@@ -175,7 +175,7 @@ The main analysis-facing folders contain short README files describing their pub
 
 ### Requirements
 
-- Node.js `>=22.13.0`
+- Node.js `>=24.0.0`
 - Python `>=3.11` (CI uses Python 3.12)
 
 ### Open the portfolio without installing anything
