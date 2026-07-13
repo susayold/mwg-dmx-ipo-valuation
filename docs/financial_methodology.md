@@ -200,10 +200,10 @@ Opening cash + CFO + CFI + CFF + FX effect = Closing cash
 
 ```text
 Opening retained earnings + NPAT - dividends
-± capitalisation / other equity movements = Closing retained earnings
+± residual capitalisation / other equity movements = Closing retained earnings
 ```
 
-Không được nhét balancing residual vào `other` rồi coi là operating adjustment. FY2025 có VND 6.542,278 tỷ capitalisation/other equity movements trong retained-earnings bridge; module trình bày riêng khoản này và không dùng nó để điều chỉnh EBIT hay CFO.
+Đây là **retained-earnings residual reconciliation**, chưa phải independent statement-of-changes-in-equity rebuild. Không được nhét balancing residual vào `other` rồi coi là operating adjustment. FY2025 có VND 6.542,278 tỷ capitalisation/other equity movements trong retained-earnings bridge; module trình bày riêng khoản này và không dùng nó để điều chỉnh EBIT hay CFO. Nếu sau này có đủ statement of changes in equity, check nên tách capitalisation, fund transfers, dividends, restructuring và OCI/other equity movements thành source-tagged lines, rồi chỉ để residual gần bằng 0.
 
 ### 5.4 Working-capital schedule
 
@@ -469,7 +469,7 @@ Scenario phải thay đổi driver kinh tế, không cộng/trừ cơ học 10% 
 
 WACC/g và exit multiple nằm trong bảng valuation sensitivity riêng. Không dùng đồng thời Bull operations + WACC cực thấp + terminal growth cực cao như một “best case” thiếu kỷ luật.
 
-Current public illustration (VND tỷ) uses an earnings anchor to make the SOTP bridge easy to audit:
+Current public website P/E illustration (VND tỷ) uses an earnings anchor to make the SOTP bridge easy to audit:
 
 | Scenario | DMX NPAT | P/E | DMX equity | MWG share ~86% | Non-DMX stub | Parent adjustments | MWG equity illustration |
 |---|---:|---:|---:|---:|---:|---:|---:|
@@ -479,13 +479,23 @@ Current public illustration (VND tỷ) uses an earnings anchor to make the SOTP 
 
 Đây là `illustrative equity value`, không phải target price. Không chuyển thành price/share hoặc upside/downside trước khi market-conclusion gate đạt yêu cầu.
 
+Illustrative FCFF DCF output (VND tỷ, except value/share):
+
+| Scenario | Enterprise value | Equity value | Value/share | Terminal value / EV |
+|---|---:|---:|---:|---:|
+| Bear | 77.784,4 | 99.908,5 | 78.809 | 65,8% |
+| Base | 131.814,8 | 154.438,9 | 121.824 | 72,7% |
+| Bull | 198.485,9 | 221.610,0 | 174.810 | 77,7% |
+
+FCFF DCF dùng Q1 2026 pre-IPO cash/debt và cộng estimated net IPO proceeds VND 13.215,080 tỷ đúng một lần qua `IPO_Bridge!D20`. Website P/E table ở trên là phương pháp minh họa riêng, không phải kết quả chính của FCFF DCF.
+
 ## 12. Kiểm tra bắt buộc
 
 Mô hình không được xuất kết quả khi một check critical khác 0 hoặc thiếu nguồn:
 
 1. `Assets - Liabilities - Equity = 0`.
 2. Cash flow closing cash = balance-sheet cash.
-3. Debt, PPE, retained earnings và JV investment roll-forward bằng 0.
+3. Debt, PPE và JV investment roll-forward bằng 0; retained earnings được trình bày là residual reconciliation nếu thiếu chi tiết statement of changes in equity.
 4. `S0 + S_new - S1 = 0` và `S_new × P0 - G = 0`.
 5. Tổng tỷ lệ sở hữu sau IPO = 100%; MWG stake dùng exact shares, không dùng rounded 86%.
 6. `Pre_money + Gross_proceeds - Post_money = 0` tại cùng giá IPO.
@@ -496,9 +506,9 @@ Mô hình không được xuất kết quả khi một check critical khác 0 ho
 11. LTM không cộng một kỳ YTD với cả năm chứa kỳ đó.
 12. Giá MWG và DMX, số cổ phần và FX có cùng ngày/nhãn ngày.
 13. `WACC > g`; terminal value share of EV được hiển thị và cảnh báo nếu quá cao.
-14. Bull/Base/Bear mapping đúng scenario và không có hard-code vào output.
+14. Bull/Base/Bear mapping đúng scenario và không có hard-code vào output; Base scenario DMX equity value khớp DMX_Valuation khi active scenario là Base.
 15. Mỗi actual có source URL/page; mỗi assumption có owner/rationale.
-16. NPAT-to-CFO bridge, cash roll và retained-earnings bridge reconcile về reported totals.
+16. NPAT-to-CFO bridge, cash roll và retained-earnings residual reconciliation reconcile về reported totals.
 17. Working-capital days dùng average balance, đúng period days và có Q1 seasonality warning.
 18. Khi starting balance sheet là Q1 pre-IPO, net-proceeds adjustment = VND 13.215,080 tỷ; khi balance sheet đã post-IPO, adjustment = 0.
 19. Reported FY2025 và management LFL comparator cùng tồn tại; không overwrite statutory actual.

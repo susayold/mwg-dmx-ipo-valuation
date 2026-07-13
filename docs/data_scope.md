@@ -122,7 +122,7 @@ Every normalized statement should pass the checks below before it reaches the mo
 8. Duplicate official attachments are detected by source ID and statement period, not only by file hash.
 9. Post-IPO share count is taken from `DMX_IPO_RESULT_2026`; proposed shares in earlier documents are not used as actual shares.
 10. Any derived ownership percentage is labelled `derived` and linked to its numerator and denominator sources.
-11. NPAT-to-CFO, cash-roll and retained-earnings bridges must reconcile to reported totals before publication.
+11. NPAT-to-CFO and cash-roll bridges must reconcile to reported totals before publication; retained earnings is labelled as a residual reconciliation unless statement-of-changes-in-equity lines are independently sourced.
 12. DIO, DSO and DPO must use consistent average balance definitions and the correct number of elapsed days.
 13. A pro forma IPO proceeds adjustment must equal VND 13,215.080bn when the starting balance sheet predates the transaction, and must be zero when the selected cash/debt balances already include it.
 14. Management LFL adjustments cannot be allocated to undisclosed EBIT, cash-flow or balance-sheet lines.

@@ -112,10 +112,10 @@ The module proves that the statements work as one accounting system through thre
 ```text
 NPAT + non-cash items ± working-capital movements − interest/tax paid = CFO
 Opening cash + CFO + CFI + CFF + FX = Closing cash
-Opening retained earnings + NPAT − dividends ± other equity movements = Closing retained earnings
+Opening retained earnings + NPAT - dividends +/- residual equity movements = Closing retained earnings
 ```
 
-All 35 generated accounting checks pass. The FY2025 retained-earnings bridge separately identifies VND 6,542.278bn of capitalisation/other equity movements; it is not recast as an operating adjustment.
+All 35 generated accounting checks pass. The retained-earnings schedule is deliberately labelled as a **residual reconciliation**, not an independent statement-of-changes-in-equity rebuild. The FY2025 bridge separately identifies VND 6,542.278bn of capitalisation/other equity movements; it is not recast as an operating adjustment.
 
 ### Working capital and earnings quality
 
@@ -146,18 +146,18 @@ The Excel model includes:
 
 - a planned-versus-actual IPO bridge;
 - FY2023–FY2025 comparative statements and Q1 2026 actuals;
-- NPAT-to-CFO, cash-roll and retained-earnings bridges;
+- NPAT-to-CFO, cash-roll and retained-earnings residual bridges;
 - working-capital, cash-conversion and quality-of-earnings schedules;
 - a documented normalization table that permits `not adjusted` where evidence is insufficient;
 - management revenue, NPAT and gross-margin references;
 - an illustrative FCFF DCF with mid-year convention;
 - an equity-level MWG SOTP;
 - Bear/Base/Bull cases and sensitivity matrices;
-- 20 QA/publication controls.
+- 21 QA/publication controls, including a check that Base scenario DMX equity value matches the active Base DCF bridge.
 
 No target price, upside/downside or investment rating is published because same-date market price, exact diluted share count and exact post-IPO ownership are not all verified on one basis.
 
-### Illustrative scenario output
+### Illustrative website P/E scenario output
 
 | Scenario | DMX NPAT | P/E | DMX equity value | MWG share at ~86% | Non-DMX stub | Parent adjustments | Illustrative MWG equity value |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -166,6 +166,16 @@ No target price, upside/downside or investment rating is published because same-
 | Bull | 8,000 | 14.0x | 112,000 | 96,320 | 65,000 | (3,000) | 158,320 |
 
 These are editable VND billion scenarios, not a target price, rating or market-based upside/downside conclusion.
+
+### Illustrative FCFF DCF output
+
+| Scenario | Enterprise value | Equity value | Value per share | Terminal value / EV |
+| --- | ---: | ---: | ---: | ---: |
+| Bear | 77,784.4 | 99,908.5 | 78,809 | 65.8% |
+| Base | 131,814.8 | 154,438.9 | 121,824 | 72.7% |
+| Bull | 198,485.9 | 221,610.0 | 174,810 | 77.7% |
+
+The FCFF DCF bridge uses pre-IPO Q1 2026 cash/debt and adds the estimated VND 13,215.080bn net IPO proceeds once through `IPO_Bridge!D20`. The website P/E scenario above is a separate lightweight SOTP illustration.
 
 ## Data architecture
 
@@ -186,7 +196,7 @@ Balance Sheet · Income Statement · Cash Flow Statement
 Source-tagged curated facts
                 │
                 ├── three-year statements and latest-quarter update
-                ├── NPAT→CFO, cash-roll and retained-earnings bridges
+                ├── NPAT→CFO, cash-roll and retained-earnings residual bridges
                 ├── working-capital, CCC and earnings-quality schedules
                 ├── accounting and lineage validation
                 ├── ratios and SQLite audit trail
@@ -200,7 +210,7 @@ Core controls include:
 - assets = liabilities + equity;
 - revenue + signed COGS = gross profit;
 - opening cash + movements + FX = ending cash;
-- opening retained earnings + NPAT - dividends + other movements = ending retained earnings;
+- opening retained earnings + NPAT - dividends + residual equity movements = ending retained earnings;
 - duplicate natural keys and missing source references;
 - consolidated versus separate-statement scope;
 - IPO share/proceeds identities;

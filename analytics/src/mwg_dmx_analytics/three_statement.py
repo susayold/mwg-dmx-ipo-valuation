@@ -335,22 +335,24 @@ def build_retained_earnings_bridges(
             _line("Opening retained earnings", opening_re),
             _line("NPAT attributable to parent", net_income),
             _line("Dividends paid", dividends),
-            _line("Capitalisation / other equity movements", other_equity_movements),
+            _line("Residual: capitalisation / other equity movements", other_equity_movements),
         ]
         calculated = sum((line["amount_vnd_bn"] for line in components), ZERO)  # type: ignore[arg-type]
         passed, difference = _bridge_check(calculated, closing_re)
         output.append(
             {
                 "period": PERIOD_LABELS[current_key],
+                "bridge_type": "retained_earnings_residual_reconciliation",
                 "components": components,
                 "calculated_closing_retained_earnings_vnd_bn": calculated,
                 "reported_closing_retained_earnings_vnd_bn": closing_re,
                 "difference_vnd_bn": difference,
                 "passed": passed,
+                "independent_reconstruction_available": False,
                 "note": (
-                    "FY2025 residual captures the disclosed capital restructuring and other equity movements; it is not treated as an operating adjustment."
+                    "Residual reconciliation only: detailed statement-of-changes-in-equity lines are not fully available in the public case set. FY2025 residual captures the disclosed capital restructuring and other equity movements; it is not treated as an operating adjustment."
                     if current_key == (date(2025, 12, 31), "FY")
-                    else "No unsupported normalization is introduced."
+                    else "Residual reconciliation only; no unsupported normalization is introduced."
                 ),
             }
         )
@@ -424,10 +426,11 @@ def build_accounting_checks(facts: Iterable[FinancialFact]) -> list[dict[str, ob
     for bridge in build_retained_earnings_bridges(facts):
         checks.append(
             {
-                "check_code": "CHK_RETAINED_EARNINGS_ROLL",
+                "check_code": "CHK_RETAINED_EARNINGS_RESIDUAL_RECONCILIATION",
                 "period": bridge["period"],
                 "passed": bridge["passed"],
                 "difference_vnd_bn": bridge["difference_vnd_bn"],
+                "validation_basis": "residual_reconciliation_not_independent_socie_rebuild",
             }
         )
 

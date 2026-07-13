@@ -11,16 +11,16 @@
       "sha256": "3b7cef7f86cf7a2d6f7660fd719886a345291f74533c80070479b7bfb0e9e365"
     },
     "public/downloads/dmx_three_statement_analysis.json": {
-      "bytes": 40782,
-      "sha256": "dca0546daa3ea4ed4092ea880306c4982c0ee29149b4d7d0ebde3ced54b8deff"
+      "bytes": 41671,
+      "sha256": "9f776a4b5df6a52d004dbb63e31aee511d8aa5fb6b423b2bdced2fac09d59133"
     },
     "public/downloads/dmx_three_statement_facts.csv": {
       "bytes": 54726,
       "sha256": "7a18647f71aaf214358e57aec98be27586f73f124908273adbba33fd0c1541b3"
     },
     "public/three-statement-data.js": {
-      "bytes": 40879,
-      "sha256": "9102eefa94b5e550c081cdda8444cc25bfd7579e753a936fea998c74f3951c39"
+      "bytes": 41768,
+      "sha256": "2ff961f91c843d85258c59501125f6f71d974ae07404834032e74c420c859897"
     }
   },
   "generic_validation": {

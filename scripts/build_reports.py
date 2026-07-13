@@ -553,11 +553,11 @@ def build_pdf(output_path: Path, three_statement: dict[str, object]):
     story.append(bridge_table)
     story.append(
         Paragraph(
-            "All NPAT-to-CFO, opening-to-closing cash and retained-earnings bridges reconcile. "
-            "The FY2025 retained-earnings residual is labelled as capitalisation/other equity "
-            "movement rather than being recast as operating performance. Normalisation is applied "
-            "only where a disclosed perimeter difference exists; unsupported EBIT, debt, lease or "
-            "minimum-cash adjustments remain N/A.",
+            "All NPAT-to-CFO and opening-to-closing cash bridges reconcile. Retained earnings is "
+            "labelled as a residual reconciliation, not an independent statement-of-changes-in-equity "
+            "rebuild. The FY2025 residual is presented as capitalisation/other equity movement rather "
+            "than being recast as operating performance. Normalisation is applied only where a disclosed "
+            "perimeter difference exists; unsupported EBIT, debt, lease or minimum-cash adjustments remain N/A.",
             styles["MemoBody"],
         )
     )
@@ -698,7 +698,42 @@ def build_pdf(output_path: Path, three_statement: dict[str, object]):
     story.append(scenario_value_table)
     story.append(
         Paragraph(
-            "Illustrative equity values only; no per-share target, rating or market upside/downside is published.",
+            "Website P/E scenario output. Separate from FCFF DCF below.",
+            styles["MemoSmall"],
+        )
+    )
+    dcf_values = [
+        ["Scenario", "Enterprise value", "Equity value", "Value/share", "TV / EV"],
+        ["Bear", "77,784", "99,909", "78,809", "65.8%"],
+        ["Base", "131,815", "154,439", "121,824", "72.7%"],
+        ["Bull", "198,486", "221,610", "174,810", "77.7%"],
+    ]
+    dcf_value_table = Table(
+        dcf_values,
+        colWidths=[30 * mm, 36 * mm, 32 * mm, 32 * mm, 24 * mm],
+    )
+    dcf_value_table.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, 0), INK),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+                ("BACKGROUND", (0, 2), (-1, 2), LIME),
+                ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", 6.2),
+                ("FONT", (0, 1), (-1, -1), "Helvetica", 6.8),
+                ("FONT", (0, 2), (-1, 2), "Helvetica-Bold", 6.8),
+                ("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#B9B4AA")),
+                ("ALIGN", (1, 1), (-1, -1), "RIGHT"),
+                ("TOPPADDING", (0, 0), (-1, -1), 5),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
+            ]
+        )
+    )
+    story.append(Spacer(1, 4 * mm))
+    story.append(dcf_value_table)
+    story.append(
+        Paragraph(
+            "FCFF DCF adds estimated net IPO proceeds through IPO_Bridge!D20 once because Q1 cash/debt are pre-IPO. "
+            "Illustrative outputs only; no target price, rating or market upside/downside is published.",
             styles["MemoSmall"],
         )
     )
@@ -851,7 +886,7 @@ def build_validation_html(
   <tbody>{checks_html}</tbody></table>
   <p class="note">The extractor allowlists only <code>Balance Sheet</code>, <code>Income Statement</code>
   and <code>Cash Flow Statement</code>. The three-statement module additionally validates NPAT-to-CFO,
-  cash roll-forward and retained-earnings bridges. Raw issuer files remain outside Git; the source register
+  cash roll-forward and retained-earnings residual bridges. Raw issuer files remain outside Git; the source register
   retains URL, retrieval timestamp, file size and SHA-256.</p>
 </main></body></html>"""
     output_path.write_text(content, encoding="utf-8")

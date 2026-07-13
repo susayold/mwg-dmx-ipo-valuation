@@ -194,22 +194,25 @@ window.DMX_THREE_STATEMENT_ANALYSIS = {
       "period": "Q1 2026A"
     },
     {
-      "check_code": "CHK_RETAINED_EARNINGS_ROLL",
+      "check_code": "CHK_RETAINED_EARNINGS_RESIDUAL_RECONCILIATION",
       "difference_vnd_bn": 0.0,
       "passed": true,
-      "period": "FY2024A"
+      "period": "FY2024A",
+      "validation_basis": "residual_reconciliation_not_independent_socie_rebuild"
     },
     {
-      "check_code": "CHK_RETAINED_EARNINGS_ROLL",
+      "check_code": "CHK_RETAINED_EARNINGS_RESIDUAL_RECONCILIATION",
       "difference_vnd_bn": 0.0,
       "passed": true,
-      "period": "FY2025A"
+      "period": "FY2025A",
+      "validation_basis": "residual_reconciliation_not_independent_socie_rebuild"
     },
     {
-      "check_code": "CHK_RETAINED_EARNINGS_ROLL",
+      "check_code": "CHK_RETAINED_EARNINGS_RESIDUAL_RECONCILIATION",
       "difference_vnd_bn": 0.0,
       "passed": true,
-      "period": "Q1 2026A"
+      "period": "Q1 2026A",
+      "validation_basis": "residual_reconciliation_not_independent_socie_rebuild"
     }
   ],
   "bridges": {
@@ -669,6 +672,7 @@ window.DMX_THREE_STATEMENT_ANALYSIS = {
     ],
     "retained_earnings": [
       {
+        "bridge_type": "retained_earnings_residual_reconciliation",
         "calculated_closing_retained_earnings_vnd_bn": 15154.898414399,
         "components": [
           {
@@ -685,16 +689,18 @@ window.DMX_THREE_STATEMENT_ANALYSIS = {
           },
           {
             "amount_vnd_bn": 0.0,
-            "label": "Capitalisation / other equity movements"
+            "label": "Residual: capitalisation / other equity movements"
           }
         ],
         "difference_vnd_bn": 0.0,
-        "note": "No unsupported normalization is introduced.",
+        "independent_reconstruction_available": false,
+        "note": "Residual reconciliation only; no unsupported normalization is introduced.",
         "passed": true,
         "period": "FY2024A",
         "reported_closing_retained_earnings_vnd_bn": 15154.898414399
       },
       {
+        "bridge_type": "retained_earnings_residual_reconciliation",
         "calculated_closing_retained_earnings_vnd_bn": 5714.405436127,
         "components": [
           {
@@ -711,16 +717,18 @@ window.DMX_THREE_STATEMENT_ANALYSIS = {
           },
           {
             "amount_vnd_bn": -6542.27821,
-            "label": "Capitalisation / other equity movements"
+            "label": "Residual: capitalisation / other equity movements"
           }
         ],
         "difference_vnd_bn": 0.0,
-        "note": "FY2025 residual captures the disclosed capital restructuring and other equity movements; it is not treated as an operating adjustment.",
+        "independent_reconstruction_available": false,
+        "note": "Residual reconciliation only: detailed statement-of-changes-in-equity lines are not fully available in the public case set. FY2025 residual captures the disclosed capital restructuring and other equity movements; it is not treated as an operating adjustment.",
         "passed": true,
         "period": "FY2025A",
         "reported_closing_retained_earnings_vnd_bn": 5714.405436127
       },
       {
+        "bridge_type": "retained_earnings_residual_reconciliation",
         "calculated_closing_retained_earnings_vnd_bn": 7932.972302376,
         "components": [
           {
@@ -737,11 +745,12 @@ window.DMX_THREE_STATEMENT_ANALYSIS = {
           },
           {
             "amount_vnd_bn": 0.0,
-            "label": "Capitalisation / other equity movements"
+            "label": "Residual: capitalisation / other equity movements"
           }
         ],
         "difference_vnd_bn": 0.0,
-        "note": "No unsupported normalization is introduced.",
+        "independent_reconstruction_available": false,
+        "note": "Residual reconciliation only; no unsupported normalization is introduced.",
         "passed": true,
         "period": "Q1 2026A",
         "reported_closing_retained_earnings_vnd_bn": 7932.972302376

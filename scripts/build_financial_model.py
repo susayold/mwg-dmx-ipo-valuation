@@ -611,7 +611,7 @@ def build_cover(wb: Workbook) -> None:
         "3. How much of DMX's value is attributable to MWG using an explicitly labelled ownership proxy?",
         "4. What illustrative residual value is assigned to BHX and other MWG assets in a SOTP?",
         "5. Which assumptions drive the range, and which QA gates prevent an unsupported conclusion?",
-        "6. Do earnings, working capital, cash and retained earnings reconcile across the three statements?",
+        "6. Do earnings, working capital, cash and retained earnings residuals reconcile across the three statements?",
     ]
     for row, question in enumerate(questions, 19):
         ws.merge_cells(start_row=row, start_column=2, end_row=row, end_column=10)
@@ -633,7 +633,7 @@ def build_cover(wb: Workbook) -> None:
         ("IPO_Bridge", "Planned versus actual primary issuance", "Actual + planned", "Shares/proceeds identity"),
         ("Q1_Actuals", "Key consolidated statements and ratios", "Actual", "Statement/cash checks"),
         ("3Y_Statements", "FY2023–FY2025 plus Q1 2026 three-statement history", "Reported actuals", "Trend and scope"),
-        ("3S_Bridges", "NPAT-to-CFO, cash, retained earnings and normalization", "Actual + management LFL", "Accounting linkage"),
+        ("3S_Bridges", "NPAT-to-CFO, cash, retained-earnings residual and normalization", "Actual + management LFL", "Accounting linkage"),
         ("WC_QoE", "Working-capital days and quality-of-earnings matrix", "Calculated", "Cash conversion risk"),
         ("Mgmt_Forecast", "2025 actual and 2026–2030 company outlook", "Actual / company outlook", "No relabelling as analyst forecast"),
         ("Assumptions", "Editable Bear/Base/Bull inputs", "Illustrative", "Replace before investment use"),
@@ -1236,7 +1236,7 @@ def build_three_statement_bridges(wb: Workbook, payload: dict[str, Any]) -> None
     set_title(
         ws,
         "Three-statement reconciliation bridges",
-        "Q1 2026 earnings-to-cash, cash roll-forward, FY2025 retained earnings, normalization and IPO pro forma controls.",
+        "Q1 2026 earnings-to-cash, cash roll-forward, FY2025 retained-earnings residual reconciliation, normalization and IPO pro forma controls.",
         14,
     )
     set_widths(
@@ -1260,7 +1260,7 @@ def build_three_statement_bridges(wb: Workbook, payload: dict[str, Any]) -> None
             "reported_ending_cash_vnd_bn",
         ),
         (
-            "Retained earnings · FY2025",
+            "Retained earnings residual · FY2025",
             next(row for row in payload["bridges"]["retained_earnings"] if row["period"] == "FY2025A"),
             11,
             "calculated_closing_retained_earnings_vnd_bn",
@@ -2294,6 +2294,7 @@ def build_scenarios(
             f'={last}{block_rows["enterprise_value"]}'
             f'-Q1_Actuals!D{q1_rows["debt"]}+Q1_Actuals!D{q1_rows["cash"]}'
             f'+Q1_Actuals!D{q1_rows["short_term_investments"]}+Q1_Actuals!D{q1_rows["long_term_deposits"]}'
+            f'+IPO_Bridge!$D$20'
             f'-Assumptions!${ass_col}${assumption_rows["VAL_LEASE"]}-Assumptions!${ass_col}${assumption_rows["VAL_OTHER_CLAIMS"]}'
             f'+Assumptions!${ass_col}${assumption_rows["VAL_ERABLUE"]}',
         )
@@ -2432,6 +2433,7 @@ def build_scenarios(
                 f'+$L$29*(1+{letter}$45)/($B{row}-{letter}$45)/(1+$B{row})^4.5'
                 f'-Q1_Actuals!D{q1_rows["debt"]}+Q1_Actuals!D{q1_rows["cash"]}'
                 f'+Q1_Actuals!D{q1_rows["short_term_investments"]}+Q1_Actuals!D{q1_rows["long_term_deposits"]}'
+                f'+IPO_Bridge!$D$20'
                 f'-Assumptions!$F${assumption_rows["VAL_LEASE"]}-Assumptions!$F${assumption_rows["VAL_OTHER_CLAIMS"]}'
                 f'+Assumptions!$F${assumption_rows["VAL_ERABLUE"]})*1000/IPO_Bridge!D11'
             )
@@ -2498,6 +2500,7 @@ def build_checks(
     assumption_rows: dict[str, int],
     dmx_rows: dict[str, int],
     sotp_rows: dict[str, int],
+    scenario_rows: dict[str, int],
 ) -> None:
     ws = wb["Checks"]
     setup_sheet(ws, "A5", 80)
@@ -2627,7 +2630,7 @@ def build_checks(
             "Critical",
             "Net IPO proceeds bridge equals the issuer estimate and is included once",
             0.01,
-            f'=ABS(DMX_Valuation!K{dmx_rows["summary_additional_ipo"]}-IPO_Bridge!D19)',
+            f'=ABS(DMX_Valuation!K{dmx_rows["summary_additional_ipo"]}-IPO_Bridge!D20)',
             '=IF(F15<=E15,"PASS","FAIL")',
             "Q1 cash/debt are pre-IPO; Resolution 15 net proceeds bridge to post-IPO shares without being embedded in cash",
         ),
@@ -2732,6 +2735,16 @@ def build_checks(
             '=IF(F24=0,"PASS","FAIL")',
             "Scenario selector controls active assumption formulas",
         ),
+        (
+            "CHK_SCENARIO_BASE_DCF_MATCH",
+            "Scenarios",
+            "Critical",
+            "Base scenario DMX equity value equals DMX_Valuation when active scenario is Base",
+            0.01,
+            f'=IF(Assumptions!C4="Base",ABS(Scenarios!L{scenario_rows["equity_value"]}-DMX_Valuation!K{dmx_rows["summary_equity_value"]}),0)',
+            '=IF(F25<=E25,"PASS","FAIL")',
+            "Prevents the independent scenario block from omitting pro forma net IPO proceeds or other EV-to-equity bridge items",
+        ),
     ]
 
     for row, check in enumerate(checks, 5):
@@ -2835,6 +2848,21 @@ def validate_generated_workbook(path: Path) -> dict[str, int]:
         raise ValueError(
             f"Actual rows reference source IDs missing from Sources: {missing_actual_sources}"
         )
+    scenario_base_equity_formula = wb["Scenarios"]["L38"].value
+    if (
+        not isinstance(scenario_base_equity_formula, str)
+        or "+IPO_Bridge!$D$20" not in scenario_base_equity_formula
+    ):
+        raise ValueError(
+            "Scenarios Base equity bridge must include net IPO proceeds once via IPO_Bridge!$D$20"
+        )
+    check_ids = {
+        wb["Checks"].cell(row, 1).value
+        for row in range(5, wb["Checks"].max_row + 1)
+        if wb["Checks"].cell(row, 1).value
+    }
+    if "CHK_SCENARIO_BASE_DCF_MATCH" not in check_ids:
+        raise ValueError("Missing scenario-to-DCF parity check")
     if formula_count < 250:
         raise ValueError(f"Too few formulas for the requested model: {formula_count}")
     if comment_count < 20:
@@ -2906,8 +2934,8 @@ def build_model() -> Path:
     assumption_rows = build_assumptions(wb)
     dmx_rows = build_dmx_valuation(wb, q1_rows, mgmt_rows, assumption_rows)
     sotp_rows = build_mwg_sotp(wb, dmx_rows, assumption_rows)
-    build_scenarios(wb, q1_rows, mgmt_rows, assumption_rows)
-    build_checks(wb, ipo_rows, q1_rows, assumption_rows, dmx_rows, sotp_rows)
+    scenario_rows = build_scenarios(wb, q1_rows, mgmt_rows, assumption_rows)
+    build_checks(wb, ipo_rows, q1_rows, assumption_rows, dmx_rows, sotp_rows, scenario_rows)
     add_workbook_navigation(wb)
     wb.active = wb.sheetnames.index("Cover")
 

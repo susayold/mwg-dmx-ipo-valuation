@@ -56,7 +56,7 @@ class ThreeStatementTests(unittest.TestCase):
                 "CHK_CASH_ROLL",
                 "CHK_CFS_TO_BS_CASH",
                 "CHK_INVENTORY_NET",
-                "CHK_RETAINED_EARNINGS_ROLL",
+                "CHK_RETAINED_EARNINGS_RESIDUAL_RECONCILIATION",
             }
             <= codes
         )
@@ -95,7 +95,15 @@ class ThreeStatementTests(unittest.TestCase):
             row["label"]: row["amount_vnd_bn"]
             for row in bridges["FY2025A"]["components"]
         }
-        self.assertLess(components["Capitalisation / other equity movements"], 0)
+        self.assertEqual(
+            bridges["FY2025A"]["bridge_type"],
+            "retained_earnings_residual_reconciliation",
+        )
+        self.assertFalse(bridges["FY2025A"]["independent_reconstruction_available"])
+        self.assertLess(
+            components["Residual: capitalisation / other equity movements"], 0
+        )
+        self.assertIn("Residual reconciliation only", bridges["FY2025A"]["note"])
         self.assertIn("capital restructuring", bridges["FY2025A"]["note"])
 
     def test_normalization_schedule_preserves_missing_evidence_as_null(self) -> None:

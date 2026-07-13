@@ -199,9 +199,9 @@ The model reconciles three accounting relationships:
     Opening cash + CFO + CFI + CFF + FX effects = Closing cash
 
     Opening retained earnings + NPAT − dividends
-    ± capitalisation/other equity movements = Closing retained earnings
+    ± residual capitalisation/other equity movements = Closing retained earnings
 
-All 35 generated accounting checks pass. In FY2025, the retained-earnings bridge contains VND 6,542.278 billion of capitalisation and other equity movements related to the disclosed restructuring. The analysis isolates that residual rather than treating it as operating income, cash flow or an invented normalization adjustment.
+All 35 generated accounting checks pass. The retained-earnings schedule is labelled as a residual reconciliation, not an independent statement-of-changes-in-equity rebuild. In FY2025, the bridge contains VND 6,542.278 billion of capitalisation and other equity movements related to the disclosed restructuring. The analysis isolates that residual rather than treating it as operating income, cash flow or an invented normalization adjustment.
 
 The Q1 2026 NPAT-to-CFO bridge is especially informative. Reported NPAT was VND 2,218.6 billion, while CFO was VND 863.7 billion. The bridge includes:
 
@@ -382,7 +382,15 @@ Required inputs are a verified share price, price date, diluted MWG share count 
 | Base | 7,350 | 12.3x | 90,405 | 77,748.3 | 45,000 | (5,000) | 117,748.3 |
 | Bull | 8,000 | 14.0x | 112,000 | 96,320 | 65,000 | (3,000) | 158,320 |
 
-The scenario table is intentionally two-dimensional where possible. Combining simultaneous optimistic assumptions without sensitivity analysis would overstate confidence.
+This is the website P/E scenario output. The FCFF DCF output is a separate method:
+
+| Scenario | Enterprise value | Equity value | Value/share | Terminal value / EV |
+|---|---:|---:|---:|---:|
+| Bear | 77,784.4 | 99,908.5 | 78,809 | 65.8% |
+| Base | 131,814.8 | 154,438.9 | 121,824 | 72.7% |
+| Bull | 198,485.9 | 221,610.0 | 174,810 | 77.7% |
+
+The FCFF DCF bridge uses pre-IPO Q1 2026 cash/debt and adds the estimated VND 13,215.080 billion net IPO proceeds exactly once through `IPO_Bridge!D20`. The scenario table is intentionally two-dimensional where possible. Combining simultaneous optimistic assumptions without sensitivity analysis would overstate confidence.
 
 These are VND billion equity illustrations, not target prices. The model does not convert them into value per share, premium/upside or a rating while exact ownership, same-date diluted shares and market price remain unverified on one basis.
 

@@ -108,7 +108,7 @@ Nếu triển khai Excel, dùng đúng tab order; nếu triển khai Python/SQL,
 | `IPO_Bridge` | Planned vs actual + pro forma use of proceeds | Resolutions/sales kit | Shares, proceeds, dilution, net-proceeds basis |
 | `Q1_Actuals` | Latest reported facts | Q1 data pack | Q1 2025/Q1 2026 comparison |
 | `3Y_Statements` | FY2023–FY2025 + Q1 update | Audited/unaudited filings | Comparative IS/BS/CF |
-| `3S_Bridges` | Linked-statement reconciliations | Normalized facts | NPAT→CFO, cash and retained-earnings bridges |
+| `3S_Bridges` | Linked-statement reconciliations | Normalized facts | NPAT→CFO, cash and retained-earnings residual bridges |
 | `WC_QoE` | Working capital and earnings quality | Average trade balances + flow data | DIO/DSO/DPO/CCC, QoE, normalization |
 | `Mgmt_Forecast` | Issuer reference case | Official management materials | Clearly labelled company guidance |
 | `Assumptions` | Analyst scenario inputs | User inputs | WACC, growth, multiples and bridge assumptions |
@@ -650,7 +650,7 @@ Tối thiểu:
 
 Operating scenario và valuation sensitivity là hai chiều độc lập.
 
-The public earnings-anchor illustration must reconcile as follows (VND billion):
+The public website P/E earnings-anchor illustration must reconcile as follows (VND billion):
 
 | Scenario | DMX equity | MWG share at ~86% | Stub | Parent adjustments | Total illustrative MWG equity |
 |---|---:|---:|---:|---:|---:|
@@ -659,6 +659,16 @@ The public earnings-anchor illustration must reconcile as follows (VND billion):
 | Bull | 112,000 | 96,320 | 65,000 | (3,000) | 158,320 |
 
 These totals are scenario checks, not target prices. `~86%` remains an approximate ownership input until an exact post-IPO shareholder record is available.
+
+The FCFF DCF output is a separate method and must be labelled separately:
+
+| Scenario | Enterprise value | Equity value | Value/share | Terminal value / EV |
+|---|---:|---:|---:|---:|
+| Bear | 77,784.4 | 99,908.5 | 78,809 | 65.8% |
+| Base | 131,814.8 | 154,438.9 | 121,824 | 72.7% |
+| Bull | 198,485.9 | 221,610.0 | 174,810 | 77.7% |
+
+The scenario DCF equity bridge must include `+IPO_Bridge!$D$20` exactly once when it uses pre-IPO Q1 cash/debt with post-IPO shares. `CHK_SCENARIO_BASE_DCF_MATCH` must pass when active scenario is Base.
 
 ## 12. QA checks and publication gate
 
@@ -682,7 +692,7 @@ CHK_3S_PPE_ROLL
 CHK_3S_EQUITY_ROLL
 CHK_3S_JV_ROLL
 CHK_3S_NPAT_TO_CFO
-CHK_3S_RETAINED_EARNINGS
+CHK_3S_RETAINED_EARNINGS_RESIDUAL_RECONCILIATION
 CHK_3S_PERIOD_DAYS
 CHK_3S_SOURCE_COVERAGE
 CHK_NORM_NO_UNSUPPORTED_ADJUSTMENT
@@ -693,6 +703,7 @@ CHK_IPO_VALUATION_IDENTITY
 CHK_OWNERSHIP_SUM
 CHK_EPS_WEIGHTED_SHARES
 CHK_DCF_WACC_GT_G
+CHK_SCENARIO_BASE_DCF_MATCH
 CHK_DCF_BRIDGE
 CHK_DCF_NO_DOUBLE_COUNT_IPO
 CHK_SOTP_NO_DUPLICATE_BUCKET
