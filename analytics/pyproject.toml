@@ -9,7 +9,7 @@ description = "Reproducible financial statement, scenario and SOTP analytics for
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
-authors = [{ name = "Portfolio project contributor" }]
+authors = [{ name = "Nguyen Pham Khoi Nguyen" }]
 dependencies = []
 
 [project.urls]

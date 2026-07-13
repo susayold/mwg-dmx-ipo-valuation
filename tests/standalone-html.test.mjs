@@ -8,6 +8,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const htmlPath = path.join(root, "index.html");
 const threeStatementScriptPath = path.join(root, "public", "three-statement-data.js");
 const standaloneScriptPath = path.join(root, "public", "standalone-site.js");
+const ciWorkflowPath = path.join(root, ".github", "workflows", "ci.yml");
+const pagesWorkflowPath = path.join(root, ".github", "workflows", "pages.yml");
 
 async function loadHtml() {
   return readFile(htmlPath, "utf8");
@@ -88,6 +90,24 @@ test("standalone renderer script parses", async () => {
   assert.match(script, /quality-of-earnings-body/);
   assert.doesNotThrow(() => new Function(script), "standalone renderer JavaScript must parse");
 });
+
+test("GitHub Pages artifact includes the standalone renderer", async () => {
+  const workflow = await readFile(pagesWorkflowPath, "utf8");
+
+  assert.match(workflow, /actions\/download-artifact@v4/);
+  assert.match(workflow, /mwg-dmx-research-artifacts/);
+  assert.match(workflow, /cp -a _ci_artifacts\/\. \./);
+  assert.match(workflow, /public\/three-statement-data\.js _site\/public\/three-statement-data\.js/);
+  assert.match(workflow, /public\/standalone-site\.js _site\/public\/standalone-site\.js/);
+});
+
+test("CI research artifact carries standalone site scripts", async () => {
+  const workflow = await readFile(ciWorkflowPath, "utf8");
+
+  assert.match(workflow, /public\/three-statement-data\.js/);
+  assert.match(workflow, /public\/standalone-site\.js/);
+});
+
 test("all local links and assets in index.html exist in the repository", async () => {
   const html = await loadHtml();
   const references = [

@@ -11,6 +11,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
@@ -37,6 +38,22 @@ jobs:
         with:
           node-version: 24
 
+      - name: Download CI-built research artifacts
+        if: github.event_name == 'workflow_run'
+        uses: actions/download-artifact@v4
+        with:
+          name: mwg-dmx-research-artifacts
+          path: _ci_artifacts
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Overlay CI-built artifacts
+        if: github.event_name == 'workflow_run'
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp -a _ci_artifacts/. .
+
       - name: Validate standalone portfolio
         run: node --test tests/standalone-html.test.mjs
 
@@ -50,6 +67,7 @@ jobs:
           install -m 0644 public/og.png _site/public/og.png
           install -m 0644 public/favicon.svg _site/public/favicon.svg
           install -m 0644 public/three-statement-data.js _site/public/three-statement-data.js
+          install -m 0644 public/standalone-site.js _site/public/standalone-site.js
           cp -a public/downloads/. _site/public/downloads/
           touch _site/.nojekyll
 
