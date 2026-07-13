@@ -79,3 +79,7 @@ htmlcov/
 # Official filings are downloaded for local, non-commercial analysis only.
 # Their source owners have not granted redistribution rights for this repository.
 /data/raw/
+# Local visual QA and TypeScript build cache
+/.tmp_pdf_pages/
+/.tmp_report_pages/
+tsconfig.tsbuildinfo

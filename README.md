@@ -4,7 +4,7 @@
 [![GitHub Pages](https://img.shields.io/badge/Live%20portfolio-GitHub%20Pages-DDFC3B?style=flat&labelColor=0B1714)](https://susayold.github.io/mwg-dmx-ipo-valuation/)
 [![License: MIT](https://img.shields.io/badge/Code-MIT-FF5B40.svg)](LICENSE)
 
-An end-to-end financial-analysis portfolio project covering the completed Điện Máy Xanh (DMX) IPO, post-transaction corporate perimeter, financial-statement normalization and a scenario-based sum-of-the-parts valuation of Mobile World Investment Corporation (MWG).
+An end-to-end financial-analysis portfolio project covering the completed Điện Máy Xanh (DMX) IPO, a FY2023–FY2025 three-statement review, Q1 2026 trend update, financial-statement normalization and a scenario-based sum-of-the-parts valuation of Mobile World Investment Corporation (MWG).
 
 > **Tóm tắt:** Dự án biến nguồn công bố chính thức thành dữ liệu tài chính có thể truy vết, đối chiếu kết quả IPO thực tế, khóa các lỗi double-count trong DCF/SOTP và đóng gói kết quả thành Excel model, investment memo, validation artifacts và website tương tác.
 
@@ -17,10 +17,12 @@ An end-to-end financial-analysis portfolio project covering the completed Điệ
 | Start here | What it demonstrates |
 | --- | --- |
 | [Live portfolio](https://susayold.github.io/mwg-dmx-ipo-valuation/) | Research narrative and interactive Bear/Base/Bull SOTP |
-| [Excel financial model](model/MWG_DMX_IPO_SOTP_Model.xlsx) | IPO bridge, actuals, management outlook, FCFF DCF, SOTP, sensitivities and QA |
+| [Excel financial model](model/MWG_DMX_IPO_SOTP_Model.xlsx) | Three-year statements, accounting bridges, working-capital/QoE schedules, IPO bridge, DCF, SOTP and QA |
 | [Research memo](reports/RESEARCH_REPORT.md) | Long-form investment analysis and limitations |
 | [Source registry](data/source_registry.csv) | 29 official-source records with scope, audit status, URL and SHA-256 |
-| [Curated financial facts](data/processed/dmx_q1_2026_financial_facts.csv) | 210 source-tagged Q1 facts from allowlisted statements |
+| [Three-statement dataset](data/processed/dmx_three_statement_facts.csv) | 320 source-tagged facts covering FY2023–FY2025 and Q1 2026 |
+| [Generated analysis payload](data/processed/dmx_three_statement_analysis.json) | Statements, bridges, WC/CCC, QoE, normalization and 35 accounting checks |
+| [Curated Q1 facts](data/processed/dmx_q1_2026_financial_facts.csv) | 210 source-tagged Q1 facts from allowlisted statements |
 | [Validation report](public/downloads/validation_report.html) | Accounting and data-quality checks |
 | [Analytics engine](analytics/) | Python/SQLite normalization, ratios, validation and valuation logic |
 
@@ -46,6 +48,20 @@ This case combines four problems normally handled separately:
 
 The key perimeter control is EraBlue: the equity-accounted joint venture sits inside DMX and is valued once. It is never added again to the MWG stub.
 
+## What I built
+
+This repository is designed to show the work of a financial analyst, not only the final valuation number. The contribution includes:
+
+- building a source registry with document hashes, audit status, statement scope and page/sheet locators;
+- standardizing 320 financial facts from three annual periods and the latest available quarter;
+- reconciling NPAT to CFO, opening cash to closing cash, and retained earnings across periods;
+- calculating DIO, DSO, DPO, cash conversion cycle, CFO/NPAT, inventory-provision coverage and CapEx/revenue;
+- separating statutory reported results, management like-for-like comparators, guidance and analyst assumptions;
+- implementing an IPO proceeds bridge and controls against double-counting cash or EraBlue;
+- packaging the analysis into a reproducible Excel model, research memo, validation artifacts and portfolio website.
+
+In a CV or interview, the project can be described as: **“Built an auditable three-statement and SOTP analysis for the DMX IPO using official filings; normalized 320 financial facts, automated 35 accounting checks, analyzed working-capital and earnings quality, and delivered the result through Python, Excel and an interactive web portfolio.”** This describes the work product; it does not imply employment by MWG, DMX or a securities firm.
+
 ## Verified transaction snapshot
 
 | Metric | Actual close |
@@ -54,10 +70,12 @@ The key perimeter control is EraBlue: the equity-accounted joint venture sits in
 | Successfully issued shares | 166,438,500 |
 | Post-offer shares | 1,267,722,000 |
 | Gross proceeds | VND 13,315.080bn |
+| Estimated issue costs | VND 100.000bn |
+| Estimated net proceeds | VND 13,215.080bn |
 | Post-money value at the offer price | VND 101,417.760bn |
 | MWG ownership disclosure | “Nearly 86%” |
 
-The model uses the final allocation, not the planned 179.5 million-share maximum. The 13.1 million unallocated shares are excluded from post-offer capital. “Nearly 86%” remains a rounded disclosure; calculations labelled `~86%` are model approximations, not an exact shareholder-register result.
+The model uses the final allocation, not the planned 179.5 million-share maximum. The 13.1 million unallocated shares are excluded from post-offer capital. Resolution 15 discloses estimated net proceeds of VND 13,215.080bn—gross proceeds of VND 13,315.080bn less VND 100.000bn of estimated issuance costs—and a plan to use that amount to repay debt during 2026. The valuation treats this as a **pro forma transaction adjustment**, not evidence that repayment had already been disbursed at the data cut-off. “Nearly 86%” remains a rounded disclosure; calculations labelled `~86%` are model approximations, not an exact shareholder-register result.
 
 ## Operating evidence
 
@@ -73,6 +91,48 @@ The earnings signal is constructive, but cash conversion is the main watchpoint.
 
 The issuer's six-month update reported VND 65,279bn of revenue, 32% same-store sales growth and 53% completion of annual revenue guidance. These figures remain labelled as an unaudited issuer operating update, not a complete H1 financial-statement set.
 
+## Three-statement analysis
+
+### Coverage and assurance
+
+| Period | Income statement | Balance sheet | Cash flow | Status |
+| --- | --- | --- | --- | --- |
+| FY2023 | Full year | 31 Dec 2023 | Full year | Comparative column in the FY2024 filing; expressly unaudited |
+| FY2024 | Full year | 31 Dec 2024 | Full year | Audited consolidated statements |
+| FY2025 | Full year | 31 Dec 2025 | Full year | Audited consolidated statements |
+| Q1 2026 | Three months | 31 Mar 2026 | Three months YTD | Unaudited consolidated data pack |
+| H1 2026 | Operating KPIs only | — | — | No complete H1 statements available at the cut-off |
+
+Q1 is used only as a latest-trend update. It is not treated as a substitute for a full year when evaluating seasonality, inventory cycles, margin durability, CapEx/depreciation or debt policy.
+
+### Linked-statement controls
+
+The module proves that the statements work as one accounting system through three explicit bridges:
+
+```text
+NPAT + non-cash items ± working-capital movements − interest/tax paid = CFO
+Opening cash + CFO + CFI + CFF + FX = Closing cash
+Opening retained earnings + NPAT − dividends ± other equity movements = Closing retained earnings
+```
+
+All 35 generated accounting checks pass. The FY2025 retained-earnings bridge separately identifies VND 6,542.278bn of capitalisation/other equity movements; it is not recast as an operating adjustment.
+
+### Working capital and earnings quality
+
+| Metric | FY2024 | FY2025 | Q1 2026 YTD |
+| --- | ---: | ---: | ---: |
+| DIO | 88.0 days | 83.6 days | 78.4 days |
+| DSO | 1.1 days | 1.1 days | 1.0 days |
+| DPO | 28.3 days | 32.5 days | 31.3 days |
+| Cash conversion cycle | 60.8 days | 52.1 days | 48.0 days |
+| CFO / NPAT | 168.0% | 86.5% | 38.9% |
+| Inventory provision / gross inventory | 2.24% | 2.61% | 3.15% |
+| CapEx / revenue | 0.08% | 0.12% | 0.36% |
+
+The Q1 day metrics use average opening/closing balances and the actual 90-day period. They are **not annual forecasts** and should not be compared mechanically with full-year ratios. The most important Q1 cash-flow signal is the VND 465.977bn cash outflow from lower payables, reversing the supplier-funding contribution seen in Q1 2025. This explains more of the CFO/NPAT deterioration than receivables alone.
+
+The normalization policy is deliberately conservative. Reported FY2025 revenue and NPAT remain intact; management's VND 107,000bn revenue and VND 6,075bn NPAT are stored as separate LFL comparators. Operating profit, excess cash and adjusted net debt remain unadjusted where disclosure is insufficient.
+
 ## Valuation framework
 
 The public case deliberately separates:
@@ -85,7 +145,10 @@ The public case deliberately separates:
 The Excel model includes:
 
 - a planned-versus-actual IPO bridge;
-- Q1 reported income-statement, balance-sheet and cash-flow facts;
+- FY2023–FY2025 comparative statements and Q1 2026 actuals;
+- NPAT-to-CFO, cash-roll and retained-earnings bridges;
+- working-capital, cash-conversion and quality-of-earnings schedules;
+- a documented normalization table that permits `not adjusted` where evidence is insufficient;
 - management revenue, NPAT and gross-margin references;
 - an illustrative FCFF DCF with mid-year convention;
 - an equity-level MWG SOTP;
@@ -93,6 +156,16 @@ The Excel model includes:
 - 20 QA/publication controls.
 
 No target price, upside/downside or investment rating is published because same-date market price, exact diluted share count and exact post-IPO ownership are not all verified on one basis.
+
+### Illustrative scenario output
+
+| Scenario | DMX NPAT | P/E | DMX equity value | MWG share at ~86% | Non-DMX stub | Parent adjustments | Illustrative MWG equity value |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Bear | 6,700 | 10.0x | 67,000 | 57,620 | 28,000 | (8,000) | 77,620 |
+| Base | 7,350 | 12.3x | 90,405 | 77,748.3 | 45,000 | (5,000) | 117,748.3 |
+| Bull | 8,000 | 14.0x | 112,000 | 96,320 | 65,000 | (3,000) | 158,320 |
+
+These are editable VND billion scenarios, not a target price, rating or market-based upside/downside conclusion.
 
 ## Data architecture
 
@@ -112,6 +185,9 @@ Balance Sheet · Income Statement · Cash Flow Statement
                 ▼
 Source-tagged curated facts
                 │
+                ├── three-year statements and latest-quarter update
+                ├── NPAT→CFO, cash-roll and retained-earnings bridges
+                ├── working-capital, CCC and earnings-quality schedules
                 ├── accounting and lineage validation
                 ├── ratios and SQLite audit trail
                 ├── DCF/SOTP scenario engine
@@ -124,6 +200,7 @@ Core controls include:
 - assets = liabilities + equity;
 - revenue + signed COGS = gross profit;
 - opening cash + movements + FX = ending cash;
+- opening retained earnings + NPAT - dividends + other movements = ending retained earnings;
 - duplicate natural keys and missing source references;
 - consolidated versus separate-statement scope;
 - IPO share/proceeds identities;
@@ -148,12 +225,12 @@ Core controls include:
 │   └── data/                     # Typed public case data
 ├── analytics/                    # Installable Python analytics package
 │   ├── src/                      # Validation, ratios, database and valuation
-│   ├── tests/                    # 19 unit/integration tests
+│   ├── tests/                    # Unit/integration tests, including three-statement checks
 │   ├── data/sample/              # Clearly labelled synthetic fixtures
 │   └── sql/                      # SQLite schema
 ├── data/
 │   ├── source_registry.csv       # Source manifest and document hashes
-│   └── processed/                # Curated source-tagged financial facts
+│   └── processed/                # Curated facts, normalization table and generated 3S payload
 ├── docs/                         # Data scope, methodology and model contract
 ├── model/                        # Generated auditable Excel workbook
 ├── public/
@@ -163,6 +240,7 @@ Core controls include:
 ├── reports/                      # Long-form research memo
 ├── scripts/
 │   ├── fetch_sources.py          # HTTPS download and SHA-256 verification
+│   ├── build_three_statement_analysis.py # Generate statements, bridges, WC/QoE and checks
 │   ├── build_financial_model.py  # Reproducible Excel builder
 │   └── build_reports.py          # PDF/HTML/manifest builder
 ├── tests/                        # Rendered and standalone web tests
@@ -214,6 +292,7 @@ The downloader accepts HTTPS only, writes only inside ignored `data/raw/`, enfor
 
 ```bash
 python -m pip install -r requirements-artifacts.txt
+python scripts/build_three_statement_analysis.py
 python scripts/build_financial_model.py
 python scripts/build_reports.py
 ```
@@ -225,15 +304,20 @@ Generated outputs:
 - `public/downloads/Investment_Memo_EN.pdf`
 - `public/downloads/validation_report.html`
 - `public/downloads/dmx_q1_2026_financial_facts.csv`
+- `public/downloads/dmx_three_statement_analysis.json`
+- `public/downloads/dmx_three_statement_facts.csv`
+- `public/downloads/dmx_normalization_adjustments.csv`
+- `public/downloads/three_statement_manifest.json`
 - `public/downloads/artifacts_manifest.json`
 
 ## Tests and continuous integration
 
 The current public suite contains:
 
-- **19 Python tests** for extraction boundaries, validation, ratios, SQLite pipeline and valuation;
+- Python tests for extraction boundaries, validation, ratios, SQLite, valuation and three-statement bridges;
 - **4 web/static tests** for rendered research content, standalone JavaScript and local artifact links;
 - workbook build checks for required sheets, formula integrity, comments and external links;
+- **35 generated three-statement accounting checks** with zero failures in the committed payload;
 - report validation and SHA-256 artifact manifests.
 
 GitHub Actions runs tests, linting, source-plan validation, model/report rebuild and required-artifact checks. A separate Pages workflow publishes only the recruiter-facing HTML/assets/downloads.
@@ -244,6 +328,9 @@ GitHub Actions runs tests, linting, source-plan validation, model/report rebuild
 - Exact MWG ownership is not inferred from the rounded “nearly 86%” announcement.
 - The 2026–2030 figures are management projections, not independent forecasts.
 - The public case does not claim a fully integrated three-statement segment forecast.
+- Q1 2026 is a 90-day unaudited update; its CCC and cash-conversion ratios are seasonal observations, not full-year run rates.
+- FY2023 appears as an expressly unaudited comparative column in the FY2024 filing.
+- Resolution 15's net-proceeds use is modelled pro forma; the project does not claim the planned debt repayment had been completed at the cut-off.
 - Non-DMX businesses need deeper standalone forecasts and same-date peer inputs.
 - The valuation outputs are scenario illustrations, not target prices or recommendations.
 - Raw issuer filings are intentionally excluded from Git and must be obtained from their official owners.
@@ -253,6 +340,10 @@ GitHub Actions runs tests, linting, source-plan validation, model/report rebuild
 - [DMX Investor Relations — reports](https://www.dmx.vn/eng/reports)
 - [DMX — completed IPO announcement](https://www.dmx.vn/eng/news/dien-may-xanh-completes-landmark-ipo-raising-more-than-vnd-13-315-billion-and-lifting-charter-capital-to-vnd-12-677-billion-5002485)
 - [DMX — offering documents and prospectus](https://www.dmx.vn/cong-bo-thong-tin/cbtt-thong-bao-chao-ban-co-phieu-ra-cong-chung-va-cac-tai-lieu-lien-quan-cua-ctcp-dau-tu-dien-may-xanh-5005813)
+- [DMX — Resolution 15 on estimated net proceeds and use of proceeds](https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/7/0/38/65/38651afbcd5d099f0e968015b88da8ee.pdf)
+- [DMX — FY2024 audited consolidated financial statements](https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/5/0/93/e5/93e558113d3fa242567df336db5e4af6.pdf)
+- [DMX — FY2025 audited consolidated financial statements](https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/5/0/08/af/08af79013e9b9bdb210eb476e2fa7b95.pdf)
+- [DMX — Q1 2026 consolidated financial data pack](https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/6/0/6b/e5/6be50a510e272451464dae07771401ca.xlsx)
 - [MWG Investor Relations — reports](https://mwg.vn/bao-cao)
 - [State Securities Commission — IPO result notice](https://ssc.gov.vn/webcenter/portal/ubck/pages_r/l/chitit?dDocName=APPSSCGOVVN1620168640)
 

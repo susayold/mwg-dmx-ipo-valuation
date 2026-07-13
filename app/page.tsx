@@ -1,4 +1,5 @@
 import { ValuationLab } from "./components/ValuationLab";
+import { ThreeStatementAnalysis } from "./components/ThreeStatementAnalysis";
 import {
   analyticalChecks,
   dataCutoff,
@@ -41,10 +42,10 @@ export default function Home() {
           <small>IPO LAB</small>
         </a>
         <nav aria-label="Primary navigation">
-          <a href="#case">Case</a>
-          <a href="#forecast">Forecast</a>
+          <a href="#financials">Financials</a>
+          <a href="#bridges">Bridges</a>
+          <a href="#working-capital">Working capital</a>
           <a href="#valuation">Valuation lab</a>
-          <a href="#methodology">Methodology</a>
         </nav>
         <a className="header-cta" href="/downloads/MWG_DMX_IPO_SOTP_Model.xlsx">
           Download model
@@ -339,9 +340,11 @@ export default function Home() {
         </div>
       </section>
 
+      <ThreeStatementAnalysis />
+
       <section className="section forecast-section" id="forecast">
         <div className="section-heading">
-          <span className="eyebrow">04 / Forecast evidence</span>
+          <span className="eyebrow">08 / Forecast evidence</span>
           <h2>Management&apos;s case is a benchmark—not the answer.</h2>
           <p>
             The model stores management guidance separately from Bear, Base and
@@ -413,7 +416,7 @@ export default function Home() {
 
       <section className="section methodology-section" id="methodology">
         <div className="section-heading">
-          <span className="eyebrow light">05 / Audit trail</span>
+          <span className="eyebrow light">09 / Audit trail</span>
           <h2>Built to be reviewed and challenged.</h2>
           <p>
             The repository keeps official facts, management guidance and analyst
@@ -459,6 +462,10 @@ export default function Home() {
                 <span>Validation report</span>
                 <b>HTML ↗</b>
               </a>
+              <a href="/downloads/dmx_three_statement_analysis.json">
+                <span>Three-statement dataset</span>
+                <b>JSON ↗</b>
+              </a>
               <a href="#sources">
                 <span>Source register</span>
                 <b>WEB ↓</b>
@@ -470,7 +477,7 @@ export default function Home() {
 
       <section className="section sources-section" id="sources">
         <div className="section-heading compact">
-          <span className="eyebrow">06 / Sources</span>
+          <span className="eyebrow">10 / Sources</span>
           <h2>Primary documents, not scraped summaries.</h2>
         </div>
         <div className="source-list">

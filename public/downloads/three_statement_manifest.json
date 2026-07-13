@@ -1,0 +1,34 @@
+{
+  "accounting_check_summary": {
+    "checks": 35,
+    "failed": 0,
+    "passed": 35
+  },
+  "data_version": "three-statement-v1.0.0",
+  "files": {
+    "public/downloads/dmx_normalization_adjustments.csv": {
+      "bytes": 1184,
+      "sha256": "3b7cef7f86cf7a2d6f7660fd719886a345291f74533c80070479b7bfb0e9e365"
+    },
+    "public/downloads/dmx_three_statement_analysis.json": {
+      "bytes": 40782,
+      "sha256": "dca0546daa3ea4ed4092ea880306c4982c0ee29149b4d7d0ebde3ced54b8deff"
+    },
+    "public/downloads/dmx_three_statement_facts.csv": {
+      "bytes": 54726,
+      "sha256": "7a18647f71aaf214358e57aec98be27586f73f124908273adbba33fd0c1541b3"
+    },
+    "public/three-statement-data.js": {
+      "bytes": 40879,
+      "sha256": "9102eefa94b5e550c081cdda8444cc25bfd7579e753a936fea998c74f3951c39"
+    }
+  },
+  "generic_validation": {
+    "checks": 32,
+    "failed_errors": 0,
+    "failed_warnings": 0,
+    "is_valid": true,
+    "passed": 32
+  },
+  "source_fact_count": 320
+}

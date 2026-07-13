@@ -1,9 +1,13 @@
 name: Deploy portfolio to GitHub Pages
 
 on:
-  push:
+  workflow_run:
+    workflows:
+      - CI
     branches:
       - main
+    types:
+      - completed
   workflow_dispatch:
 
 permissions:
@@ -17,10 +21,13 @@ concurrency:
 
 jobs:
   build:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -42,6 +49,7 @@ jobs:
           install -m 0644 index.html _site/index.html
           install -m 0644 public/og.png _site/public/og.png
           install -m 0644 public/favicon.svg _site/public/favicon.svg
+          install -m 0644 public/three-statement-data.js _site/public/three-statement-data.js
           cp -a public/downloads/. _site/public/downloads/
           touch _site/.nojekyll
 

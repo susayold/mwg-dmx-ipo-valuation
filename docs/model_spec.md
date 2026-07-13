@@ -103,19 +103,19 @@ Nếu triển khai Excel, dùng đúng tab order; nếu triển khai Python/SQL,
 
 | Tab/module | Vai trò | Input chính | Output chính |
 |---|---|---|---|
-| `00_README` | Hướng dẫn/version/disclaimer | — | Model map |
-| `01_CONTROL` | Date/scenario/units/conventions | User inputs | Global controls |
-| `02_SOURCES` | Source registry | URLs/metadata | Provenance |
-| `03_IPO_BRIDGE` | Planned vs actual | Resolution/sales kit | Shares, proceeds, dilution |
-| `04_DMX_HIST` | Actual statements/KPIs | BCTC/data pack | Standardized historicals |
-| `05_DMX_LFL` | Carve-out bridge | Reported + disclosed adjustments | 2025 comparator |
-| `06_DMX_DRIVERS` | Store/SSSG/margin/WC/capex | Actual KPIs + assumptions | Forecast drivers |
-| `07_DMX_3S` | Integrated IS/BS/CF | Historicals + drivers | 2026E–2030E statements |
-| `08_DCF` | FCFF valuation | 3S + WACC | EV/equity/price range |
-| `09_COMPS` | Peer valuation | Same-date market/forecast data | Multiple range |
-| `10_MWG_SOTP` | Parent NAV/stub | Entity equity values/ownership | MWG NAV, implied BHX |
-| `11_SCENARIOS` | Bear/Base/Bull/sensitivities | Driver matrix | Output matrix |
-| `12_CHECKS` | Model QA | All modules | PASS/FAIL/error count |
+| `Cover` | Hướng dẫn/version/disclaimer | — | Model map |
+| `Sources` | Source registry | URLs/metadata | Provenance |
+| `IPO_Bridge` | Planned vs actual + pro forma use of proceeds | Resolutions/sales kit | Shares, proceeds, dilution, net-proceeds basis |
+| `Q1_Actuals` | Latest reported facts | Q1 data pack | Q1 2025/Q1 2026 comparison |
+| `3Y_Statements` | FY2023–FY2025 + Q1 update | Audited/unaudited filings | Comparative IS/BS/CF |
+| `3S_Bridges` | Linked-statement reconciliations | Normalized facts | NPAT→CFO, cash and retained-earnings bridges |
+| `WC_QoE` | Working capital and earnings quality | Average trade balances + flow data | DIO/DSO/DPO/CCC, QoE, normalization |
+| `Mgmt_Forecast` | Issuer reference case | Official management materials | Clearly labelled company guidance |
+| `Assumptions` | Analyst scenario inputs | User inputs | WACC, growth, multiples and bridge assumptions |
+| `DMX_Valuation` | FCFF/earnings valuation | Actuals + assumptions | EV/equity illustration |
+| `MWG_SOTP` | Parent SOTP | DMX/stub/parent inputs | MWG illustrative equity value |
+| `Scenarios` | Bear/Base/Bull/sensitivities | Driver matrix | Output matrix |
+| `Checks` | Model QA | All modules | PASS/FAIL/error count |
 
 Actuals nên trái sang phải, forecast bắt đầu sau một cột ngăn; màu/formula convention nếu dùng Excel: blue hard-code input, black formula, green cross-sheet link, red error only.
 
@@ -155,10 +155,14 @@ shares_cancelled              =    13_061_900
 shares_post                   = 1_267_722_000
 par_value                     =        10_000 VND/share
 gross_proceeds                =    13_315.080 VND_bn
+estimated_issue_costs         =       100.000 VND_bn
+estimated_net_proceeds        =    13_215.080 VND_bn
+planned_debt_repayment        =    13_215.080 VND_bn
 completion_resolution_date    = 2026-06-30
+use_of_proceeds_resolution    = 2026-07-07
 ```
 
-`issue_costs`, exact `mwg_shares_pre/post` và accounting recognition date không được đoán. Chúng giữ `null` cho tới khi có nguồn chính thức đủ chính xác. Công bố “gần 86%” chỉ dùng cho approximate check range.
+VND 100 tỷ là **estimated issue costs** theo Nghị quyết 15, không được đổi nhãn thành actual costs paid. Tương tự, VND 13.215,080 tỷ là estimated net proceeds và planned debt repayment; không ghi nhận actual disbursement nếu chưa có BCTC/bank evidence hậu giao dịch. Exact `mwg_shares_pre/post` và accounting recognition date vẫn giữ `null` tới khi có nguồn chính thức đủ chính xác. Công bố “gần 86%” chỉ dùng cho approximate check range.
 
 ### 4.3 Formula and validation
 
@@ -186,11 +190,26 @@ CHK_IPO_03 = shares_offered - shares_successfully_allocated
              - shares_cancelled                                     # = 0
 CHK_IPO_04 = pre_money_value + gross_proceeds - post_money_value     # = 0
 CHK_IPO_05 = abs(mwg_ownership_post - disclosed_approx_86pct)        # warning only
+CHK_IPO_06 = gross_proceeds - estimated_issue_costs
+             - estimated_net_proceeds                               # = 0
+CHK_IPO_07 = planned_debt_repayment - estimated_net_proceeds         # = 0, plan basis
 ```
 
 `CHK_IPO_05` không được dùng để tạo exact ownership.
 
 ## 5. Historical and LFL specification
+
+### 5.0 Required coverage
+
+| Period | Required statements | Audit flag | Use |
+|---|---|---|---|
+| FY2023 | IS/BS/CF comparative | `comparative_unaudited` | Three-year trend; never labelled audited |
+| FY2024 | IS/BS/CF | `audited` | Statutory historical |
+| FY2025 | IS/BS/CF | `audited` | Statutory historical and LFL bridge anchor |
+| Q1 2026 | IS/BS/CF YTD | `unaudited` | Latest trend and WC/QoE update |
+| H1 2026 | KPI update only | `management_update` | Do not populate missing H1 statements |
+
+The committed normalized dataset is `data/processed/dmx_three_statement_facts.csv`; the generated analysis contract is `data/processed/dmx_three_statement_analysis.json`. Every actual retains a `source_id`, page/sheet locator, scope, period type and audit note.
 
 ### 5.1 Required P&L lines
 
@@ -263,7 +282,43 @@ other_perimeter_adjustments
 
 Mỗi adjustment phải có nguồn; chỉ NPAT LFL được công bố không cho phép tự tạo LFL line-by-line. Các dòng không đủ disclosure phải `null` hoặc ghi rõ `analyst_estimate`, không phân bổ pro-rata ngầm.
 
+Required committed normalization rows:
+
+| Metric | Reported FY2025 | Adjustment | Management LFL comparator | Treatment |
+|---|---:|---:|---:|---|
+| Net revenue | 109,479.188 | (2,479.188) | 107,000.000 | `management_lfl_comparator` |
+| NPAT attributable to parent | 5,801.785 | +273.215 | 6,075.000 | `management_lfl_comparator` |
+| Operating profit | 7,240.396 | `null` | `null` | `not_adjusted` — insufficient disclosure |
+| Cash and cash equivalents | 3,578.155 | `null` | `null` | `not_adjusted` — minimum cash unknown |
+| Total debt | 23,429.114 | `null` | `null` | `not_adjusted` — lease/debt basis unsupported |
+
+`not_adjusted` is a valid reviewed conclusion. The model must never replace `null` with zero, because zero would assert that the analyst tested and rejected an adjustment rather than lacking evidence.
+
 ## 6. Driver and three-statement specification
+
+Current implemented scope:
+
+- **implemented:** FY2023–FY2025 historical three-statement analysis, Q1 2026 update, statement bridges, working-capital and QoE schedules;
+- **not claimed:** a fully integrated 2026E–2030E balance-sheet/cash-flow forecast with debt circularity.
+
+The driver/forecast rules below define the extension path. They do not convert management guidance into an analyst forecast automatically.
+
+### 6.0 Historical reconciliation contract
+
+```text
+CFO = NPAT + P&L tax expense + D&A ± other non-cash items
+      ± Δreceivables ± Δinventory ± Δpayables ± Δprepayments
+      - interest paid - corporate income tax paid
+
+cash_close = cash_open + CFO + CFI + CFF + FX_effect
+
+retained_earnings_close = retained_earnings_open
+                          + NPAT attributable to parent
+                          - dividends
+                          ± capitalisation/other equity movements
+```
+
+Required output fields per bridge: `period`, ordered `components`, `calculated_total`, `reported_total`, `difference`, `tolerance`, `passed`, `note`. A balancing residual cannot be recast as a normalization adjustment without source evidence.
 
 ### 6.1 Chain driver table
 
@@ -297,6 +352,20 @@ Nếu actual store timing có theo tháng, thay 0,5 bằng month-weighted averag
 
 ### 6.2 Working-capital schedule
 
+Historical analysis uses average trade balances and actual elapsed days:
+
+```text
+historical_dio = average(net_inventory_open, net_inventory_close)
+                 / abs(cogs) × elapsed_days
+historical_dso = average(trade_receivables_open, trade_receivables_close)
+                 / revenue × elapsed_days
+historical_dpo = average(trade_payables_open, trade_payables_close)
+                 / abs(cogs) × elapsed_days
+historical_ccc = historical_dio + historical_dso - historical_dpo
+```
+
+FY2024 uses 366 days, FY2025 uses 365 days and Q1 2026 uses 90 days. Q1 output must carry `q1_seasonality_warning=true`. Forecast balances, if later implemented, follow the driver equations below:
+
 ```text
 receivables = revenue × dso / 365
 inventory   = cogs × dio / 365
@@ -309,6 +378,17 @@ delta_nwc   = nwc_t - nwc_t_minus_1
 ```
 
 Sử dụng 366 ngày cho leap year nếu model dùng date-exact convention; nếu dùng 365 cho mọi năm phải ghi rõ.
+
+Additional QoE outputs:
+
+```text
+cfo_to_npat = CFO / NPAT
+inventory_provision_to_gross = abs(inventory_provision) / gross_inventory
+capex_to_revenue = abs(capex) / revenue
+free_cash_flow = CFO + capex              # capex stored with cash-flow sign
+```
+
+The analysis must present the Q1 2026 payables contribution (approximately VND -465.977bn) beside Q1 2025 (approximately VND +2,104.879bn); it may not attribute the entire CFO gap to inventory or receivables.
 
 ### 6.3 Fixed asset, debt and equity schedules
 
@@ -429,8 +509,10 @@ Khi FCFF dùng EBIT/EBITDA hợp nhất và EraBlue được equity-accounted, `
 
 IPO proceeds policy:
 
-- Valuation balance sheet hậu IPO: dùng actual/pro forma cash và debt; `additional_ipo_proceeds = 0` trong bridge.
-- Valuation balance sheet tiền IPO: model IPO trong cash/debt schedule; không cộng `net_proceeds` độc lập sau khi đã nằm trong ending cash.
+- Valuation balance sheet hậu IPO đã phản ánh giao dịch: dùng actual/pro forma cash và debt; `additional_ipo_proceeds = 0` trong bridge.
+- Valuation balance sheet Q1 2026 tiền IPO cùng post-IPO shares: `additional_ipo_proceeds = 13_215.080 VND_bn`, bằng gross VND 13,315.080bn trừ estimated costs VND 100.000bn; cộng đúng một lần.
+- Planned debt repayment of VND 13,215.080bn reduces debt in the pro forma schedule but remains `planned`, not `actual_disbursed`, until later evidence confirms execution.
+- Nếu net proceeds đã nằm trong ending cash hoặc debt balance, không cộng lại tại equity bridge.
 
 ## 9. Comparable-company specification
 
@@ -568,6 +650,16 @@ Tối thiểu:
 
 Operating scenario và valuation sensitivity là hai chiều độc lập.
 
+The public earnings-anchor illustration must reconcile as follows (VND billion):
+
+| Scenario | DMX equity | MWG share at ~86% | Stub | Parent adjustments | Total illustrative MWG equity |
+|---|---:|---:|---:|---:|---:|
+| Bear | 67,000 | 57,620 | 28,000 | (8,000) | 77,620 |
+| Base | 90,405 | 77,748.3 | 45,000 | (5,000) | 117,748.3 |
+| Bull | 112,000 | 96,320 | 65,000 | (3,000) | 158,320 |
+
+These totals are scenario checks, not target prices. `~86%` remains an approximate ownership input until an exact post-IPO shareholder record is available.
+
 ## 12. QA checks and publication gate
 
 ### 12.1 Tolerances
@@ -589,8 +681,14 @@ CHK_3S_DEBT_ROLL
 CHK_3S_PPE_ROLL
 CHK_3S_EQUITY_ROLL
 CHK_3S_JV_ROLL
+CHK_3S_NPAT_TO_CFO
+CHK_3S_RETAINED_EARNINGS
+CHK_3S_PERIOD_DAYS
+CHK_3S_SOURCE_COVERAGE
+CHK_NORM_NO_UNSUPPORTED_ADJUSTMENT
 CHK_IPO_SHARES
 CHK_IPO_PROCEEDS
+CHK_IPO_NET_PROCEEDS
 CHK_IPO_VALUATION_IDENTITY
 CHK_OWNERSHIP_SUM
 CHK_EPS_WEIGHTED_SHARES
@@ -605,6 +703,8 @@ CHK_PERIOD_NO_OVERLAP
 CHK_ACTUAL_SOURCE_COMPLETE
 CHK_SCENARIO_LINKS
 ```
+
+The generated historical module currently publishes 35 accounting checks; committed output must have `failed = 0`. This count is separate from the broader workbook publication-gate checks.
 
 ### 12.3 Publication gate
 
@@ -635,7 +735,8 @@ Website có thể đọc một JSON đã version hóa:
 ```text
 meta: valuation_date, generated_at, scenario, units, version, disclaimer
 ipo: planned, actual, ownership, checks
-dmx: historical, lfl_bridge, forecast, kpis
+dmx: historical, three_statement_bridges, working_capital, quality_of_earnings,
+     normalization, lfl_bridge, forecast, kpis
 valuation: dcf, comps, sensitivity
 mwg: sotp, stub, implied_bhx
 qa: critical_errors, warnings, source_coverage
@@ -651,6 +752,8 @@ Mỗi chart/table phải có:
 - `scenario` nếu là forecast.
 
 Website không được dùng số demo làm actual. Placeholder phải là `null` và render `N/A`, không dùng `0`.
+
+Website scenario output may show total illustrative equity value in VND billion. It must not show target price, premium/upside or an investment rating until `market_conclusion_allowed=true`.
 
 ## 14. Versioning and sign-off
 

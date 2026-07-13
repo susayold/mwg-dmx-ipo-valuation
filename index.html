@@ -134,7 +134,7 @@
 
       .site-header nav {
         display: flex;
-        gap: 26px;
+        gap: clamp(12px, 1.55vw, 26px);
         color: rgba(255, 255, 255, 0.75);
         font-size: 12px;
       }
@@ -811,6 +811,278 @@
         font-size: 12px;
       }
 
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .financials-wrap,
+      .quality-wrap {
+        background: var(--white);
+      }
+
+      .data-status,
+      .reconciliation-strip,
+      .analysis-formula {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 14px 18px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        font-size: 12px;
+      }
+
+      .data-status {
+        margin: -20px 0 25px;
+        color: var(--muted);
+        background: rgba(232, 225, 211, 0.45);
+      }
+
+      .data-status[data-state="ready"] {
+        color: var(--ink);
+        background: rgba(215, 255, 95, 0.28);
+      }
+
+      .data-status strong,
+      .reconciliation-strip strong,
+      .analysis-formula strong {
+        color: var(--ink);
+        font-weight: 900;
+      }
+
+      .table-scroll {
+        width: 100%;
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        box-shadow: var(--shadow);
+        scrollbar-gutter: stable;
+      }
+
+      .analysis-table {
+        width: 100%;
+        min-width: 820px;
+        border-collapse: collapse;
+        background: var(--white);
+      }
+
+      .analysis-table th,
+      .analysis-table td {
+        padding: 14px 15px;
+        text-align: right;
+        vertical-align: top;
+        border-bottom: 1px solid var(--line);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .analysis-table th:first-child,
+      .analysis-table td:first-child {
+        text-align: left;
+      }
+
+      .analysis-table thead {
+        color: var(--white);
+        background: var(--ink);
+      }
+
+      .analysis-table thead th {
+        font-size: 11px;
+        letter-spacing: 0.03em;
+      }
+
+      .analysis-table thead small,
+      .analysis-table tbody small {
+        display: block;
+        margin-top: 3px;
+        color: rgba(255, 255, 255, 0.58);
+        font-size: 9px;
+        font-weight: 400;
+      }
+
+      .analysis-table tbody small {
+        color: var(--muted);
+      }
+
+      .analysis-table tbody tr:nth-child(even) {
+        background: rgba(232, 225, 211, 0.34);
+      }
+
+      .analysis-table tbody tr:last-child th,
+      .analysis-table tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .table-note {
+        margin: 16px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .bridge-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .bridge-card {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        padding: 25px;
+        background: var(--white);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+      }
+
+      .bridge-card h3 {
+        margin: 5px 0 7px;
+        font-size: 24px;
+        line-height: 1.08;
+      }
+
+      .bridge-card > p {
+        margin: 0 0 18px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .bridge-list {
+        margin: 0;
+      }
+
+      .bridge-list div {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 12px;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--line);
+        font-size: 11px;
+      }
+
+      .bridge-list dt {
+        color: var(--muted);
+      }
+
+      .bridge-list dd {
+        margin: 0;
+        font-weight: 800;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .bridge-list .bridge-total {
+        margin-top: 4px;
+        color: var(--ink);
+        border-top: 2px solid var(--ink);
+        border-bottom: 0;
+        font-weight: 900;
+      }
+
+      .bridge-card .bridge-check {
+        margin: auto 0 0;
+        padding-top: 18px;
+        color: #375b09;
+        font-size: 10px;
+        font-weight: 900;
+      }
+
+      .reconciliation-strip {
+        margin-top: 18px;
+        color: var(--muted);
+        background: rgba(215, 255, 95, 0.24);
+      }
+
+      .working-capital-wrap {
+        color: var(--white);
+        background: var(--ink);
+      }
+
+      .working-capital-wrap .section-heading p,
+      .working-capital-wrap .eyebrow,
+      .working-capital-wrap .table-note {
+        color: rgba(255, 255, 255, 0.64);
+      }
+
+      .working-capital-wrap .eyebrow::before {
+        background: var(--lime);
+      }
+
+      .working-capital-wrap .table-scroll {
+        border-color: rgba(255, 255, 255, 0.18);
+        box-shadow: none;
+      }
+
+      .analysis-formula {
+        margin-bottom: 20px;
+        color: rgba(255, 255, 255, 0.68);
+        border-color: rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .analysis-formula strong {
+        color: var(--lime);
+      }
+
+      .qoe-table td:nth-child(n + 2) {
+        max-width: 290px;
+        text-align: left;
+        font-size: 11px;
+      }
+
+      .normalization-heading {
+        display: grid;
+        grid-template-columns: minmax(0, 0.75fr) minmax(280px, 1fr);
+        align-items: end;
+        gap: 30px;
+        margin: 56px 0 22px;
+      }
+
+      .normalization-heading h3 {
+        margin: 6px 0 0;
+        font-size: clamp(29px, 4vw, 45px);
+        line-height: 1;
+        letter-spacing: -0.04em;
+      }
+
+      .normalization-heading p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .limitations-card {
+        display: grid;
+        grid-template-columns: minmax(220px, 0.55fr) 1fr;
+        gap: 28px;
+        margin-top: 24px;
+        padding: 26px;
+        color: var(--white);
+        background: var(--ink);
+        border-radius: var(--radius);
+      }
+
+      .limitations-card h3 {
+        margin: 5px 0 0;
+        font-size: 27px;
+      }
+
+      .limitations-card ul {
+        display: grid;
+        gap: 10px;
+        margin: 0;
+        padding-left: 19px;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 11px;
+      }
+
       .valuation-wrap {
         color: var(--white);
         background: var(--blue);
@@ -935,20 +1207,6 @@
         font-size: clamp(41px, 5vw, 65px);
         line-height: 1;
         letter-spacing: -0.055em;
-      }
-
-      .premium {
-        display: inline-block;
-        padding: 6px 9px;
-        color: var(--ink);
-        background: var(--lime);
-        border-radius: 7px;
-        font-size: 11px;
-        font-weight: 900;
-      }
-
-      .premium.negative {
-        background: var(--coral);
       }
 
       .value-bridge {
@@ -1148,8 +1406,11 @@
         .hero-inner,
         .decision-grid,
         .evidence-grid,
+        .bridge-grid,
         .lab-grid,
-        .audit-grid {
+        .audit-grid,
+        .normalization-heading,
+        .limitations-card {
           grid-template-columns: 1fr;
         }
 
@@ -1262,6 +1523,18 @@
           white-space: nowrap;
         }
 
+        .data-status,
+        .reconciliation-strip,
+        .analysis-formula {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 5px;
+        }
+
+        .bridge-card {
+          padding: 22px;
+        }
+
         .source-list a {
           grid-template-columns: 42px 1fr;
         }
@@ -1309,8 +1582,9 @@
       </a>
       <nav aria-label="Primary navigation">
         <a href="#case">Case</a>
-        <a href="#evidence">Evidence</a>
-        <a href="#forecast">Forecast</a>
+        <a href="#financials">Financials</a>
+        <a href="#bridges">Bridges</a>
+        <a href="#working-capital">WC &amp; QoE</a>
         <a href="#valuation">Valuation</a>
         <a href="#sources">Sources</a>
       </nav>
@@ -1454,10 +1728,165 @@
         </div>
       </section>
 
+      <section class="financials-wrap" id="financials">
+        <div class="section">
+          <div class="section-heading">
+            <span class="eyebrow">04 / Three-year financials</span>
+            <h2>Trend first. Latest quarter second.</h2>
+            <p>
+              FY2023-FY2025 establish the operating and balance-sheet trend; Q1 2026
+              updates momentum without being treated as a substitute for a full year.
+              Every number below is rendered from the versioned three-statement payload.
+            </p>
+          </div>
+          <div class="data-status" id="three-statement-status" role="status" aria-live="polite" data-state="loading">
+            <span>Loading generated financial-statement analysis...</span>
+            <strong>Historical reported basis</strong>
+          </div>
+          <noscript><p class="table-note">JavaScript is required to display the generated financial tables. The source files remain available in the download pack.</p></noscript>
+          <div class="table-scroll" tabindex="0" aria-label="Scrollable comparative financial statements">
+            <table class="analysis-table">
+              <caption class="sr-only">DMX comparative consolidated financial statements in VND billion</caption>
+              <thead>
+                <tr>
+                  <th scope="col">VND bn</th>
+                  <th scope="col">FY2023A<small>comparative unaudited</small></th>
+                  <th scope="col">FY2024A<small>audited</small></th>
+                  <th scope="col">FY2025A<small>audited</small></th>
+                  <th scope="col">Q1 2026A<small>unaudited; 90 days</small></th>
+                </tr>
+              </thead>
+              <tbody id="financials-body"></tbody>
+            </table>
+          </div>
+          <p class="table-note">
+            Income-statement and cash-flow lines are period flows; balance-sheet lines are period-end balances.
+            FY2023 is the unaudited comparative presented in the FY2024 audited filing.
+          </p>
+        </div>
+      </section>
+
+      <section class="section" id="bridges">
+        <div class="section-heading">
+          <span class="eyebrow">05 / Three-statement bridges</span>
+          <h2>The statements reconcile as one accounting system.</h2>
+          <p>
+            Q1 2026 is shown because it exposes the current cash-conversion question most clearly.
+            The same generated module runs the reconciliations across every covered period.
+          </p>
+        </div>
+        <div class="bridge-grid">
+          <article class="bridge-card">
+            <span class="card-label">Income statement to cash flow</span>
+            <h3>NPAT to CFO</h3>
+            <p>Non-cash items, working capital, interest and tax explain the conversion gap.</p>
+            <dl class="bridge-list" id="npat-cfo-bridge"></dl>
+            <p class="bridge-check" id="npat-cfo-check">Awaiting reconciliation data</p>
+          </article>
+          <article class="bridge-card">
+            <span class="card-label">Cash-flow statement to balance sheet</span>
+            <h3>Cash roll-forward</h3>
+            <p>Opening cash plus CFO, CFI, CFF and FX equals reported closing cash.</p>
+            <dl class="bridge-list" id="cash-bridge"></dl>
+            <p class="bridge-check" id="cash-check">Awaiting reconciliation data</p>
+          </article>
+          <article class="bridge-card">
+            <span class="card-label">Profit to equity</span>
+            <h3>Retained earnings</h3>
+            <p>Opening reserves, parent NPAT, dividends and other equity movements bridge to closing.</p>
+            <dl class="bridge-list" id="retained-earnings-bridge"></dl>
+            <p class="bridge-check" id="retained-earnings-check">Awaiting reconciliation data</p>
+          </article>
+        </div>
+        <div class="reconciliation-strip">
+          <span>Automated accounting control suite</span>
+          <strong id="check-summary">Checks loading...</strong>
+        </div>
+      </section>
+
+      <section class="working-capital-wrap" id="working-capital">
+        <div class="section">
+          <div class="section-heading">
+            <span class="eyebrow">06 / Working capital</span>
+            <h2>Retail cash quality lives in the conversion cycle.</h2>
+            <p>
+              Average trade balances and actual elapsed days reveal how long inventory is held,
+              how quickly customers pay, and how much operating funding suppliers provide.
+            </p>
+          </div>
+          <div class="analysis-formula">
+            <span>Cash conversion cycle</span>
+            <strong>CCC = DIO + DSO - DPO</strong>
+          </div>
+          <div class="table-scroll" tabindex="0" aria-label="Scrollable working-capital schedule">
+            <table class="analysis-table">
+              <caption class="sr-only">DMX working-capital and cash-quality schedule</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Period</th>
+                  <th scope="col">DIO</th>
+                  <th scope="col">DSO</th>
+                  <th scope="col">DPO</th>
+                  <th scope="col">CCC</th>
+                  <th scope="col">CFO / NPAT</th>
+                  <th scope="col">Inventory provision / gross</th>
+                  <th scope="col">CapEx / revenue</th>
+                </tr>
+              </thead>
+              <tbody id="working-capital-body"></tbody>
+            </table>
+          </div>
+          <p class="table-note">
+            Q1 2026 ratios use a 90-day year-to-date basis and should not be annualized mechanically.
+            Full H1 financial statements were not available at the 13 July 2026 cut-off.
+          </p>
+        </div>
+      </section>
+
+      <section class="quality-wrap" id="quality">
+        <div class="section">
+          <div class="section-heading">
+            <span class="eyebrow">07 / Quality of earnings</span>
+            <h2>Interpret the signal before naming the risk.</h2>
+            <p>
+              The diagnostic separates observation, analytical interpretation and residual risk,
+              avoiding a simplistic conclusion from one low-conversion quarter.
+            </p>
+          </div>
+          <div class="table-scroll" tabindex="0" aria-label="Scrollable quality-of-earnings diagnostic">
+            <table class="analysis-table qoe-table">
+              <caption class="sr-only">Quality-of-earnings observations, interpretations and risks</caption>
+              <thead><tr><th scope="col">Indicator</th><th scope="col">Observation</th><th scope="col">Interpretation</th><th scope="col">Risk</th></tr></thead>
+              <tbody id="quality-of-earnings-body"></tbody>
+            </table>
+          </div>
+
+          <div class="normalization-heading">
+            <div><span class="card-label">Normalization discipline</span><h3>Adjust only when evidence supports it.</h3></div>
+            <p>
+              Management's FY2025 like-for-like comparator is bridged but never overwrites statutory actuals.
+              Unsupported operating-profit, excess-cash and lease adjustments remain explicitly not determined.
+            </p>
+          </div>
+          <div class="table-scroll" tabindex="0" aria-label="Scrollable normalization adjustments">
+            <table class="analysis-table">
+              <caption class="sr-only">Reported-to-normalized adjustment schedule</caption>
+              <thead><tr><th scope="col">Reported item</th><th scope="col">Reported</th><th scope="col">Adjustment</th><th scope="col">Normalized</th><th scope="col">Treatment and reason</th></tr></thead>
+              <tbody id="normalization-body"></tbody>
+            </table>
+          </div>
+
+          <aside class="limitations-card" aria-labelledby="limitations-title">
+            <div><span class="card-label">Senior review boundary</span><h3 id="limitations-title">What this analysis does not claim</h3></div>
+            <ul id="limitations-list"></ul>
+          </aside>
+        </div>
+      </section>
+
       <section class="forecast-wrap" id="forecast">
         <div class="section">
           <div class="section-heading">
-            <span class="eyebrow">04 / Forecast evidence</span>
+            <span class="eyebrow">08 / Forecast evidence</span>
             <h2>Management's case is a benchmark—not the answer.</h2>
             <p>Company outlook is isolated from independent Bear, Base and Bull assumptions so a presentation target never becomes an unchallenged analyst forecast.</p>
           </div>
@@ -1480,7 +1909,7 @@
         <div class="section">
           <div class="lab">
             <div class="lab-head">
-              <div><span class="eyebrow">Interactive valuation</span><h2>Rebuild the SOTP in under a minute.</h2><p>Change earnings, multiple, stub value and parent adjustments. These are illustrative analyst inputs—not company guidance or a recommendation.</p></div>
+              <div><span class="eyebrow">09 / Interactive valuation</span><h2>Rebuild the SOTP in under a minute.</h2><p>Change earnings, multiple, stub value and parent adjustments. These are illustrative analyst inputs—not company guidance or a recommendation.</p></div>
               <div class="scenario-tabs" role="group" aria-label="Valuation scenarios">
                 <button type="button" data-scenario="Bear">Bear</button>
                 <button type="button" class="active" data-scenario="Base" aria-pressed="true">Base</button>
@@ -1493,13 +1922,10 @@
                 <label class="lab-control"><span>DMX forward P/E <strong id="pe-value"></strong></span><input id="pe" type="range" min="8" max="18" step="0.1" value="12.3"></label>
                 <label class="lab-control"><span>Non-DMX stub value <strong id="stub-value"></strong></span><input id="stub" type="range" min="10000" max="90000" step="1000" value="45000"></label>
                 <label class="lab-control"><span>Parent adjustments <strong id="adjustments-value"></strong></span><input id="adjustments" type="range" min="-15000" max="5000" step="500" value="-5000"></label>
-                <label class="lab-control"><span>MWG diluted shares <strong id="shares-value"></strong></span><input id="shares" type="range" min="1300" max="1550" step="1" value="1477"></label>
-                <label class="lab-control"><span>Your reference price <strong id="reference-value"></strong></span><input id="reference" type="range" min="40000" max="220000" step="1000" value="100000"></label>
               </div>
               <div class="lab-output" aria-live="polite">
-                <span class="output-label">Illustrative MWG value / share</span>
-                <strong class="output-value" id="per-share-output">—</strong>
-                <span class="premium" id="premium-output">—</span>
+                <span class="output-label">Illustrative MWG equity value</span>
+                <strong class="output-value" id="equity-value-output">—</strong>
                 <div class="value-bridge">
                   <div><span>DMX equity value</span><strong id="dmx-equity-output">—</strong></div>
                   <div><span>MWG share of DMX (~86% model approximation)</span><strong id="stake-output">—</strong></div>
@@ -1507,7 +1933,7 @@
                   <div><span>Parent adjustments</span><strong id="adjustments-output">—</strong></div>
                   <div class="total"><span>MWG equity value</span><strong id="equity-output">—</strong></div>
                 </div>
-                <p class="lab-note">The issuer disclosed MWG ownership only as “nearly 86%”. The 86.0% calculation is explicitly a model approximation. Replace all assumptions with cut-off-date verified inputs before drawing a market conclusion.</p>
+                <p class="lab-note">The issuer disclosed MWG ownership only as “nearly 86%”. The 86.0% calculation is explicitly a model approximation. No per-share value, target price, rating, premium or upside is published because the same-date market and share-count publication gate has not passed.</p>
               </div>
             </div>
           </div>
@@ -1516,7 +1942,7 @@
 
       <section class="section" id="methodology">
         <div class="section-heading">
-          <span class="eyebrow">05 / Audit trail</span>
+          <span class="eyebrow">10 / Audit trail</span>
           <h2>Built to be inspected—not merely presented.</h2>
           <p>The repository separates official actuals, management outlook and analyst assumptions, with source hashes and publication gates.</p>
         </div>
@@ -1538,6 +1964,9 @@
               <a href="public/downloads/MWG_DMX_IPO_SOTP_Model.xlsx"><span>Excel financial model</span><b>XLSX ↗</b></a>
               <a href="public/downloads/Investment_Memo_EN.pdf"><span>Investment memo</span><b>PDF ↗</b></a>
               <a href="public/downloads/validation_report.html"><span>Validation report</span><b>HTML ↗</b></a>
+              <a href="public/downloads/dmx_three_statement_analysis.json"><span>Three-statement analysis payload</span><b>JSON ↗</b></a>
+              <a href="public/downloads/dmx_three_statement_facts.csv"><span>FY2023-Q1 2026 normalized facts</span><b>CSV ↗</b></a>
+              <a href="public/downloads/dmx_normalization_adjustments.csv"><span>Normalization schedule</span><b>CSV ↗</b></a>
               <a href="public/downloads/dmx_q1_2026_financial_facts.csv"><span>Curated Q1 facts</span><b>CSV ↗</b></a>
               <a href="public/downloads/artifacts_manifest.json"><span>Artifact SHA-256 manifest</span><b>JSON ↗</b></a>
             </div>
@@ -1547,13 +1976,15 @@
 
       <section class="sources-wrap" id="sources">
         <div class="section">
-          <div class="section-heading"><span class="eyebrow">06 / Primary sources</span><h2>Issuer documents, not scraped summaries.</h2></div>
+          <div class="section-heading"><span class="eyebrow">11 / Primary sources</span><h2>Issuer documents, not scraped summaries.</h2></div>
           <div class="source-list">
-            <a href="https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/7/0/f1/08/f108ca2a7399d9a70674915a4b2cf651.pdf" target="_blank" rel="noreferrer"><span>01</span><div><strong>DMX board resolution approving the IPO result</strong><p>Actual offering, proceeds and post-offer share bridge</p></div><b>DMX_IPO_RESULT_2026 ↗</b></a>
-            <a href="https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/6/0/6b/e5/6be50a510e272451464dae07771401ca.xlsx" target="_blank" rel="noreferrer"><span>02</span><div><strong>DMX official Q1 2026 financial data pack</strong><p>Balance sheet, income statement and cash-flow facts</p></div><b>DMX_DATA_2026Q1 ↗</b></a>
-            <a href="https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/7/5006021/b5/ee/b5ee17c283b469b12b3b435d00da8aa4.pdf" target="_blank" rel="noreferrer"><span>03</span><div><strong>DMX six-month 2026 business results</strong><p>Unaudited LFL revenue, network and operating KPIs</p></div><b>DMX_RESULTS_2026H1 ↗</b></a>
-            <a href="https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/6/5005889/4a/f4/4af4a4152a74661a28063a23b4d6747f.pdf" target="_blank" rel="noreferrer"><span>04</span><div><strong>DMX IPO presentation</strong><p>Management 2026–2030 outlook and model perimeter</p></div><b>DMX_IPO_PRESENTATION_2026 ↗</b></a>
-            <a href="https://cdnv2.tgdd.vn/mwgvn/investorrelations/files/posts/2026/3/5677/48/8a/488ab752e1224bcbd9dd5413be04179f.pdf" target="_blank" rel="noreferrer"><span>05</span><div><strong>MWG Annual Report 2025</strong><p>Group structure, history and governance context</p></div><b>MWG_AR_2025 ↗</b></a>
+            <a href="https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/5/0/93/e5/93e558113d3fa242567df336db5e4af6.pdf" target="_blank" rel="noreferrer"><span>01</span><div><strong>DMX FY2024 audited consolidated statements</strong><p>FY2024 reported actuals and the FY2023 unaudited comparative</p></div><b>DMX_FS_2024_C ↗</b></a>
+            <a href="https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/5/0/08/af/08af79013e9b9bdb210eb476e2fa7b95.pdf" target="_blank" rel="noreferrer"><span>02</span><div><strong>DMX FY2025 audited consolidated statements</strong><p>FY2025 reported actuals, balance sheet and cash-flow disclosures</p></div><b>DMX_FS_2025_C ↗</b></a>
+            <a href="https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/6/0/6b/e5/6be50a510e272451464dae07771401ca.xlsx" target="_blank" rel="noreferrer"><span>03</span><div><strong>DMX official Q1 2026 financial data pack</strong><p>Balance sheet, income statement and cash-flow facts</p></div><b>DMX_DATA_2026Q1 ↗</b></a>
+            <a href="https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/7/0/f1/08/f108ca2a7399d9a70674915a4b2cf651.pdf" target="_blank" rel="noreferrer"><span>04</span><div><strong>DMX board resolution approving the IPO result</strong><p>Actual offering, proceeds and post-offer share bridge</p></div><b>DMX_IPO_RESULT_2026 ↗</b></a>
+            <a href="https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/7/5006021/b5/ee/b5ee17c283b469b12b3b435d00da8aa4.pdf" target="_blank" rel="noreferrer"><span>05</span><div><strong>DMX six-month 2026 business results</strong><p>Unaudited LFL revenue, network and operating KPIs</p></div><b>DMX_RESULTS_2026H1 ↗</b></a>
+            <a href="https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/6/5005889/4a/f4/4af4a4152a74661a28063a23b4d6747f.pdf" target="_blank" rel="noreferrer"><span>06</span><div><strong>DMX IPO presentation</strong><p>Management 2026–2030 outlook and model perimeter</p></div><b>DMX_IPO_PRESENTATION_2026 ↗</b></a>
+            <a href="https://cdnv2.tgdd.vn/mwgvn/investorrelations/files/posts/2026/3/5677/48/8a/488ab752e1224bcbd9dd5413be04179f.pdf" target="_blank" rel="noreferrer"><span>07</span><div><strong>MWG Annual Report 2025</strong><p>Group structure, history and governance context</p></div><b>MWG_AR_2025 ↗</b></a>
           </div>
         </div>
       </section>
@@ -1571,22 +2002,23 @@
       <div class="cutoff"><span>Data cut-off</span><strong>13 July 2026</strong></div>
     </footer>
 
+    <script src="public/three-statement-data.js"></script>
+    <script src="public/standalone-site.js"></script>
     <script>
       (() => {
         "use strict";
 
         const scenarios = {
-          Bear: { npat: 6700, pe: 10, stub: 28000, adjustments: -8000, shares: 1477, reference: 100000 },
-          Base: { npat: 7350, pe: 12.3, stub: 45000, adjustments: -5000, shares: 1477, reference: 100000 },
-          Bull: { npat: 8000, pe: 14, stub: 65000, adjustments: -3000, shares: 1477, reference: 100000 }
+          Bear: { npat: 6700, pe: 10, stub: 28000, adjustments: -8000 },
+          Base: { npat: 7350, pe: 12.3, stub: 45000, adjustments: -5000 },
+          Bull: { npat: 8000, pe: 14, stub: 65000, adjustments: -3000 }
         };
         const ownershipApproximation = 0.86;
-        const inputIds = ["npat", "pe", "stub", "adjustments", "shares", "reference"];
+        const inputIds = ["npat", "pe", "stub", "adjustments"];
         const inputs = Object.fromEntries(inputIds.map((id) => [id, document.getElementById(id)]));
         const output = (id) => document.getElementById(id);
         const integer = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
         const oneDecimal = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-        const vnd = new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", maximumFractionDigits: 0 });
 
         function value(id) {
           return Number(inputs[id].value);
@@ -1605,29 +2037,20 @@
           const pe = value("pe");
           const stub = value("stub");
           const adjustments = value("adjustments");
-          const shares = value("shares");
-          const reference = value("reference");
           const dmxEquity = npat * pe;
           const stake = dmxEquity * ownershipApproximation;
           const equity = stake + stub + adjustments;
-          const perShare = (equity / shares) * 1000;
-          const premium = reference ? perShare / reference - 1 : 0;
 
           output("npat-value").textContent = `${integer.format(npat)}bn`;
           output("pe-value").textContent = `${oneDecimal.format(pe)}×`;
           output("stub-value").textContent = `${integer.format(stub)}bn`;
           output("adjustments-value").textContent = `${integer.format(adjustments)}bn`;
-          output("shares-value").textContent = `${integer.format(shares)}m`;
-          output("reference-value").textContent = vnd.format(reference);
-          output("per-share-output").textContent = vnd.format(perShare);
+          output("equity-value-output").textContent = `${integer.format(equity)}bn`;
           output("dmx-equity-output").textContent = `${integer.format(dmxEquity)}bn`;
           output("stake-output").textContent = `${integer.format(stake)}bn`;
           output("stub-output").textContent = `${integer.format(stub)}bn`;
           output("adjustments-output").textContent = `${integer.format(adjustments)}bn`;
           output("equity-output").textContent = `${integer.format(equity)}bn`;
-          const premiumNode = output("premium-output");
-          premiumNode.textContent = `${premium >= 0 ? "+" : ""}${(premium * 100).toFixed(1)}% vs your reference`;
-          premiumNode.classList.toggle("negative", premium < 0);
         }
 
         document.querySelectorAll("[data-scenario]").forEach((button) => {

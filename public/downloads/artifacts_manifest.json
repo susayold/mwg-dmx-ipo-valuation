@@ -5,13 +5,13 @@
   "artifacts": [
     {
       "path": "public/downloads/Investment_Memo_EN.pdf",
-      "size_bytes": 10696,
-      "sha256": "8e69bab4a1d7b1976ab7548a1ac13695a886f2de20e3da1a21084686bdccd4cd"
+      "size_bytes": 15919,
+      "sha256": "cdbf8a451ff95e62a4085d203213fefc27055ca9d624011e6b3138f4f4a7ac8e"
     },
     {
       "path": "public/downloads/validation_report.html",
-      "size_bytes": 3192,
-      "sha256": "5ada8e8c892f66713facef63b584eed6c5d77d2cba7520937aa67fef53c8d0ea"
+      "size_bytes": 3358,
+      "sha256": "6ce7b8922e31faadcc377c8d56da914c1da48e9d3d79535ba6dad64be5b6db1b"
     },
     {
       "path": "public/downloads/dmx_q1_2026_financial_facts.csv",
@@ -20,8 +20,28 @@
     },
     {
       "path": "public/downloads/MWG_DMX_IPO_SOTP_Model.xlsx",
-      "size_bytes": 52550,
-      "sha256": "93914077806d9d37a4a9c869fefbfac33c6ca6661df83c2692ba761f19a5e34c"
+      "size_bytes": 69667,
+      "sha256": "665676ef1c92855a265755efd292996615933ce682f93e2877c34ef213c1a24d"
+    },
+    {
+      "path": "public/downloads/dmx_three_statement_analysis.json",
+      "size_bytes": 40782,
+      "sha256": "dca0546daa3ea4ed4092ea880306c4982c0ee29149b4d7d0ebde3ced54b8deff"
+    },
+    {
+      "path": "public/downloads/dmx_three_statement_facts.csv",
+      "size_bytes": 54726,
+      "sha256": "7a18647f71aaf214358e57aec98be27586f73f124908273adbba33fd0c1541b3"
+    },
+    {
+      "path": "public/downloads/dmx_normalization_adjustments.csv",
+      "size_bytes": 1184,
+      "sha256": "3b7cef7f86cf7a2d6f7660fd719886a345291f74533c80070479b7bfb0e9e365"
+    },
+    {
+      "path": "public/downloads/three_statement_manifest.json",
+      "size_bytes": 982,
+      "sha256": "e85c15fc404bd8ecde9df13371775189a6e97b2ccbf642a3ea86a2059f1d8d75"
     }
   ]
 }

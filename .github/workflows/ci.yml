@@ -67,6 +67,35 @@ jobs:
       - name: Validate source-download plan without network access
         run: python scripts/fetch_sources.py --dry-run
 
+      - name: Remove committed generated artifacts
+        shell: python
+        run: |
+          from pathlib import Path
+
+          generated = [
+              Path("model/MWG_DMX_IPO_SOTP_Model.xlsx"),
+              Path("public/downloads/MWG_DMX_IPO_SOTP_Model.xlsx"),
+              Path("public/downloads/Investment_Memo_EN.pdf"),
+              Path("public/downloads/validation_report.html"),
+              Path("public/downloads/artifacts_manifest.json"),
+              Path("public/downloads/dmx_q1_2026_financial_facts.csv"),
+              Path("data/processed/dmx_three_statement_analysis.json"),
+              Path("app/data/three-statement-analysis.json"),
+              Path("public/three-statement-data.js"),
+              Path("public/downloads/dmx_three_statement_analysis.json"),
+              Path("public/downloads/dmx_three_statement_facts.csv"),
+              Path("public/downloads/dmx_normalization_adjustments.csv"),
+              Path("public/downloads/three_statement_manifest.json"),
+          ]
+          for path in generated:
+              path.unlink(missing_ok=True)
+          remaining = [str(path) for path in generated if path.exists()]
+          if remaining:
+              raise SystemExit(f"Could not remove generated artifacts: {remaining}")
+
+      - name: Build and validate three-statement analysis
+        run: python scripts/build_three_statement_analysis.py
+
       - name: Build financial model
         run: python scripts/build_financial_model.py
 
@@ -76,7 +105,12 @@ jobs:
       - name: Verify generated artifacts
         shell: python
         run: |
+          import hashlib
+          import json
           from pathlib import Path
+          from zipfile import ZipFile
+
+          from scripts.build_financial_model import validate_generated_workbook
 
           required = [
               Path("model/MWG_DMX_IPO_SOTP_Model.xlsx"),
@@ -84,13 +118,101 @@ jobs:
               Path("public/downloads/Investment_Memo_EN.pdf"),
               Path("public/downloads/validation_report.html"),
               Path("public/downloads/artifacts_manifest.json"),
+              Path("public/downloads/dmx_q1_2026_financial_facts.csv"),
+              Path("data/processed/dmx_three_statement_analysis.json"),
+              Path("app/data/three-statement-analysis.json"),
+              Path("public/three-statement-data.js"),
+              Path("public/downloads/dmx_three_statement_analysis.json"),
+              Path("public/downloads/dmx_three_statement_facts.csv"),
+              Path("public/downloads/dmx_normalization_adjustments.csv"),
+              Path("public/downloads/three_statement_manifest.json"),
           ]
           missing = [str(path) for path in required if not path.is_file() or path.stat().st_size == 0]
           if missing:
               raise SystemExit(f"Missing or empty artifacts: {missing}")
+
+          model = required[0]
+          public_model = required[1]
+          qa = validate_generated_workbook(model)
+          with ZipFile(public_model) as archive:
+              bad_member = archive.testzip()
+          if bad_member is not None:
+              raise SystemExit(f"Corrupt public workbook member: {bad_member}")
+
+          def sha256(path: Path) -> str:
+              digest = hashlib.sha256()
+              with path.open("rb") as handle:
+                  for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+                      digest.update(chunk)
+              return digest.hexdigest()
+
+          if sha256(model) != sha256(public_model):
+              raise SystemExit("Public workbook is not the workbook generated in this run")
+
+          canonical_analysis = Path("data/processed/dmx_three_statement_analysis.json")
+          app_analysis = Path("app/data/three-statement-analysis.json")
+          download_analysis = Path("public/downloads/dmx_three_statement_analysis.json")
+          if len({sha256(canonical_analysis), sha256(app_analysis), sha256(download_analysis)}) != 1:
+              raise SystemExit("Three-statement JSON copies are not identical")
+
+          three_manifest_path = Path("public/downloads/three_statement_manifest.json")
+          three_manifest = json.loads(three_manifest_path.read_text(encoding="utf-8"))
+          if three_manifest.get("source_fact_count") != 320:
+              raise SystemExit("Unexpected three-statement fact count")
+          if three_manifest.get("accounting_check_summary", {}).get("failed") != 0:
+              raise SystemExit("Three-statement accounting checks did not pass")
+          generic = three_manifest.get("generic_validation", {})
+          if generic.get("failed_errors") != 0 or generic.get("failed_warnings") != 0:
+              raise SystemExit("Three-statement generic validation is not clean")
+          three_files = three_manifest.get("files", {})
+          expected_three_files = {
+              "public/downloads/dmx_three_statement_analysis.json",
+              "public/downloads/dmx_three_statement_facts.csv",
+              "public/downloads/dmx_normalization_adjustments.csv",
+              "public/three-statement-data.js",
+          }
+          if set(three_files) != expected_three_files:
+              raise SystemExit(f"Unexpected three-statement manifest files: {sorted(three_files)}")
+          for artifact_path, metadata in three_files.items():
+              path = Path(artifact_path)
+              if metadata.get("bytes") != path.stat().st_size:
+                  raise SystemExit(f"Three-statement manifest size mismatch: {artifact_path}")
+              if metadata.get("sha256") != sha256(path):
+                  raise SystemExit(f"Three-statement manifest hash mismatch: {artifact_path}")
+
+          manifest_path = Path("public/downloads/artifacts_manifest.json")
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          if manifest.get("checks_passed") is not True:
+              raise SystemExit("Report manifest does not confirm passing validation checks")
+          expected_manifest_paths = {
+              "public/downloads/MWG_DMX_IPO_SOTP_Model.xlsx",
+              "public/downloads/Investment_Memo_EN.pdf",
+              "public/downloads/validation_report.html",
+              "public/downloads/dmx_q1_2026_financial_facts.csv",
+              "public/downloads/dmx_three_statement_analysis.json",
+              "public/downloads/dmx_three_statement_facts.csv",
+              "public/downloads/dmx_normalization_adjustments.csv",
+              "public/downloads/three_statement_manifest.json",
+          }
+          manifest_artifacts = {
+              artifact.get("path"): artifact for artifact in manifest.get("artifacts", [])
+          }
+          if set(manifest_artifacts) != expected_manifest_paths:
+              raise SystemExit(
+                  "Unexpected manifest artifact set: "
+                  f"{sorted(path for path in manifest_artifacts if path)}"
+              )
+          for artifact_path, metadata in manifest_artifacts.items():
+              path = Path(artifact_path)
+              if metadata.get("size_bytes") != path.stat().st_size:
+                  raise SystemExit(f"Manifest size mismatch: {artifact_path}")
+              if metadata.get("sha256") != sha256(path):
+                  raise SystemExit(f"Manifest hash mismatch: {artifact_path}")
+
           print("Verified generated artifacts:")
           for path in required:
               print(f"- {path} ({path.stat().st_size:,} bytes)")
+          print(f"- workbook QA: {qa}")
 
       - name: Upload research artifacts
         uses: actions/upload-artifact@v4
@@ -104,3 +226,8 @@ jobs:
             public/downloads/Investment_Memo_EN.pdf
             public/downloads/validation_report.html
             public/downloads/artifacts_manifest.json
+            public/downloads/dmx_q1_2026_financial_facts.csv
+            public/downloads/dmx_three_statement_analysis.json
+            public/downloads/dmx_three_statement_facts.csv
+            public/downloads/dmx_normalization_adjustments.csv
+            public/downloads/three_statement_manifest.json

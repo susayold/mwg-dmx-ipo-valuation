@@ -12,6 +12,7 @@ No market conclusion is produced unless same-date price inputs are supplied.
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from datetime import date, datetime
 from pathlib import Path
@@ -29,8 +30,11 @@ from openpyxl.worksheet.datavalidation import DataValidation
 REPO_ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_PATH = REPO_ROOT / "model" / "MWG_DMX_IPO_SOTP_Model.xlsx"
 RAW_Q1_PATH = REPO_ROOT / "data" / "raw" / "dmx" / "dmx_q1_2026_data_pack.xlsx"
+THREE_STATEMENT_PATH = (
+    REPO_ROOT / "data" / "processed" / "dmx_three_statement_analysis.json"
+)
 
-MODEL_VERSION = "1.0.0"
+MODEL_VERSION = "2.0.0"
 DATA_CUTOFF = date(2026, 7, 13)
 # Excel stores naive datetimes; the repository timezone is Asia/Bangkok.
 GENERATED_AT = datetime.now().replace(microsecond=0)
@@ -40,6 +44,9 @@ SHEET_ORDER = [
     "Sources",
     "IPO_Bridge",
     "Q1_Actuals",
+    "3Y_Statements",
+    "3S_Bridges",
+    "WC_QoE",
     "Mgmt_Forecast",
     "Assumptions",
     "DMX_Valuation",
@@ -146,7 +153,52 @@ SOURCES = [
         "'Nearly 86%' is a reasonableness check, not exact ownership.",
     ),
     Source(
-        "DMX-Q1-2026",
+        "DMX_IPO_PROCEEDS_2026",
+        "DMX",
+        "Board resolution / use of proceeds",
+        "Resolution No. 15 on adjusted use of IPO proceeds",
+        None,
+        date(2026, 7, 7),
+        DATA_CUTOFF,
+        "N/A",
+        "Issuer disclosure",
+        "https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/7/0/38/65/38651afbcd5d099f0e968015b88da8ee.pdf",
+        "data/raw/dmx/dmx_ipo_proceeds_adjustment_2026.pdf",
+        "Estimated issue costs, net proceeds and planned debt repayment",
+        "Gross proceeds are actual; costs and net proceeds are issuer estimates. Debt repayment remains pro forma until actual disbursement is evidenced.",
+    ),
+    Source(
+        "DMX_FS_2024_C",
+        "DMX",
+        "Audited consolidated financial statements",
+        "DMX consolidated financial statements FY2024",
+        date(2024, 12, 31),
+        date(2026, 5, 22),
+        DATA_CUTOFF,
+        "FY2024 audited; FY2023 comparative expressly unaudited",
+        "Consolidated",
+        "https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/5/0/93/e5/93e558113d3fa242567df336db5e4af6.pdf",
+        "data/raw/dmx/dmx_fy2024_audited_consolidated.pdf",
+        "FY2023 comparative and FY2024 historical statements",
+        "Primary source for the three-statement history; FY2023 is not presented as audited.",
+    ),
+    Source(
+        "DMX_FS_2025_C",
+        "DMX",
+        "Audited consolidated financial statements",
+        "DMX consolidated financial statements FY2025",
+        date(2025, 12, 31),
+        date(2026, 5, 22),
+        DATA_CUTOFF,
+        "Audited",
+        "Consolidated",
+        "https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/5/0/08/af/08af79013e9b9bdb210eb476e2fa7b95.pdf",
+        "data/raw/dmx/dmx_fy2025_audited_consolidated.pdf",
+        "FY2025 historical statements and FY2024 comparatives",
+        "Primary audited source for FY2025 three-statement analysis.",
+    ),
+    Source(
+        "DMX_DATA_2026Q1",
         "DMX",
         "Interim financial statements and data pack",
         "DMX Q1 2026 consolidated financial statements",
@@ -161,7 +213,7 @@ SOURCES = [
         "Model values are in VND bn; source workbook is in VND.",
     ),
     Source(
-        "DMX-6M-2026",
+        "DMX_RESULTS_2026H1",
         "DMX",
         "Business update",
         "DMX business results — six months 2026",
@@ -448,6 +500,33 @@ def verify_embedded_q1_against_raw() -> list[str]:
     return messages
 
 
+def load_three_statement_payload() -> dict[str, Any]:
+    if not THREE_STATEMENT_PATH.is_file():
+        raise FileNotFoundError(
+            "Three-statement payload is missing. Run "
+            "`python scripts/build_three_statement_analysis.py` first."
+        )
+    with THREE_STATEMENT_PATH.open("r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+    metadata = payload.get("metadata", {})
+    summary = payload.get("check_summary", {})
+    if not str(metadata.get("data_version", "")).startswith("three-statement-v"):
+        raise ValueError("Unexpected or missing three-statement data version")
+    if summary.get("checks", 0) < 30 or summary.get("failed") != 0:
+        raise ValueError(f"Three-statement accounting controls are incomplete: {summary}")
+    registered_source_ids = {source.source_id for source in SOURCES}
+    coverage_source_ids = {
+        row.get("source_id") for row in payload.get("coverage", []) if row.get("source_id")
+    }
+    missing_coverage_sources = sorted(coverage_source_ids - registered_source_ids)
+    if missing_coverage_sources:
+        raise ValueError(
+            "Three-statement coverage contains source IDs missing from the workbook Sources sheet: "
+            f"{missing_coverage_sources}"
+        )
+    return payload
+
+
 def new_workbook() -> Workbook:
     wb = Workbook()
     default = wb.active
@@ -473,7 +552,7 @@ def build_cover(wb: Workbook) -> None:
     ws = wb["Cover"]
     setup_sheet(ws, "A1", 95)
     ws.page_setup.fitToHeight = 1
-    ws.print_area = "B2:J41"
+    ws.print_area = "B2:J44"
     ws.sheet_properties.tabColor = NAVY
     set_widths(ws, {"A": 4, "B": 23, "C": 20, "D": 18, "E": 4, "F": 4, "G": 24, "H": 24, "I": 22, "J": 22})
 
@@ -486,7 +565,7 @@ def build_cover(wb: Workbook) -> None:
     ws.row_dimensions[3].height = 28
 
     ws.merge_cells("B4:J5")
-    ws["B4"] = "IPO bridge · DMX FCFF DCF · MWG sum-of-the-parts · scenario & QA model"
+    ws["B4"] = "Three-statement history · IPO bridge · DMX FCFF DCF · MWG SOTP · scenario & QA model"
     ws["B4"].font = Font(name="Aptos", size=13, color="D9EAF7", italic=True)
     ws["B4"].fill = fill(NAVY_2)
     ws["B4"].alignment = Alignment(vertical="center")
@@ -532,6 +611,7 @@ def build_cover(wb: Workbook) -> None:
         "3. How much of DMX's value is attributable to MWG using an explicitly labelled ownership proxy?",
         "4. What illustrative residual value is assigned to BHX and other MWG assets in a SOTP?",
         "5. Which assumptions drive the range, and which QA gates prevent an unsupported conclusion?",
+        "6. Do earnings, working capital, cash and retained earnings reconcile across the three statements?",
     ]
     for row, question in enumerate(questions, 19):
         ws.merge_cells(start_row=row, start_column=2, end_row=row, end_column=10)
@@ -552,6 +632,9 @@ def build_cover(wb: Workbook) -> None:
         ("Sources", "Official source registry and URLs", "Official metadata", "Provenance"),
         ("IPO_Bridge", "Planned versus actual primary issuance", "Actual + planned", "Shares/proceeds identity"),
         ("Q1_Actuals", "Key consolidated statements and ratios", "Actual", "Statement/cash checks"),
+        ("3Y_Statements", "FY2023–FY2025 plus Q1 2026 three-statement history", "Reported actuals", "Trend and scope"),
+        ("3S_Bridges", "NPAT-to-CFO, cash, retained earnings and normalization", "Actual + management LFL", "Accounting linkage"),
+        ("WC_QoE", "Working-capital days and quality-of-earnings matrix", "Calculated", "Cash conversion risk"),
         ("Mgmt_Forecast", "2025 actual and 2026–2030 company outlook", "Actual / company outlook", "No relabelling as analyst forecast"),
         ("Assumptions", "Editable Bear/Base/Bull inputs", "Illustrative", "Replace before investment use"),
         ("DMX_Valuation", "Driver-based FCFF DCF and equity bridge", "Illustrative forecast", "WACC, TV, double count"),
@@ -574,16 +657,16 @@ def build_cover(wb: Workbook) -> None:
             ws.cell(r, c).alignment = Alignment(vertical="center", wrap_text=True)
         ws.row_dimensions[r].height = 28
 
-    ws.merge_cells("B39:J41")
-    ws["B39"] = (
+    ws.merge_cells("B42:J44")
+    ws["B42"] = (
         "DISCLAIMER — Portfolio case study only. Not investment research, a recommendation, or an offer to buy/sell securities. "
         "Official facts remain subject to source documents. Management outlook is not a guarantee. All yellow/blue inputs are "
         "illustrative analyst assumptions. No market upside/downside is shown because same-date price inputs are absent."
     )
-    ws["B39"].fill = fill(PALE_YELLOW)
-    ws["B39"].font = Font(name="Aptos", size=10, bold=True, color=NAVY)
-    ws["B39"].alignment = Alignment(wrap_text=True, vertical="center")
-    ws["B39"].border = Border(top=MEDIUM_NAVY, bottom=MEDIUM_NAVY, left=MEDIUM_NAVY, right=MEDIUM_NAVY)
+    ws["B42"].fill = fill(PALE_YELLOW)
+    ws["B42"].font = Font(name="Aptos", size=10, bold=True, color=NAVY)
+    ws["B42"].alignment = Alignment(wrap_text=True, vertical="center")
+    ws["B42"].border = Border(top=MEDIUM_NAVY, bottom=MEDIUM_NAVY, left=MEDIUM_NAVY, right=MEDIUM_NAVY)
 
 
 def build_sources(wb: Workbook) -> None:
@@ -698,9 +781,9 @@ def build_ipo_bridge(wb: Workbook) -> dict[str, int]:
         ("Pre-money equity value at IPO price", "VND bn", "=C6*C5/1000", "=D6*D5/1000", "Calculated", "Pre shares × offer price", "Transaction-price identity, not independent fair value"),
         ("Post-money equity value at IPO price", "VND bn", "=C11*C5/1000", "=D11*D5/1000", "Calculated", "Post shares × offer price", "Transaction-price identity, not a market conclusion"),
         ("MWG ownership after IPO", "%", "N/A", 0.86, "Approximate disclosure", "DMX-IPO-COMPLETE", "'Nearly 86%' only; exact shares remain unverified"),
-        ("Issue costs", "VND bn", "N/A", "N/A", "Unavailable", "Not disclosed precisely in current source set", "Do not guess"),
-        ("Net proceeds", "VND bn", "N/A", '=IF(ISNUMBER(D18),D12-D18,"N/A")', "Unavailable until issue costs verified", "Gross proceeds − issue costs", "No double count in equity bridge"),
-        ("Additional IPO proceeds in DCF bridge", "VND bn", 0.0, 0.0, "Control", "Post-IPO balance sheet convention", "Must remain zero because proceeds enter cash once"),
+        ("Estimated issue costs", "VND bn", "N/A", 100.000, "Issuer estimate", "DMX_IPO_PROCEEDS_2026", "Estimated transaction costs; not a final reported cash outflow"),
+        ("Estimated net proceeds", "VND bn", "N/A", "=D12-D18", "Issuer estimate", "DMX_IPO_PROCEEDS_2026", "Gross proceeds less estimated issue costs"),
+        ("Net IPO proceeds adjustment in DCF bridge", "VND bn", "N/A", "=D19", "Pro forma", "Resolution 15 after 31-Mar-2026 balance date", "Included once because the DCF uses pre-IPO Q1 cash/debt with post-IPO shares"),
     ]
     row_map: dict[str, int] = {}
     for row, item in enumerate(rows, 5):
@@ -737,7 +820,9 @@ def build_ipo_bridge(wb: Workbook) -> dict[str, int]:
         12: '=IF(ABS(D9*D5/1000-13315.080)<0.001,"PASS","FAIL")',
         16: '=IF(ABS(D15+D12-D16)<0.001,"PASS","FAIL")',
         17: '=IF(ABS(D17-86%)<=1%,"PASS — rounded","WARN")',
-        20: '=IF(D20=0,"PASS","FAIL")',
+        18: '=IF(ABS(D18-100)<0.001,"PASS","FAIL")',
+        19: '=IF(ABS(D19-13215.080)<0.001,"PASS","FAIL")',
+        20: '=IF(ABS(D20-D19)<0.001,"PASS","FAIL")',
     }
     for row, formula in control_formulas.items():
         ws.cell(row, 8, formula)
@@ -748,9 +833,10 @@ def build_ipo_bridge(wb: Workbook) -> dict[str, int]:
     note_row = 23
     ws.merge_cells(start_row=note_row, start_column=1, end_row=note_row + 2, end_column=8)
     ws.cell(note_row, 1, (
-        "Accounting boundary: this is a primary issuance. Gross proceeds belong to DMX, not MWG. Under the post-IPO balance-sheet "
-        "convention used in the DCF, cash/debt are taken from the latest available actual balance sheet and additional IPO proceeds "
-        "remain zero. Exact MWG share ownership is not inferred from the rounded 'nearly 86%' announcement."
+        "Accounting boundary: this is a primary issuance. Gross proceeds belong to DMX, not MWG. The DCF bridges 31-Mar-2026 "
+        "pre-IPO cash/debt to a post-IPO share count, so estimated net proceeds of VND 13,215.08bn are added exactly once. Resolution "
+        "15 earmarks the proceeds for debt repayment, but this is labelled pro forma until actual disbursement is evidenced. Exact "
+        "MWG ownership is not inferred from the rounded 'nearly 86%' announcement."
     ))
     ws.cell(note_row, 1).fill = fill(PALE_YELLOW)
     ws.cell(note_row, 1).font = Font(name="Aptos", size=9, color=NAVY, bold=True)
@@ -823,23 +909,23 @@ def build_q1_actuals(wb: Workbook) -> dict[str, int]:
         row += 1
 
     add_section("INCOME STATEMENT", "Q1 2026 vs Q1 2025 | VND bn except EPS and ratios")
-    add_line("revenue", "IS", "Net revenue", "VND bn", Q1["revenue_2026"], Q1["revenue_2025"], "=ABS(D6)/ABS(E6)-1", "DMX-Q1-2026", "Income Statement — Net revenue", "Actual")
-    add_line("cogs", "IS", "Cost of goods sold", "VND bn", Q1["cogs_2026"], Q1["cogs_2025"], "=ABS(D7)/ABS(E7)-1", "DMX-Q1-2026", "Income Statement — Cost of goods sold", "Actual", "Reported as a negative expense")
-    add_line("gross_profit", "IS", "Gross profit", "VND bn", Q1["gross_profit_2026"], Q1["gross_profit_2025"], "=D8/E8-1", "DMX-Q1-2026", "Income Statement — Gross profit", "Actual")
+    add_line("revenue", "IS", "Net revenue", "VND bn", Q1["revenue_2026"], Q1["revenue_2025"], "=ABS(D6)/ABS(E6)-1", "DMX_DATA_2026Q1", "Income Statement — Net revenue", "Actual")
+    add_line("cogs", "IS", "Cost of goods sold", "VND bn", Q1["cogs_2026"], Q1["cogs_2025"], "=ABS(D7)/ABS(E7)-1", "DMX_DATA_2026Q1", "Income Statement — Cost of goods sold", "Actual", "Reported as a negative expense")
+    add_line("gross_profit", "IS", "Gross profit", "VND bn", Q1["gross_profit_2026"], Q1["gross_profit_2025"], "=D8/E8-1", "DMX_DATA_2026Q1", "Income Statement — Gross profit", "Actual")
     add_line("gross_margin", "IS", "Gross margin", "%", "=D8/D6", "=E8/E6", "=D9-E9", "MODEL-FORMULA", "Gross profit / net revenue", "Calculated", "Change shown in percentage points")
-    add_line("financial_income", "IS", "Financial income", "VND bn", Q1["financial_income_2026"], Q1["financial_income_2025"], "=D10/E10-1", "DMX-Q1-2026", "Income Statement — Financial income", "Actual")
-    add_line("financial_expense", "IS", "Financial expense", "VND bn", Q1["financial_expense_2026"], Q1["financial_expense_2025"], "=ABS(D11)/ABS(E11)-1", "DMX-Q1-2026", "Income Statement — Financial expense", "Actual", "Reported as a negative expense")
-    add_line("interest_expense", "IS", "Interest expense", "VND bn", Q1["interest_expense_2026"], Q1["interest_expense_2025"], "=ABS(D12)/ABS(E12)-1", "DMX-Q1-2026", "Income Statement — Interest expense", "Actual")
-    add_line("selling_expense", "IS", "Selling expense", "VND bn", Q1["selling_expense_2026"], Q1["selling_expense_2025"], "=ABS(D13)/ABS(E13)-1", "DMX-Q1-2026", "Income Statement — Selling expense", "Actual")
-    add_line("ga_expense", "IS", "G&A expense", "VND bn", Q1["ga_expense_2026"], Q1["ga_expense_2025"], "=ABS(D14)/ABS(E14)-1", "DMX-Q1-2026", "Income Statement — G&A expense", "Actual")
-    add_line("share_jv", "IS", "Share of profit from JV", "VND bn", Q1["share_jv_2026"], Q1["share_jv_2025"], "=D15/E15-1", "DMX-Q1-2026", "Income Statement — Share of JV profit", "Actual", "EraBlue is treated as a JV perimeter control")
-    add_line("operating_profit", "IS", "Operating profit", "VND bn", Q1["operating_profit_2026"], Q1["operating_profit_2025"], "=D16/E16-1", "DMX-Q1-2026", "Income Statement — Operating profit", "Actual")
+    add_line("financial_income", "IS", "Financial income", "VND bn", Q1["financial_income_2026"], Q1["financial_income_2025"], "=D10/E10-1", "DMX_DATA_2026Q1", "Income Statement — Financial income", "Actual")
+    add_line("financial_expense", "IS", "Financial expense", "VND bn", Q1["financial_expense_2026"], Q1["financial_expense_2025"], "=ABS(D11)/ABS(E11)-1", "DMX_DATA_2026Q1", "Income Statement — Financial expense", "Actual", "Reported as a negative expense")
+    add_line("interest_expense", "IS", "Interest expense", "VND bn", Q1["interest_expense_2026"], Q1["interest_expense_2025"], "=ABS(D12)/ABS(E12)-1", "DMX_DATA_2026Q1", "Income Statement — Interest expense", "Actual")
+    add_line("selling_expense", "IS", "Selling expense", "VND bn", Q1["selling_expense_2026"], Q1["selling_expense_2025"], "=ABS(D13)/ABS(E13)-1", "DMX_DATA_2026Q1", "Income Statement — Selling expense", "Actual")
+    add_line("ga_expense", "IS", "G&A expense", "VND bn", Q1["ga_expense_2026"], Q1["ga_expense_2025"], "=ABS(D14)/ABS(E14)-1", "DMX_DATA_2026Q1", "Income Statement — G&A expense", "Actual")
+    add_line("share_jv", "IS", "Share of profit from JV", "VND bn", Q1["share_jv_2026"], Q1["share_jv_2025"], "=D15/E15-1", "DMX_DATA_2026Q1", "Income Statement — Share of JV profit", "Actual", "EraBlue is treated as a JV perimeter control")
+    add_line("operating_profit", "IS", "Operating profit", "VND bn", Q1["operating_profit_2026"], Q1["operating_profit_2025"], "=D16/E16-1", "DMX_DATA_2026Q1", "Income Statement — Operating profit", "Actual")
     add_line("operating_margin", "IS", "Operating margin", "%", "=D16/D6", "=E16/E6", "=D17-E17", "MODEL-FORMULA", "Operating profit / revenue", "Calculated", "Company line includes finance and JV effects; not used as DCF EBIT")
-    add_line("pbt", "IS", "Profit before tax", "VND bn", Q1["pbt_2026"], Q1["pbt_2025"], "=D18/E18-1", "DMX-Q1-2026", "Income Statement — Profit before tax", "Actual")
-    add_line("tax", "IS", "Income tax expense", "VND bn", Q1["tax_2026"], Q1["tax_2025"], "=ABS(D19)/ABS(E19)-1", "DMX-Q1-2026", "Income Statement — current + deferred tax", "Actual")
-    add_line("npat", "IS", "Net profit after tax", "VND bn", Q1["npat_2026"], Q1["npat_2025"], "=D20/E20-1", "DMX-Q1-2026", "Income Statement — NPAT", "Actual")
+    add_line("pbt", "IS", "Profit before tax", "VND bn", Q1["pbt_2026"], Q1["pbt_2025"], "=D18/E18-1", "DMX_DATA_2026Q1", "Income Statement — Profit before tax", "Actual")
+    add_line("tax", "IS", "Income tax expense", "VND bn", Q1["tax_2026"], Q1["tax_2025"], "=ABS(D19)/ABS(E19)-1", "DMX_DATA_2026Q1", "Income Statement — current + deferred tax", "Actual")
+    add_line("npat", "IS", "Net profit after tax", "VND bn", Q1["npat_2026"], Q1["npat_2025"], "=D20/E20-1", "DMX_DATA_2026Q1", "Income Statement — NPAT", "Actual")
     add_line("npat_margin", "IS", "NPAT margin", "%", "=D20/D6", "=E20/E6", "=D21-E21", "MODEL-FORMULA", "NPAT / revenue", "Calculated", "Change shown in percentage points")
-    add_line("eps", "IS", "Basic EPS", "VND/share", Q1["eps_2026"], Q1["eps_2025"], "=D22/E22-1", "DMX-Q1-2026", "Income Statement — Basic EPS", "Actual")
+    add_line("eps", "IS", "Basic EPS", "VND/share", Q1["eps_2026"], Q1["eps_2025"], "=D22/E22-1", "DMX_DATA_2026Q1", "Income Statement — Basic EPS", "Actual")
 
     row += 1
     add_section("BALANCE SHEET", "31-Mar-2026 vs 31-Dec-2025 | VND bn")
@@ -864,7 +950,7 @@ def build_q1_actuals(wb: Workbook) -> dict[str, int]:
         current_value: Any = current
         prior_value: Any = prior
         status = "Actual"
-        source_id = "DMX-Q1-2026"
+        source_id = "DMX_DATA_2026Q1"
         if key == "cash_deposits":
             current_value = f'=D{row_map["cash"]}+D{row_map["short_term_investments"]}+D{row_map["long_term_deposits"]}'
             prior_value = f'=E{row_map["cash"]}+E{row_map["short_term_investments"]}+E{row_map["long_term_deposits"]}'
@@ -895,7 +981,7 @@ def build_q1_actuals(wb: Workbook) -> dict[str, int]:
     ]
     for key, label, current, prior, locator in cf_items:
         status = "Actual"
-        source_id = "DMX-Q1-2026"
+        source_id = "DMX_DATA_2026Q1"
         unit = "VND bn"
         current_value: Any = current
         prior_value: Any = prior
@@ -937,7 +1023,473 @@ def build_q1_actuals(wb: Workbook) -> dict[str, int]:
     ws.add_chart(chart, "L7")
 
     ws.auto_filter.ref = f"A4:J{row - 1}"
+    row_map["_last_data_row"] = row - 1
     return row_map
+
+
+def build_three_year_statements(
+    wb: Workbook, payload: dict[str, Any]
+) -> dict[str, dict[str, int]]:
+    ws = wb["3Y_Statements"]
+    setup_sheet(ws, "C8", 82)
+    set_title(
+        ws,
+        "DMX three-statement history",
+        "FY2023 comparative, FY2024–FY2025 statutory actuals and Q1 2026 latest actual; VND bn unless stated.",
+        10,
+    )
+    set_widths(
+        ws,
+        {
+            "A": 4,
+            "B": 36,
+            "C": 16,
+            "D": 16,
+            "E": 16,
+            "F": 16,
+            "G": 3,
+            "H": 27,
+            "I": 31,
+            "J": 18,
+        },
+    )
+
+    periods = {entry["period"]: entry for entry in payload["statements"]}
+    period_columns = {
+        "FY2023A": 3,
+        "FY2024A": 4,
+        "FY2025A": 5,
+        "Q1 2026A": 6,
+    }
+    for label, col in period_columns.items():
+        ws.cell(5, col, label)
+        ws.cell(6, col, periods[label]["audit_status"])
+        ws.cell(7, col, "DMX consolidated · reported")
+    ws["B5"] = "Line item"
+    ws["B6"] = "Audit status"
+    ws["B7"] = "Scope / basis"
+    style_table_header(ws, 5, 2, 6)
+    for col in range(2, 7):
+        ws.cell(6, col).fill = fill(PALE_YELLOW if col in {2, 3, 6} else PALE_GREEN)
+        ws.cell(7, col).fill = fill(LIGHT_GREY)
+        ws.cell(6, col).alignment = Alignment(wrap_text=True, horizontal="center")
+        ws.cell(7, col).alignment = Alignment(wrap_text=True, horizontal="center")
+        ws.cell(6, col).font = Font(name="Aptos", size=8, bold=True, color=NAVY)
+        ws.cell(7, col).font = Font(name="Aptos", size=8, color=GREY)
+
+    groups = [
+        (
+            "INCOME STATEMENT",
+            [
+                ("revenue", "Net revenue"),
+                ("cogs", "Cost of goods sold"),
+                ("gross_profit", "Gross profit"),
+                ("gross_margin", "Gross margin"),
+                ("financial_income", "Financial income"),
+                ("financial_expense", "Financial expense"),
+                ("operating_profit", "Reported operating profit"),
+                ("operating_margin", "Operating margin"),
+                ("pretax_income", "Profit before tax"),
+                ("tax_expense", "Income-tax expense"),
+                ("net_income", "Net profit after tax"),
+                ("net_margin", "Net margin"),
+            ],
+        ),
+        (
+            "BALANCE SHEET",
+            [
+                ("cash", "Cash and cash equivalents"),
+                ("short_term_investments", "Short-term investments"),
+                ("receivables", "Trade receivables"),
+                ("inventory_gross", "Gross inventory"),
+                ("inventory_provision", "Inventory provision"),
+                ("inventory", "Net inventory"),
+                ("payables", "Trade payables"),
+                ("total_debt", "Total borrowings"),
+                ("retained_earnings", "Retained earnings"),
+                ("total_assets", "Total assets"),
+                ("total_liabilities", "Total liabilities"),
+                ("total_equity", "Total equity"),
+                ("balance_check", "Assets − liabilities − equity"),
+            ],
+        ),
+        (
+            "CASH-FLOW STATEMENT",
+            [
+                ("depreciation_amortization", "Depreciation and amortization"),
+                ("operating_cash_flow", "Cash flow from operations"),
+                ("investing_cash_flow", "Cash flow from investing"),
+                ("financing_cash_flow", "Cash flow from financing"),
+                ("opening_cash", "Opening cash"),
+                ("fx_cash_effect", "FX effect"),
+                ("ending_cash", "Closing cash"),
+                ("capex", "Cash CapEx"),
+                ("free_cash_flow", "CFO less CapEx"),
+                ("cfo_to_npat", "CFO / NPAT"),
+            ],
+        ),
+    ]
+
+    row_map: dict[str, int] = {}
+    current_row = 9
+    formula_keys = {
+        "gross_margin",
+        "operating_margin",
+        "net_margin",
+        "balance_check",
+        "free_cash_flow",
+        "cfo_to_npat",
+    }
+    for group_title, metrics in groups:
+        section(ws, current_row, group_title, 2, 6)
+        current_row += 1
+        for key, label in metrics:
+            row_map[key] = current_row
+            ws.cell(current_row, 2, label)
+            ws.cell(current_row, 2).font = Font(
+                name="Aptos", size=9, bold=key in formula_keys, color=NAVY if key in formula_keys else BLACK
+            )
+            for period_label, col in period_columns.items():
+                values = periods[period_label]["values_vnd_bn"]
+                if key not in formula_keys:
+                    value = values.get(key)
+                    ws.cell(current_row, col, "N/D" if value is None else value)
+                    if value is not None:
+                        ws.cell(current_row, col).number_format = FMT_BN_1
+                        add_note(
+                            ws.cell(current_row, col),
+                            f"{period_label}; {periods[period_label]['audit_status']}; consolidated reported basis.",
+                        )
+                ws.cell(current_row, col).fill = fill(WHITE if current_row % 2 else LIGHT_GREY)
+                ws.cell(current_row, col).border = Border(bottom=THIN_GREY)
+            current_row += 1
+        current_row += 1
+
+    for col in period_columns.values():
+        letter = get_column_letter(col)
+        formulas = {
+            "gross_margin": f'={letter}{row_map["gross_profit"]}/{letter}{row_map["revenue"]}',
+            "operating_margin": f'={letter}{row_map["operating_profit"]}/{letter}{row_map["revenue"]}',
+            "net_margin": f'={letter}{row_map["net_income"]}/{letter}{row_map["revenue"]}',
+            "balance_check": (
+                f'=IF(OR(NOT(ISNUMBER({letter}{row_map["total_assets"]})),NOT(ISNUMBER({letter}{row_map["total_liabilities"]})),NOT(ISNUMBER({letter}{row_map["total_equity"]}))),'
+                f'"N/D",{letter}{row_map["total_assets"]}-{letter}{row_map["total_liabilities"]}-{letter}{row_map["total_equity"]})'
+            ),
+            "free_cash_flow": f'={letter}{row_map["operating_cash_flow"]}+{letter}{row_map["capex"]}',
+            "cfo_to_npat": f'={letter}{row_map["operating_cash_flow"]}/{letter}{row_map["net_income"]}',
+        }
+        for key, formula in formulas.items():
+            ws.cell(row_map[key], col, formula)
+            style_formula(
+                ws.cell(row_map[key], col),
+                number_format=FMT_PCT if key in {"gross_margin", "operating_margin", "net_margin", "cfo_to_npat"} else FMT_BN_2,
+            )
+
+    ws.merge_cells("H5:J7")
+    ws["H5"] = (
+        "Coverage control: FY2023 is the comparative column in the FY2024 filing and is expressly unaudited. "
+        "FY2024 and FY2025 are audited consolidated statutory actuals. Q1 2026 is unaudited. "
+        "The H1 2026 issuer update is not presented as a financial statement."
+    )
+    ws["H5"].fill = fill(PALE_YELLOW)
+    ws["H5"].font = Font(name="Aptos", size=9, bold=True, color=NAVY)
+    ws["H5"].alignment = Alignment(wrap_text=True, vertical="center")
+
+    chart = BarChart()
+    chart.type = "col"
+    chart.style = 10
+    chart.title = "Revenue and NPAT history"
+    chart.y_axis.title = "VND bn"
+    chart.height = 7.3
+    chart.width = 14.5
+    chart.add_data(
+        Reference(ws, min_col=3, max_col=5, min_row=row_map["revenue"], max_row=row_map["revenue"]),
+        titles_from_data=False,
+        from_rows=True,
+    )
+    chart.add_data(
+        Reference(ws, min_col=3, max_col=5, min_row=row_map["net_income"], max_row=row_map["net_income"]),
+        titles_from_data=False,
+        from_rows=True,
+    )
+    chart.set_categories(Reference(ws, min_col=3, max_col=5, min_row=5, max_row=5))
+    chart.series[0].tx = None
+    chart.series[1].tx = None
+    ws.add_chart(chart, "H9")
+    ws["H25"] = "Formula evidence"
+    ws["H25"].font = Font(name="Aptos", size=10, bold=True, color=NAVY)
+    ws["H26"] = "Gross profit = revenue + signed COGS"
+    ws["H27"] = "Closing cash = opening cash + CFO + CFI + CFF + FX"
+    ws["H28"] = "Balance check = assets − liabilities − equity"
+    ws["H29"] = "CFO/NPAT is read with seasonality and working-capital drivers"
+    for row in range(26, 30):
+        ws.merge_cells(start_row=row, start_column=8, end_row=row, end_column=10)
+        ws.cell(row, 8).fill = fill(WHITE if row % 2 else LIGHT_GREY)
+        ws.cell(row, 8).alignment = Alignment(wrap_text=True)
+
+    return {"rows": row_map, "columns": period_columns}
+
+
+def build_three_statement_bridges(wb: Workbook, payload: dict[str, Any]) -> None:
+    ws = wb["3S_Bridges"]
+    setup_sheet(ws, "A5", 82)
+    set_title(
+        ws,
+        "Three-statement reconciliation bridges",
+        "Q1 2026 earnings-to-cash, cash roll-forward, FY2025 retained earnings, normalization and IPO pro forma controls.",
+        14,
+    )
+    set_widths(
+        ws,
+        {"A": 35, "B": 17, "C": 15, "D": 18, "E": 3, "F": 34, "G": 17, "H": 15, "I": 18, "J": 3, "K": 38, "L": 17, "M": 15, "N": 24},
+    )
+
+    bridge_specs = [
+        (
+            "NPAT → CFO · Q1 2026",
+            next(row for row in payload["bridges"]["npat_to_cfo"] if row["period"] == "Q1 2026A"),
+            1,
+            "calculated_cfo_vnd_bn",
+            "reported_cfo_vnd_bn",
+        ),
+        (
+            "Opening cash → closing cash · Q1 2026",
+            next(row for row in payload["bridges"]["cash"] if row["period"] == "Q1 2026A"),
+            6,
+            "calculated_ending_cash_vnd_bn",
+            "reported_ending_cash_vnd_bn",
+        ),
+        (
+            "Retained earnings · FY2025",
+            next(row for row in payload["bridges"]["retained_earnings"] if row["period"] == "FY2025A"),
+            11,
+            "calculated_closing_retained_earnings_vnd_bn",
+            "reported_closing_retained_earnings_vnd_bn",
+        ),
+    ]
+    for title, bridge, start_col, calculated_key, reported_key in bridge_specs:
+        end_col = start_col + 3
+        ws.merge_cells(start_row=4, start_column=start_col, end_row=4, end_column=end_col)
+        ws.cell(4, start_col, title)
+        ws.cell(4, start_col).fill = fill(NAVY)
+        ws.cell(4, start_col).font = Font(name="Aptos", size=10, bold=True, color=WHITE)
+        component_start = 5
+        for offset, component in enumerate(bridge["components"]):
+            row = component_start + offset
+            ws.cell(row, start_col, component["label"])
+            ws.cell(row, start_col + 1, component["amount_vnd_bn"])
+            ws.cell(row, start_col + 1).number_format = FMT_BN_2
+            ws.cell(row, start_col).fill = fill(WHITE if row % 2 else LIGHT_GREY)
+            ws.cell(row, start_col + 1).fill = fill(WHITE if row % 2 else LIGHT_GREY)
+            ws.cell(row, start_col).alignment = Alignment(wrap_text=True)
+        total_row = component_start + len(bridge["components"])
+        ws.cell(total_row, start_col, "Calculated total")
+        ws.cell(total_row, start_col + 1, f"=SUM({get_column_letter(start_col + 1)}{component_start}:{get_column_letter(start_col + 1)}{total_row - 1})")
+        style_formula(ws.cell(total_row, start_col + 1), number_format=FMT_BN_2)
+        ws.cell(total_row + 1, start_col, "Reported total")
+        ws.cell(total_row + 1, start_col + 1, bridge[reported_key])
+        ws.cell(total_row + 1, start_col + 1).number_format = FMT_BN_2
+        ws.cell(total_row + 2, start_col, "Difference")
+        ws.cell(total_row + 2, start_col + 1, f"={get_column_letter(start_col + 1)}{total_row + 1}-{get_column_letter(start_col + 1)}{total_row}")
+        style_formula(ws.cell(total_row + 2, start_col + 1), number_format=FMT_BN_2)
+        ws.cell(total_row + 3, start_col, "Control")
+        ws.cell(total_row + 3, start_col + 1, f'=IF(ABS({get_column_letter(start_col + 1)}{total_row + 2})<0.001,"PASS","FAIL")')
+        style_formula(ws.cell(total_row + 3, start_col + 1))
+        add_status_conditional_formatting(
+            ws, f"{get_column_letter(start_col + 1)}{total_row + 3}"
+        )
+        ws.merge_cells(
+            start_row=total_row + 4,
+            start_column=start_col,
+            end_row=total_row + 6,
+            end_column=end_col,
+        )
+        ws.cell(total_row + 4, start_col, bridge.get("note", "All components preserve the reported cash-flow sign convention."))
+        ws.cell(total_row + 4, start_col).fill = fill(PALE_YELLOW)
+        ws.cell(total_row + 4, start_col).font = Font(name="Aptos", size=8, color=NAVY)
+        ws.cell(total_row + 4, start_col).alignment = Alignment(wrap_text=True, vertical="center")
+
+    normalization_start = 27
+    section(ws, normalization_start, "FY2025 REPORTED → MANAGEMENT LFL NORMALIZATION", 1, 9)
+    headers = ["Reported item", "Reported", "Adjustment", "LFL comparator", "Treatment", "Reason", "Source IDs"]
+    for col, header in enumerate(headers, 1):
+        ws.cell(normalization_start + 1, col, header)
+    style_table_header(ws, normalization_start + 1, 1, 9)
+    ws.merge_cells(start_row=normalization_start + 1, start_column=6, end_row=normalization_start + 1, end_column=8)
+    for offset, item in enumerate(payload["normalization"], normalization_start + 2):
+        ws.cell(offset, 1, item["metric"])
+        ws.cell(offset, 2, item["reported_value_vnd_bn"] if item["reported_value_vnd_bn"] is not None else "N/D")
+        ws.cell(offset, 3, item["adjustment_vnd_bn"] if item["adjustment_vnd_bn"] is not None else "N/D")
+        ws.cell(offset, 4, item["normalized_value_vnd_bn"] if item["normalized_value_vnd_bn"] is not None else "N/D")
+        ws.cell(offset, 5, item["treatment"])
+        ws.cell(offset, 6, item["reason"])
+        ws.merge_cells(start_row=offset, start_column=6, end_row=offset, end_column=8)
+        ws.cell(offset, 9, item["source_ids"])
+        for col in range(1, 10):
+            ws.cell(offset, col).fill = fill(WHITE if offset % 2 else LIGHT_GREY)
+            ws.cell(offset, col).border = Border(bottom=THIN_GREY)
+            ws.cell(offset, col).alignment = Alignment(wrap_text=True, vertical="center")
+        for col in (2, 3, 4):
+            if isinstance(ws.cell(offset, col).value, (float, int)):
+                ws.cell(offset, col).number_format = FMT_BN_1
+        ws.row_dimensions[offset].height = 42
+
+    ipo_row = normalization_start + 9
+    section(ws, ipo_row, "POST-IPO PRO FORMA — TRANSACTION, NOT REPORTED H1 ACTUAL", 1, 9)
+    ipo_lines = [
+        ("Gross primary proceeds", 13_315.080, "Official actual"),
+        ("Estimated issue costs", -100.000, "Resolution 15; estimate at 6-Jul-2026"),
+        ("Estimated net proceeds", "=B{0}+B{1}".format(ipo_row + 2, ipo_row + 3), "VND 13,215.08bn"),
+        ("Debt repayment plan", "=-B{0}".format(ipo_row + 4), "Earmarked for 2026; not evidence of completed repayment"),
+        ("Pro forma liquidity retained", "=SUM(B{0}:B{1})".format(ipo_row + 4, ipo_row + 5), "Zero under disclosed use-of-proceeds plan"),
+    ]
+    for offset, (label, value, status) in enumerate(ipo_lines, ipo_row + 2):
+        ws.cell(offset, 1, label)
+        ws.cell(offset, 2, value)
+        ws.cell(offset, 3, status)
+        ws.merge_cells(start_row=offset, start_column=3, end_row=offset, end_column=9)
+        ws.cell(offset, 2).number_format = FMT_BN_2
+        if isinstance(value, str) and value.startswith("="):
+            style_formula(ws.cell(offset, 2), number_format=FMT_BN_2)
+        for col in range(1, 10):
+            ws.cell(offset, col).fill = fill(PALE_YELLOW if offset >= ipo_row + 4 else LIGHT_BLUE)
+            ws.cell(offset, col).alignment = Alignment(wrap_text=True)
+
+
+def build_working_capital_qoe(
+    wb: Workbook,
+    payload: dict[str, Any],
+    statement_map: dict[str, dict[str, int]],
+) -> None:
+    ws = wb["WC_QoE"]
+    setup_sheet(ws, "C5", 82)
+    set_title(
+        ws,
+        "Working capital and quality of earnings",
+        "Trade-balance days use average opening/closing balances and actual elapsed days; Q1 remains seasonality-sensitive.",
+        11,
+    )
+    set_widths(ws, {"A": 4, "B": 34, "C": 17, "D": 17, "E": 17, "F": 4, "G": 25, "H": 34, "I": 38, "J": 34, "K": 16})
+    headers = ["Metric", "FY2024A", "FY2025A", "Q1 2026A"]
+    for col, header in enumerate(headers, 2):
+        ws.cell(4, col, header)
+    style_table_header(ws, 4, 2, 5)
+
+    rows = {
+        "days": 5,
+        "average_inventory": 6,
+        "average_receivables": 7,
+        "average_payables": 8,
+        "dio": 10,
+        "dso": 11,
+        "dpo": 12,
+        "ccc": 13,
+        "cfo_to_npat": 15,
+        "capex_to_revenue": 16,
+        "inventory_provision": 17,
+        "free_cash_flow": 18,
+    }
+    labels = {
+        "days": "Actual period days",
+        "average_inventory": "Average net inventory",
+        "average_receivables": "Average trade receivables",
+        "average_payables": "Average trade payables",
+        "dio": "Days inventory outstanding",
+        "dso": "Days sales outstanding",
+        "dpo": "Days payables outstanding",
+        "ccc": "Cash conversion cycle",
+        "cfo_to_npat": "CFO / NPAT",
+        "capex_to_revenue": "Cash CapEx / revenue",
+        "inventory_provision": "Inventory provision / gross inventory",
+        "free_cash_flow": "CFO less CapEx",
+    }
+    for key, row in rows.items():
+        ws.cell(row, 2, labels[key])
+        ws.cell(row, 2).font = Font(name="Aptos", size=9, bold=key in {"dio", "dso", "dpo", "ccc"}, color=NAVY if key in {"dio", "dso", "dpo", "ccc"} else BLACK)
+        for col in range(2, 6):
+            ws.cell(row, col).fill = fill(WHITE if row % 2 else LIGHT_GREY)
+            ws.cell(row, col).border = Border(bottom=THIN_GREY)
+
+    statement_rows = statement_map["rows"]
+    source_columns = statement_map["columns"]
+    schedule = [
+        (3, source_columns["FY2023A"], source_columns["FY2024A"], 366),
+        (4, source_columns["FY2024A"], source_columns["FY2025A"], 365),
+        (5, source_columns["FY2025A"], source_columns["Q1 2026A"], 90),
+    ]
+    for output_col, opening_col, current_col, days in schedule:
+        opening_letter = get_column_letter(opening_col)
+        current_letter = get_column_letter(current_col)
+        out_letter = get_column_letter(output_col)
+        ws.cell(rows["days"], output_col, days)
+        ws.cell(rows["average_inventory"], output_col, f"=('3Y_Statements'!{opening_letter}{statement_rows['inventory']}+'3Y_Statements'!{current_letter}{statement_rows['inventory']})/2")
+        ws.cell(rows["average_receivables"], output_col, f"=('3Y_Statements'!{opening_letter}{statement_rows['receivables']}+'3Y_Statements'!{current_letter}{statement_rows['receivables']})/2")
+        ws.cell(rows["average_payables"], output_col, f"=('3Y_Statements'!{opening_letter}{statement_rows['payables']}+'3Y_Statements'!{current_letter}{statement_rows['payables']})/2")
+        ws.cell(rows["dio"], output_col, f"={out_letter}{rows['average_inventory']}/ABS('3Y_Statements'!{current_letter}{statement_rows['cogs']})*{out_letter}{rows['days']}")
+        ws.cell(rows["dso"], output_col, f"={out_letter}{rows['average_receivables']}/'3Y_Statements'!{current_letter}{statement_rows['revenue']}*{out_letter}{rows['days']}")
+        ws.cell(rows["dpo"], output_col, f"={out_letter}{rows['average_payables']}/ABS('3Y_Statements'!{current_letter}{statement_rows['cogs']})*{out_letter}{rows['days']}")
+        ws.cell(rows["ccc"], output_col, f"={out_letter}{rows['dio']}+{out_letter}{rows['dso']}-{out_letter}{rows['dpo']}")
+        ws.cell(rows["cfo_to_npat"], output_col, f"='3Y_Statements'!{current_letter}{statement_rows['operating_cash_flow']}/'3Y_Statements'!{current_letter}{statement_rows['net_income']}")
+        ws.cell(rows["capex_to_revenue"], output_col, f"=ABS('3Y_Statements'!{current_letter}{statement_rows['capex']})/'3Y_Statements'!{current_letter}{statement_rows['revenue']}")
+        ws.cell(rows["inventory_provision"], output_col, f"=ABS('3Y_Statements'!{current_letter}{statement_rows['inventory_provision']})/'3Y_Statements'!{current_letter}{statement_rows['inventory_gross']}")
+        ws.cell(rows["free_cash_flow"], output_col, f"='3Y_Statements'!{current_letter}{statement_rows['free_cash_flow']}")
+        for key, row in rows.items():
+            if key == "days":
+                continue
+            style_formula(
+                ws.cell(row, output_col),
+                cross_sheet=True,
+                number_format=(
+                    FMT_PCT
+                    if key in {"cfo_to_npat", "capex_to_revenue", "inventory_provision"}
+                    else FMT_BN_1
+                    if key in {"average_inventory", "average_receivables", "average_payables", "free_cash_flow"}
+                    else "0.0"
+                ),
+            )
+
+    ws.merge_cells("G4:K6")
+    ws["G4"] = (
+        "Senior interpretation: CCC improved from roughly 61 days in FY2024 to 52 days in FY2025. "
+        "Q1 2026 screens near 48 days on a 90-day YTD denominator, but this is not directly equivalent to a full-year seasonal outcome."
+    )
+    ws["G4"].fill = fill(PALE_GREEN)
+    ws["G4"].font = Font(name="Aptos", size=9, bold=True, color=NAVY)
+    ws["G4"].alignment = Alignment(wrap_text=True, vertical="center")
+
+    qoe_start = 21
+    section(ws, qoe_start, "QUALITY OF EARNINGS — EVIDENCE, READ-THROUGH, OPEN RISK", 2, 11)
+    qoe_headers = ["Indicator", "Observation", "Senior read-through", "What remains at risk", "Metric"]
+    for col, header in zip((2, 3, 6, 8, 11), qoe_headers):
+        ws.cell(qoe_start + 1, col, header)
+    ws.merge_cells(start_row=qoe_start + 1, start_column=3, end_row=qoe_start + 1, end_column=5)
+    ws.merge_cells(start_row=qoe_start + 1, start_column=6, end_row=qoe_start + 1, end_column=7)
+    ws.merge_cells(start_row=qoe_start + 1, start_column=8, end_row=qoe_start + 1, end_column=10)
+    style_table_header(ws, qoe_start + 1, 2, 11)
+    for row_number, item in enumerate(payload["quality_of_earnings"], qoe_start + 2):
+        ws.cell(row_number, 2, item["indicator"])
+        ws.cell(row_number, 3, item["observation"])
+        ws.merge_cells(start_row=row_number, start_column=3, end_row=row_number, end_column=5)
+        ws.cell(row_number, 6, item["interpretation"])
+        ws.merge_cells(start_row=row_number, start_column=6, end_row=row_number, end_column=7)
+        ws.cell(row_number, 8, item["risk"])
+        ws.merge_cells(start_row=row_number, start_column=8, end_row=row_number, end_column=10)
+        metric = item.get("value", item.get("value_vnd_bn"))
+        ws.cell(row_number, 11, metric)
+        ws.cell(row_number, 11).number_format = FMT_PCT if "value" in item else FMT_BN_1
+        for col in range(2, 12):
+            ws.cell(row_number, col).fill = fill(WHITE if row_number % 2 else LIGHT_GREY)
+            ws.cell(row_number, col).border = Border(bottom=THIN_GREY)
+            ws.cell(row_number, col).alignment = Alignment(wrap_text=True, vertical="center")
+        ws.row_dimensions[row_number].height = 54
+
+    notes_row = qoe_start + 9
+    section(ws, notes_row, "SENIOR CONTROL POINTS", 2, 11)
+    for row_number, note in enumerate(payload["senior_readthroughs"], notes_row + 1):
+        ws.cell(row_number, 2, f"• {note}")
+        ws.merge_cells(start_row=row_number, start_column=2, end_row=row_number, end_column=11)
+        ws.cell(row_number, 2).fill = fill(PALE_YELLOW if row_number % 2 else LIGHT_BLUE)
+        ws.cell(row_number, 2).alignment = Alignment(wrap_text=True)
 
 
 def build_mgmt_forecast(wb: Workbook) -> dict[str, int]:
@@ -1166,7 +1718,7 @@ def build_dmx_valuation(
     set_title(
         ws,
         "DMX illustrative FCFF DCF",
-        "Management revenue path + explicit analyst EBIT/tax/D&A/capex/NWC drivers. Mid-year convention; post-IPO balance-sheet bridge.",
+        "Management revenue path + explicit analyst EBIT/tax/D&A/capex/NWC drivers. Mid-year convention; explicit pre-IPO Q1 to post-IPO bridge.",
         13,
     )
     set_widths(ws, {"A": 4, "B": 38, "C": 15, "D": 15, "E": 15, "F": 15, "G": 15, "H": 15, "I": 4, "J": 34, "K": 20, "L": 24, "M": 45})
@@ -1343,13 +1895,13 @@ def build_dmx_valuation(
         "enterprise_value": ("Enterprise value", "=K10+K11", "Calculated", "FCFF enterprise value"),
         "tv_pct": ("Terminal value / EV", "=K10/K12", "Calculated", "High percentages require caution"),
         "gross_debt": ("Gross debt", f'=Q1_Actuals!D{q1_rows["debt"]}', "Actual at 31-Mar-2026", "Short-term debt; no long-term debt line in source BS"),
-        "cash": ("Cash & equivalents", f'=Q1_Actuals!D{q1_rows["cash"]}', "Actual at 31-Mar-2026", "Post balance-sheet date IPO effects are not assumed"),
+        "cash": ("Cash & equivalents", f'=Q1_Actuals!D{q1_rows["cash"]}', "Actual at 31-Mar-2026", "Pre-IPO balance-sheet cash; later net proceeds are shown separately"),
         "short_term_investments": ("Short-term investments", f'=Q1_Actuals!D{q1_rows["short_term_investments"]}', "Actual at 31-Mar-2026", "Held-to-maturity investments"),
         "long_term_deposits": ("Long-term deposits", f'=Q1_Actuals!D{q1_rows["long_term_deposits"]}', "Actual at 31-Mar-2026", "Held-to-maturity investments"),
         "lease_liability": ("Lease liabilities", f'=Assumptions!$H${assumption_rows["VAL_LEASE"]}', "Illustrative placeholder", "Replace when lease convention is verified"),
         "other_claims": ("Other claims", f'=Assumptions!$H${assumption_rows["VAL_OTHER_CLAIMS"]}', "Illustrative placeholder", "No unsupported claim inserted"),
         "erablue_value": ("EraBlue stake value", f'=Assumptions!$H${assumption_rows["VAL_ERABLUE"]}', "Illustrative", "Added once; FCFF excludes JV earnings"),
-        "additional_ipo": ("Additional IPO proceeds", "=IPO_Bridge!D20", "Control", "Must remain zero under post-IPO bridge policy"),
+        "additional_ipo": ("Net IPO proceeds adjustment", "=IPO_Bridge!D20", "Pro forma after 31-Mar-2026", "Estimated net proceeds included once; planned debt repayment is not presented as reported actual"),
         "equity_value": ("DMX equity value", "=K12-K15+K16+K17+K18-K19-K20+K21+K22", "Calculated", "EV-to-equity bridge"),
         "post_ipo_shares": ("Post-IPO diluted shares", "=IPO_Bridge!D11", "Actual", "Million shares"),
         "value_per_share": ("DCF value per share", "=K23*1000/K24", "Illustrative", "VND/share; not a target price"),
@@ -2073,11 +2625,11 @@ def build_checks(
             "CHK_DCF_NO_DOUBLE_COUNT_IPO",
             "DCF",
             "Critical",
-            "Additional IPO proceeds in equity bridge must be zero",
-            0.0,
-            f'=ABS(DMX_Valuation!K{dmx_rows["summary_additional_ipo"]})',
+            "Net IPO proceeds bridge equals the issuer estimate and is included once",
+            0.01,
+            f'=ABS(DMX_Valuation!K{dmx_rows["summary_additional_ipo"]}-IPO_Bridge!D19)',
             '=IF(F15<=E15,"PASS","FAIL")',
-            "Post-IPO policy prevents proceeds being added twice",
+            "Q1 cash/debt are pre-IPO; Resolution 15 net proceeds bridge to post-IPO shares without being embedded in cash",
         ),
         (
             "CHK_DCF_TV_SHARE",
@@ -2157,11 +2709,18 @@ def build_checks(
             "CHK_ACTUAL_SOURCE_COMPLETE",
             "Sources",
             "Critical",
-            "Every row labelled Actual has a source ID",
+            "Every row labelled Actual has a registered source ID",
             0.0,
-            '=COUNTIFS(Q1_Actuals!I:I,"Actual",Q1_Actuals!G:G,"")',
+            (
+                f'=COUNTIFS(Q1_Actuals!I5:I{q1_rows["_last_data_row"]},"Actual",'
+                f'Q1_Actuals!G5:G{q1_rows["_last_data_row"]},"")+'
+                f'SUMPRODUCT(--(Q1_Actuals!I5:I{q1_rows["_last_data_row"]}="Actual"),'
+                f'--(Q1_Actuals!G5:G{q1_rows["_last_data_row"]}<>""),'
+                f'--ISNA(MATCH(Q1_Actuals!G5:G{q1_rows["_last_data_row"]},'
+                f'Sources!$A$5:$A${4 + len(SOURCES)},0)))'
+            ),
             '=IF(F23=0,"PASS","FAIL")',
-            "Source locator is also displayed beside each actual",
+            "Source locator is displayed beside each actual and the ID must exist in Sources",
         ),
         (
             "CHK_SCENARIO_LINKS",
@@ -2261,11 +2820,31 @@ def validate_generated_workbook(path: Path) -> dict[str, int]:
                         raise ValueError(f"Broken formula token in {ws.title}!{cell.coordinate}: {cell.value}")
                     if "[" in cell.value and "]" in cell.value:
                         raise ValueError(f"External workbook link in {ws.title}!{cell.coordinate}: {cell.value}")
+    source_ids = [
+        wb["Sources"].cell(row, 1).value for row in range(5, 5 + len(SOURCES))
+    ]
+    if len(source_ids) != len(set(source_ids)) or any(not value for value in source_ids):
+        raise ValueError(f"Workbook Sources sheet has blank or duplicate IDs: {source_ids}")
+    actual_source_ids = {
+        wb["Q1_Actuals"].cell(row, 7).value
+        for row in range(5, wb["Q1_Actuals"].max_row + 1)
+        if wb["Q1_Actuals"].cell(row, 9).value == "Actual"
+    }
+    missing_actual_sources = sorted(actual_source_ids - set(source_ids))
+    if missing_actual_sources:
+        raise ValueError(
+            f"Actual rows reference source IDs missing from Sources: {missing_actual_sources}"
+        )
     if formula_count < 250:
         raise ValueError(f"Too few formulas for the requested model: {formula_count}")
     if comment_count < 20:
         raise ValueError(f"Assumption audit comments missing: {comment_count}")
-    return {"formula_cells": formula_count, "comments": comment_count, "sheets": len(wb.sheetnames)}
+    return {
+        "formula_cells": formula_count,
+        "comments": comment_count,
+        "sheets": len(wb.sheetnames),
+        "registered_sources": len(source_ids),
+    }
 
 
 def calculate_base_case_sanity() -> dict[str, float]:
@@ -2295,6 +2874,7 @@ def calculate_base_case_sanity() -> dict[str, float]:
         + Q1["cash_mar_2026"]
         + Q1["short_term_investments_mar_2026"]
         + Q1["long_term_deposits_mar_2026"]
+        + 13_215.080
         + 1_500.0
     )
     value_per_share = equity_value * 1000 / 1_267.722
@@ -2313,11 +2893,15 @@ def calculate_base_case_sanity() -> dict[str, float]:
 
 def build_model() -> Path:
     source_messages = verify_embedded_q1_against_raw()
+    three_statement_payload = load_three_statement_payload()
     wb = new_workbook()
     build_cover(wb)
     build_sources(wb)
     ipo_rows = build_ipo_bridge(wb)
     q1_rows = build_q1_actuals(wb)
+    statement_map = build_three_year_statements(wb, three_statement_payload)
+    build_three_statement_bridges(wb, three_statement_payload)
+    build_working_capital_qoe(wb, three_statement_payload, statement_map)
     mgmt_rows = build_mgmt_forecast(wb)
     assumption_rows = build_assumptions(wb)
     dmx_rows = build_dmx_valuation(wb, q1_rows, mgmt_rows, assumption_rows)

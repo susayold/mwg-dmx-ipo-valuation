@@ -56,10 +56,49 @@ def value_dcf_unit(unit: Mapping[str, Any]) -> UnitValuationResult:
     if discount_rate <= Decimal("-1"):
         raise ValuationInputError("discount_rate must be greater than -100%")
 
+    mid_year_convention = unit.get("mid_year_convention", True)
+    if not isinstance(mid_year_convention, bool):
+        raise ValuationInputError("mid_year_convention must be true or false")
+
+    raw_discount_periods = unit.get("discount_periods")
+    if raw_discount_periods is None:
+        offset = Decimal("0.5") if mid_year_convention else Decimal("0")
+        discount_periods = [
+            Decimal(period) - offset for period in range(1, len(cash_flows) + 1)
+        ]
+        timing_convention = "mid_year" if mid_year_convention else "year_end"
+    else:
+        if not isinstance(raw_discount_periods, list):
+            raise ValuationInputError("discount_periods must be a list when provided")
+        if len(raw_discount_periods) != len(cash_flows):
+            raise ValuationInputError(
+                "discount_periods must contain one period for each cash flow"
+            )
+        discount_periods = [
+            _decimal(value, "discount_periods") for value in raw_discount_periods
+        ]
+        if any(period <= 0 for period in discount_periods):
+            raise ValuationInputError("discount_periods must be positive")
+        if any(
+            later <= earlier
+            for earlier, later in zip(discount_periods, discount_periods[1:])
+        ):
+            raise ValuationInputError("discount_periods must be strictly increasing")
+        timing_convention = "custom"
+
+    terminal_discount_period = _decimal(
+        unit.get("terminal_discount_period", discount_periods[-1]),
+        "terminal_discount_period",
+    )
+    if terminal_discount_period < discount_periods[-1]:
+        raise ValuationInputError(
+            "terminal_discount_period cannot precede the final explicit cash flow"
+        )
+
     present_value = sum(
         (
-            cash_flow / ((Decimal("1") + discount_rate) ** year)
-            for year, cash_flow in enumerate(cash_flows, start=1)
+            cash_flow / ((Decimal("1") + discount_rate) ** period)
+            for cash_flow, period in zip(cash_flows, discount_periods)
         ),
         Decimal("0"),
     )
@@ -69,7 +108,7 @@ def value_dcf_unit(unit: Mapping[str, Any]) -> UnitValuationResult:
         / (discount_rate - terminal_growth)
     )
     terminal_present_value = terminal_value / (
-        (Decimal("1") + discount_rate) ** len(cash_flows)
+        (Decimal("1") + discount_rate) ** terminal_discount_period
     )
     enterprise_value = present_value + terminal_present_value
     return _equity_bridge(
@@ -80,6 +119,10 @@ def value_dcf_unit(unit: Mapping[str, Any]) -> UnitValuationResult:
             "cash_flows": cash_flows,
             "discount_rate": discount_rate,
             "terminal_growth": terminal_growth,
+            "mid_year_convention": mid_year_convention,
+            "timing_convention": timing_convention,
+            "discount_periods": discount_periods,
+            "terminal_discount_period": terminal_discount_period,
             "explicit_period_pv": present_value,
             "terminal_value_pv": terminal_present_value,
         },
@@ -211,12 +254,17 @@ def dcf_sensitivity_matrix(
     cash_flows: Iterable[Decimal | int | float | str],
     discount_rates: Iterable[Decimal | int | float | str],
     terminal_growth_rates: Iterable[Decimal | int | float | str],
+    *,
+    mid_year_convention: bool = True,
+    discount_periods: Iterable[Decimal | int | float | str] | None = None,
+    terminal_discount_period: Decimal | int | float | str | None = None,
 ) -> dict[str, dict[str, Decimal]]:
     """Return an enterprise-value sensitivity matrix for explicit FCFs."""
 
     cash_flows = [_decimal(value, "cash_flows") for value in cash_flows]
     if not cash_flows:
         raise ValuationInputError("Sensitivity matrix requires explicit cash flows")
+    custom_periods = list(discount_periods) if discount_periods is not None else None
     matrix: dict[str, dict[str, Decimal]] = {}
     for discount_rate_value in discount_rates:
         discount_rate = _decimal(discount_rate_value, "discount_rate")
@@ -230,6 +278,17 @@ def dcf_sensitivity_matrix(
                     "cash_flows": cash_flows,
                     "discount_rate": discount_rate,
                     "terminal_growth": terminal_growth,
+                    "mid_year_convention": mid_year_convention,
+                    **(
+                        {"discount_periods": custom_periods}
+                        if custom_periods is not None
+                        else {}
+                    ),
+                    **(
+                        {"terminal_discount_period": terminal_discount_period}
+                        if terminal_discount_period is not None
+                        else {}
+                    ),
                 }
             )
             row[str(terminal_growth)] = result.enterprise_value

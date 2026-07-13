@@ -1,0 +1,6 @@
+metric,reported_value_vnd_bn,adjustment_vnd_bn,normalized_value_vnd_bn,treatment,reason,source_ids
+Net revenue,109479.188452846,-2479.188452846,107000.000000000,management_lfl_comparator,"Management's FY2025 LFL perimeter excludes An Khang and AvaKids and includes Thợ Điện Máy Xanh; this comparator does not overwrite the statutory actual.",DMX_FS_2025_C|DMX_IPO_PRESENTATION_2026
+NPAT attributable to parent,5801.785231728,273.214768272,6075.000000000,management_lfl_comparator,"Only the disclosed management-adjusted headline is bridged; no unsupported allocation is made to EBIT, working capital or cash flow.",DMX_FS_2025_C|DMX_IPO_PRESENTATION_2026
+Operating profit,7240.395752425,,,not_adjusted,"No sufficiently granular disclosure exists to normalize the statutory operating-profit line across the perimeter change.",DMX_FS_2025_C
+Cash and cash equivalents,3578.154917657,,,not_adjusted,"Minimum operating cash is not disclosed; cash-like balances are not automatically classified as excess cash.",DMX_FS_2025_C
+Total debt,23429.114317650,,,not_adjusted,"Lease and debt conventions are not sufficiently disclosed for a supported adjusted-net-debt figure.",DMX_FS_2025_C

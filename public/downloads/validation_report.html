@@ -10,7 +10,7 @@
     main{max-width:1100px;margin:auto;padding:64px 24px} h1{font:52px Georgia,serif;letter-spacing:-.04em;margin:.2em 0}
     .top{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;border-bottom:2px solid var(--ink);padding-bottom:28px}
     .badge{padding:12px 16px;background:var(--lime);font-weight:800}
-    .metrics{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--ink);margin:32px 0}
+    .metrics{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--ink);margin:32px 0}
     .metrics div{padding:24px;border-right:1px solid var(--ink)} .metrics div:last-child{border:0}
     .metrics strong{display:block;font:36px Georgia,serif} .metrics span{font-size:10px;text-transform:uppercase}
     table{width:100%;border-collapse:collapse;background:#fff} th,td{padding:14px;border:1px solid #b7b0a4;text-align:left}
@@ -21,16 +21,18 @@
 </head>
 <body><main>
   <div class="top"><div><small>GENERATED · 2026-07-13</small><h1>Validation report</h1>
-  <p>DMX official Q1 2026 data pack → curated financial facts.</p></div>
+  <p>DMX FY2023–FY2025 and Q1 2026 → source-tagged three-statement analysis.</p></div>
   <div class="badge">ALL CHECKS PASS</div></div>
   <section class="metrics">
-    <div><strong>210</strong><span>curated facts</span></div>
-    <div><strong>3</strong><span>reporting dates</span></div>
+    <div><strong>320</strong><span>three-statement facts</span></div>
+    <div><strong>35/35</strong><span>accounting checks</span></div>
+    <div><strong>3</strong><span>Q1 source dates</span></div>
     <div><strong>29</strong><span>registered sources</span></div>
   </section>
   <table><thead><tr><th>Control</th><th>Status</th><th>Observed</th><th>Tolerance</th></tr></thead>
   <tbody><tr><td>Curated fact rows</td><td><span class='pass'>PASS</span></td><td>210</td><td>210</td></tr><tr><td>Duplicate natural keys</td><td><span class='pass'>PASS</span></td><td>0</td><td>0</td></tr><tr><td>Balance-sheet equation</td><td><span class='pass'>PASS</span></td><td>0 VND</td><td>0 VND</td></tr><tr><td>Gross-profit equation</td><td><span class='pass'>PASS</span></td><td>0 VND</td><td>0 VND</td></tr><tr><td>Cash-flow bridge</td><td><span class='pass'>PASS</span></td><td>0 VND</td><td>0 VND</td></tr><tr><td>Full source hash on each fact</td><td><span class='pass'>PASS</span></td><td>1</td><td>1 source</td></tr><tr><td>Verified source registry</td><td><span class='pass'>PASS</span></td><td>28 files</td><td>at least 20</td></tr></tbody></table>
   <p class="note">The extractor allowlists only <code>Balance Sheet</code>, <code>Income Statement</code>
-  and <code>Cash Flow Statement</code>. Config and notes sheets are not ingested. Raw issuer files remain
-  outside Git; the source register retains URL, retrieval timestamp, file size and SHA-256.</p>
+  and <code>Cash Flow Statement</code>. The three-statement module additionally validates NPAT-to-CFO,
+  cash roll-forward and retained-earnings bridges. Raw issuer files remain outside Git; the source register
+  retains URL, retrieval timestamp, file size and SHA-256.</p>
 </main></body></html>

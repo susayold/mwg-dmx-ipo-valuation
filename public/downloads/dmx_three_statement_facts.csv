@@ -1,0 +1,321 @@
+entity_code,period_end,period_type,statement_scope,currency,unit,line_item,value,data_status,source_document_id,source_page,extraction_method,notes
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,current_assets,42189.953366083,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,cash,4139.929685549,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,short_term_investments,15742.181273443,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,current_receivables,3600.944215409,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,receivables,298.857679542,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,inventory_gross,18442.492515483,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,inventory_provision,-204.448896920,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,inventory,18238.043618563,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,fixed_assets,3062.528496166,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,jv_investment,286.632252729,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,long_term_deposits,460.000000000,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,total_assets,46427.544502056,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,current_liabilities,25984.509220523,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,total_liabilities,27873.959220523,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,payables,5457.040214493,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,short_term_debt,18416.666409682,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,long_term_debt,1889.450000000,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,total_debt,20306.116409682,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,total_equity,18553.585281533,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,share_capital,4361.518810000,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,retained_earnings,14188.327441227,official,DMX_FS_2024_C,FS pp. 5-6,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,revenue,86822.142993475,official,DMX_FS_2024_C,FS p. 7,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,cogs,-72403.597338351,official,DMX_FS_2024_C,FS p. 7,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,gross_profit,14418.545655124,official,DMX_FS_2024_C,FS p. 7,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,financial_income,1707.166695280,official,DMX_FS_2024_C,FS p. 7,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,financial_expense,-1082.011569400,official,DMX_FS_2024_C,FS p. 7,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,interest_expense,-1079.340781938,official,DMX_FS_2024_C,FS p. 7,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,selling_expense,-12106.242047179,official,DMX_FS_2024_C,FS p. 7,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,general_admin_expense,-933.421452736,official,DMX_FS_2024_C,FS p. 7,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,operating_profit,2004.037281089,official,DMX_FS_2024_C,FS p. 7,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,other_income,25.533291460,official,DMX_FS_2024_C,FS p. 7,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,other_expense,-230.283672260,official,DMX_FS_2024_C,FS p. 7,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,other_profit,-204.750380800,official,DMX_FS_2024_C,FS p. 7,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,pretax_income,1799.286900289,official,DMX_FS_2024_C,FS p. 7,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,current_tax_expense,-393.496576363,official,DMX_FS_2024_C,FS p. 7,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,deferred_tax_expense,-60.289118117,official,DMX_FS_2024_C,FS p. 7,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,tax_expense,-453.785694480,official,DMX_FS_2024_C,FS p. 7,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,net_income,1345.501205809,official,DMX_FS_2024_C,FS p. 7,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,net_income_parent,1345.501205809,official,DMX_FS_2024_C,FS p. 7,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,depreciation_amortization,1449.207883056,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,provisions,-165.930068134,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,fx_revaluation_adjustment,-0.368727798,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,investing_profit_adjustment,-1305.206744891,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,interest_expense_adjustment,1079.340781938,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,operating_profit_before_working_capital,2856.330024460,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,change_receivables,580.300892931,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,change_inventory,4011.323151278,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,change_payables,-3302.470753718,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,change_prepaids,125.916897642,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,interest_paid,-1095.134298420,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,tax_paid,-818.968881764,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,operating_cash_flow,2357.297032409,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,capex,-316.883339058,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,asset_disposal_proceeds,7.356066690,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,term_deposit_placements,-27504.613656928,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,term_deposit_collections,18221.485675908,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,investments_in_other_entities,-105.597412729,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,interest_received,893.148723318,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,investing_cash_flow,-8805.103942799,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,debt_drawdown,69600.847575387,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,debt_repayment,-62188.354104759,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,dividends_paid,-200.009999995,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,financing_cash_flow,7212.483470833,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,net_change_cash,764.676560443,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,opening_cash,3374.884397308,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,fx_cash_effect,0.368727798,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2023-12-31,FY,consolidated,VND,VND_bn,ending_cash,4139.929685549,official,DMX_FS_2024_C,FS pp. 8-9,manual,Comparative column in FY2024 filing; expressly unaudited.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,current_assets,47063.191892772,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,cash,3780.128276727,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,short_term_investments,19463.430958687,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,current_receivables,5005.016206176,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,receivables,241.768864731,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,inventory_gross,18868.713558233,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,inventory_provision,-423.097685938,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,inventory,18445.615872295,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,fixed_assets,1625.231472209,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,jv_investment,242.035797830,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,long_term_deposits,0.000000000,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,total_assets,49472.143167469,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,current_liabilities,29955.725943070,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,total_liabilities,29955.725943070,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,payables,6325.109928640,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,short_term_debt,19930.172643525,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,long_term_debt,0.000000000,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,total_debt,19930.172643525,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,total_equity,19516.417224399,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,share_capital,4361.518810000,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,retained_earnings,15154.898414399,official,DMX_FS_2024_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,revenue,93356.607723985,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,cogs,-76267.199511301,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,gross_profit,17089.408212684,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,financial_income,1673.177566415,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,financial_expense,-700.525805609,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,interest_expense,-698.026126670,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,share_of_jv_profit,-44.596454899,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,selling_expense,-10476.983983071,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,general_admin_expense,-2456.442534973,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,operating_profit,5084.037000547,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,other_income,19.561273875,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,other_expense,-357.083845173,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,other_profit,-337.522571298,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,pretax_income,4746.514429249,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,current_tax_expense,-1226.420618792,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,deferred_tax_expense,196.477162710,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,tax_expense,-1029.943456082,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,net_income,3716.570973167,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,net_income_parent,3716.570973167,official,DMX_FS_2024_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,depreciation_amortization,1086.316535865,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,provisions,220.952651591,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,fx_revaluation_adjustment,-0.104133542,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,investing_profit_adjustment,-1104.545913764,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,interest_expense_adjustment,698.026126670,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,operating_profit_before_working_capital,5647.159696069,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,change_receivables,332.280519604,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,change_inventory,-426.288336665,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,change_payables,2270.686564790,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,change_prepaids,52.414720963,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,interest_paid,-700.748020023,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,tax_paid,-932.426715489,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,operating_cash_flow,6243.078429249,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,capex,-75.317052553,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,asset_disposal_proceeds,22.045328209,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,term_deposit_placements,-36083.817752133,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,term_deposit_collections,30805.730737856,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,interest_received,1854.318533160,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,investing_cash_flow,-3477.040205461,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,debt_drawdown,72369.835479230,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,debt_repayment,-72745.779245387,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,dividends_paid,-2749.999999995,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,financing_cash_flow,-3125.943766152,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,net_change_cash,-359.905542364,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,opening_cash,4139.929685549,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,fx_cash_effect,0.104133542,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2024-12-31,FY,consolidated,VND,VND_bn,ending_cash,3780.128276727,official,DMX_FS_2024_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,current_assets,53565.566103895,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,cash,3578.154917657,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,short_term_investments,20414.244731666,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,current_receivables,6264.835281364,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,receivables,394.564407242,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,inventory_gross,23368.695775234,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,inventory_provision,-609.594155009,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,inventory,22759.101620225,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,fixed_assets,840.472791325,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,jv_investment,371.159064528,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,long_term_deposits,1400.000000000,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,total_assets,56916.237866410,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,current_liabilities,39115.666255903,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,total_liabilities,39115.666255903,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,payables,9701.594456166,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,short_term_debt,23429.114317650,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,long_term_debt,0.000000000,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,total_debt,23429.114317650,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,total_equity,17800.571610507,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,share_capital,11012.835000000,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,other_owner_equity,1073.331174380,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,retained_earnings,5714.405436127,official,DMX_FS_2025_C,FS pp. 5-6,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,revenue,109479.188452846,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,cogs,-89992.477524267,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,gross_profit,19486.710928579,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,financial_income,1842.889655874,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,financial_expense,-973.377602687,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,interest_expense,-970.038874515,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,share_of_jv_profit,24.351079198,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,selling_expense,-9960.990653627,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,general_admin_expense,-3179.187654912,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,operating_profit,7240.395752425,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,other_income,41.993570273,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,other_expense,-13.690616919,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,other_profit,28.302953354,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,pretax_income,7268.698705779,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,current_tax_expense,-1638.902794566,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,deferred_tax_expense,171.989320515,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,tax_expense,-1466.913474051,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,net_income,5801.785231728,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,net_income_parent,5801.785231728,official,DMX_FS_2025_C,FS p. 7,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,depreciation_amortization,775.210194149,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,provisions,205.754863290,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,fx_revaluation_adjustment,-0.057131972,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,investing_profit_adjustment,-1707.522809174,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,interest_expense_adjustment,970.038874515,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,operating_profit_before_working_capital,7512.122696587,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,change_receivables,-40.254576400,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,change_inventory,-5020.792722687,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,change_payables,5029.401100314,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,change_prepaids,-50.175336438,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,interest_paid,-952.184628079,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,tax_paid,-1461.385165412,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,operating_cash_flow,5016.731367885,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,capex,-126.099723642,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,asset_disposal_proceeds,60.406749261,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,term_deposit_placements,-33723.305970369,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,term_deposit_collections,30521.492197390,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,investments_in_other_entities,-204.771087500,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,investment_disposal_proceeds,1977.546976380,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,interest_received,1506.801236958,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,investing_cash_flow,12.070378478,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,capital_contribution,109.037980000,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,debt_drawdown,84226.229694440,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,debt_repayment,-80866.099911845,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,dividends_paid,-8700.000000000,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,financing_cash_flow,-5230.832237405,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,net_change_cash,-202.030491042,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,opening_cash,3780.128276727,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,fx_cash_effect,0.057131972,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-12-31,FY,consolidated,VND,VND_bn,ending_cash,3578.154917657,official,DMX_FS_2025_C,FS pp. 8-9,manual,Audited consolidated statutory actual.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,revenue,25153.558068114,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,cogs,-20627.386516636,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,gross_profit,4526.171551478,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,financial_income,436.151968360,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,financial_expense,-202.423284684,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,interest_expense,-201.641796928,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,share_of_jv_profit,3.129774300,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,selling_expense,-2139.579773103,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,general_admin_expense,-771.423462048,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,operating_profit,1852.026774303,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,other_income,8.875237585,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,other_expense,-4.337131020,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,other_profit,4.538106565,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,pretax_income,1856.564880868,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,current_tax_expense,-380.292182958,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,deferred_tax_expense,2.102682734,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,tax_expense,-378.189500224,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,net_income,1478.375380644,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,net_income_parent,1478.375380644,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,depreciation_amortization,205.451868228,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,provisions,11.990839619,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,fx_revaluation_adjustment,-0.048240903,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,investing_profit_adjustment,-392.116938942,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,interest_expense_adjustment,201.641796928,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,operating_profit_before_working_capital,1883.484205798,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,change_receivables,-315.306802147,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,change_inventory,-560.884788424,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,change_payables,2104.879285004,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,change_prepaids,-2.213777119,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,interest_paid,-217.844681507,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,tax_paid,-415.064214814,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,operating_cash_flow,2477.049226791,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,capex,-24.589934831,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,asset_disposal_proceeds,0.824723069,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,term_deposit_placements,-8408.793175807,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,term_deposit_collections,6205.581527697,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,interest_received,290.940901087,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,investing_cash_flow,-1936.035958785,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,debt_drawdown,17652.457126709,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,debt_repayment,-19751.444561031,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,dividends_paid,-500.000000004,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,financing_cash_flow,-2598.987434326,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,net_change_cash,-2057.974166320,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,opening_cash,3780.128276727,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,fx_cash_effect,0.048240903,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2025-03-31,Q1,consolidated,VND,VND_bn,ending_cash,1722.202351310,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Unaudited Q1 comparative in official consolidated data pack.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,current_assets,53656.943199832,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,cash,3312.678561377,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,short_term_investments,25255.708750726,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,current_receivables,1612.050831121,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,receivables,293.386129508,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,inventory_gross,23803.478899648,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,inventory_provision,-749.032356311,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,inventory,23054.446543337,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,fixed_assets,751.596973808,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,jv_investment,502.561163711,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,long_term_deposits,1499.502400000,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,total_assets,57327.010309745,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,current_liabilities,37307.871832989,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,total_liabilities,37307.871832989,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,payables,8598.546695344,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,short_term_debt,22158.890775085,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,long_term_debt,0.000000000,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,total_debt,22158.890775085,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,total_equity,20019.138476756,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,share_capital,11012.835000000,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,other_owner_equity,1073.331174380,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,retained_earnings,7932.972302376,official,DMX_DATA_2026Q1,Balance Sheet rows 6-59,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,revenue,32541.950091890,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,cogs,-26300.728779400,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,gross_profit,6241.221312490,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,financial_income,512.117161615,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,financial_expense,-326.141821808,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,interest_expense,-324.569874029,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,share_of_jv_profit,9.011741928,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,selling_expense,-2438.374451087,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,general_admin_expense,-1225.141003222,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,operating_profit,2772.692939916,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,other_income,6.380784517,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,other_expense,-3.632263678,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,other_profit,2.748520839,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,pretax_income,2775.441460755,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,current_tax_expense,-784.058706153,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,deferred_tax_expense,227.184111647,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,tax_expense,-556.874594506,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,net_income,2218.566866249,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,net_income_parent,2218.566866249,official,DMX_DATA_2026Q1,Income Statement rows 6-28,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,depreciation_amortization,137.829667906,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,provisions,148.321568632,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,fx_revaluation_adjustment,-0.913927127,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,investing_profit_adjustment,-478.814737469,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,interest_expense_adjustment,324.569874029,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,operating_profit_before_working_capital,2906.433906726,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,change_receivables,-79.604723992,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,change_inventory,-434.783124414,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,change_payables,-465.976745678,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,change_prepaids,33.250162148,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,interest_paid,-315.368018140,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,tax_paid,-780.264689673,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,operating_cash_flow,863.686766977,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,capex,-116.154581487,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,asset_disposal_proceeds,18.152613100,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,term_deposit_placements,-7114.085278445,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,term_deposit_collections,7049.778235150,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,investments_in_other_entities,-122.390357255,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,interest_received,424.845861118,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,investing_cash_flow,140.146492181,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,debt_drawdown,22101.481775842,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,debt_repayment,-23371.705318407,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,dividends_paid,0.000000000,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,financing_cash_flow,-1270.223542565,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,net_change_cash,-266.390283407,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,opening_cash,3578.154917657,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,fx_cash_effect,0.913927127,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.
+DMX,2026-03-31,Q1,consolidated,VND,VND_bn,ending_cash,3312.678561377,official,DMX_DATA_2026Q1,Cash Flow Statement rows 7-38,table_extract,Official unaudited consolidated Q1 actual.

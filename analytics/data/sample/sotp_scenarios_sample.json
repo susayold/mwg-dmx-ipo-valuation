@@ -19,7 +19,7 @@
       "units": [
         {"code": "DMX", "name": "DMX synthetic carve-out", "method": "multiple", "metric_name": "EBITDA", "metric_value": 7000, "valuation_multiple": 5.5, "net_debt": 1000, "non_operating_assets": 0, "minority_interest": 0, "ownership_pct": 0.70},
         {"code": "BHX", "name": "BHX synthetic business", "method": "multiple", "metric_name": "Revenue", "metric_value": 40000, "valuation_multiple": 0.55, "net_debt": 500, "non_operating_assets": 0, "minority_interest": 0, "ownership_pct": 0.95},
-        {"code": "ERABLUE", "name": "EraBlue synthetic business", "method": "dcf", "cash_flows": [300, 450, 650, 850, 1000], "discount_rate": 0.14, "terminal_growth": 0.03, "net_debt": 100, "non_operating_assets": 0, "minority_interest": 0, "ownership_pct": 0.45}
+        {"code": "ERABLUE", "name": "EraBlue synthetic business", "method": "dcf", "cash_flows": [300, 450, 650, 850, 1000], "discount_rate": 0.14, "terminal_growth": 0.03, "mid_year_convention": true, "net_debt": 100, "non_operating_assets": 0, "minority_interest": 0, "ownership_pct": 0.45}
       ]
     },
     {
@@ -31,7 +31,7 @@
       "units": [
         {"code": "DMX", "name": "DMX synthetic carve-out", "method": "multiple", "metric_name": "EBITDA", "metric_value": 8000, "valuation_multiple": 6.5, "net_debt": 500, "non_operating_assets": 0, "minority_interest": 0, "ownership_pct": 0.70},
         {"code": "BHX", "name": "BHX synthetic business", "method": "multiple", "metric_name": "Revenue", "metric_value": 45000, "valuation_multiple": 0.75, "net_debt": 250, "non_operating_assets": 0, "minority_interest": 0, "ownership_pct": 0.95},
-        {"code": "ERABLUE", "name": "EraBlue synthetic business", "method": "dcf", "cash_flows": [400, 650, 900, 1200, 1450], "discount_rate": 0.12, "terminal_growth": 0.04, "net_debt": 50, "non_operating_assets": 0, "minority_interest": 0, "ownership_pct": 0.45}
+        {"code": "ERABLUE", "name": "EraBlue synthetic business", "method": "dcf", "cash_flows": [400, 650, 900, 1200, 1450], "discount_rate": 0.12, "terminal_growth": 0.04, "mid_year_convention": true, "net_debt": 50, "non_operating_assets": 0, "minority_interest": 0, "ownership_pct": 0.45}
       ]
     },
     {
@@ -43,7 +43,7 @@
       "units": [
         {"code": "DMX", "name": "DMX synthetic carve-out", "method": "multiple", "metric_name": "EBITDA", "metric_value": 9000, "valuation_multiple": 7.5, "net_debt": 0, "non_operating_assets": 0, "minority_interest": 0, "ownership_pct": 0.70},
         {"code": "BHX", "name": "BHX synthetic business", "method": "multiple", "metric_name": "Revenue", "metric_value": 50000, "valuation_multiple": 0.95, "net_debt": 0, "non_operating_assets": 0, "minority_interest": 0, "ownership_pct": 0.95},
-        {"code": "ERABLUE", "name": "EraBlue synthetic business", "method": "dcf", "cash_flows": [500, 800, 1150, 1550, 1900], "discount_rate": 0.105, "terminal_growth": 0.045, "net_debt": 0, "non_operating_assets": 0, "minority_interest": 0, "ownership_pct": 0.45}
+        {"code": "ERABLUE", "name": "EraBlue synthetic business", "method": "dcf", "cash_flows": [500, 800, 1150, 1550, 1900], "discount_rate": 0.105, "terminal_growth": 0.045, "mid_year_convention": true, "net_debt": 0, "non_operating_assets": 0, "minority_interest": 0, "ownership_pct": 0.45}
       ]
     }
   ]

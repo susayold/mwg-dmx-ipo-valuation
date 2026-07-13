@@ -28,6 +28,9 @@ from reportlab.platypus import (
 ROOT = Path(__file__).resolve().parents[1]
 FACTS_PATH = ROOT / "data" / "processed" / "dmx_q1_2026_financial_facts.csv"
 SOURCES_PATH = ROOT / "data" / "source_registry.csv"
+THREE_STATEMENT_PATH = (
+    ROOT / "data" / "processed" / "dmx_three_statement_analysis.json"
+)
 DOWNLOADS = ROOT / "public" / "downloads"
 REPORTS = ROOT / "reports"
 
@@ -117,6 +120,17 @@ def build_checks(rows: list[dict[str, str]], sources: list[dict[str, str]]) -> l
     ]
 
 
+def require_passing_checks(checks: list[Check]) -> None:
+    failed = [check for check in checks if not check.passed]
+    if not failed:
+        return
+    details = "; ".join(
+        f"{check.name}: observed={check.observed}, tolerance={check.tolerance}"
+        for check in failed
+    )
+    raise ValueError(f"Report validation failed; artifacts were not published: {details}")
+
+
 def page_number(canvas, doc):
     canvas.saveState()
     canvas.setFillColor(MUTED)
@@ -126,7 +140,7 @@ def page_number(canvas, doc):
     canvas.restoreState()
 
 
-def build_pdf(output_path: Path):
+def build_pdf(output_path: Path, three_statement: dict[str, object]):
     styles = getSampleStyleSheet()
     styles.add(
         ParagraphStyle(
@@ -186,6 +200,29 @@ def build_pdf(output_path: Path):
             textColor=MUTED,
         )
     )
+    styles.add(
+        ParagraphStyle(
+            name="MemoTableCell",
+            parent=styles["BodyText"],
+            fontName="Helvetica",
+            fontSize=7,
+            leading=9,
+            textColor=INK,
+            spaceAfter=0,
+        )
+    )
+    styles.add(
+        ParagraphStyle(
+            name="MemoTableCellCenter",
+            parent=styles["BodyText"],
+            fontName="Helvetica-Bold",
+            fontSize=6.2,
+            leading=7.5,
+            textColor=LIME,
+            alignment=1,
+            spaceAfter=0,
+        )
+    )
 
     doc = SimpleDocTemplate(
         str(output_path),
@@ -204,7 +241,7 @@ def build_pdf(output_path: Path):
     story.append(Paragraph("MWG After the<br/>DMX IPO", styles["MemoTitle"]))
     story.append(
         Paragraph(
-            "IPO bridge, sum-of-the-parts valuation and the value of the non-DMX stub.",
+            "Three-statement analysis, IPO bridge, sum-of-the-parts valuation and the non-DMX stub.",
             styles["MemoBody"],
         )
     )
@@ -264,6 +301,8 @@ def build_pdf(output_path: Path):
         ["Shares issued, mn", "179.5004", "166.4385"],
         ["Post-offer shares, mn", "1,280.7839", "1,267.7220"],
         ["Gross proceeds", "14,360.032", "13,315.080"],
+        ["Estimated issue costs", "N/A", "(100.000)"],
+        ["Estimated net proceeds", "N/A", "13,215.080"],
         ["Post-money at VND80k", "102,462.712", "101,417.760"],
     ]
     tx_table = Table(transaction, colWidths=[75 * mm, 43 * mm, 43 * mm])
@@ -284,14 +323,27 @@ def build_pdf(output_path: Path):
         )
     )
     story.append(tx_table)
+    story.append(
+        Paragraph(
+            "Resolution 15 earmarks estimated net proceeds of VND 13,215.08bn for debt repayment. "
+            "The valuation labels this as a pro forma post-Q1 bridge until actual disbursement is evidenced.",
+            styles["MemoSmall"],
+        )
+    )
     story.append(Spacer(1, 7 * mm))
 
     story.append(Paragraph("2 · Perimeter control", styles["MemoH1"]))
     perimeter = [
         ["Inside DMX", "Outside DMX / MWG stub"],
         [
-            "TGDD, DMX, TopZone, DMX Technician, Super App, EraBlue 45% JV",
-            "Bach Hoa Xanh, An Khang, AvaKids, parent and other assets",
+            Paragraph(
+                "TGDD, DMX, TopZone, DMX Technician, Super App, EraBlue 45% JV",
+                styles["MemoTableCell"],
+            ),
+            Paragraph(
+                "Bach Hoa Xanh, An Khang, AvaKids, parent and other assets",
+                styles["MemoTableCell"],
+            ),
         ],
     ]
     perimeter_table = Table(perimeter, colWidths=[80.5 * mm, 80.5 * mm])
@@ -373,7 +425,145 @@ def build_pdf(output_path: Path):
         )
     )
 
-    story.append(Paragraph("4 · Management reference case", styles["MemoH1"]))
+    story.append(PageBreak())
+    story.append(Paragraph("4 · Three-statement analysis", styles["MemoH1"]))
+    story.append(
+        Paragraph(
+            "The historical module treats the income statement, balance sheet and cash-flow "
+            "statement as one linked accounting system. FY2024 and FY2025 are audited; FY2023 "
+            "is an unaudited comparative in the FY2024 filing. Q1 2026 is an unaudited trend "
+            "update and is not annualised for conclusions on seasonality.",
+            styles["MemoBody"],
+        )
+    )
+
+    statements_by_period = {
+        item["period"]: item for item in three_statement["statements"]
+    }
+    statement_periods = ["FY2023A", "FY2024A", "FY2025A", "Q1 2026A"]
+
+    def statement_value(period: str, key: str) -> str:
+        value = statements_by_period[period]["values_vnd_bn"].get(key)
+        return "N/A" if value is None else f"{value:,.0f}"
+
+    history = [["VND bn", *statement_periods]]
+    for label, key in (
+        ("Revenue", "revenue"),
+        ("Gross profit", "gross_profit"),
+        ("NPAT", "net_income"),
+        ("Operating cash flow", "operating_cash_flow"),
+        ("Inventory", "inventory"),
+        ("Total debt", "total_debt"),
+    ):
+        history.append([label, *(statement_value(period, key) for period in statement_periods)])
+    history_table = Table(history, colWidths=[49 * mm] + [28 * mm] * 4)
+    history_table.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, 0), INK),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+                ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", 6.8),
+                ("FONT", (0, 1), (-1, -1), "Helvetica", 7),
+                ("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#B9B4AA")),
+                ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, PAPER]),
+                ("ALIGN", (1, 1), (-1, -1), "RIGHT"),
+                ("TOPPADDING", (0, 0), (-1, -1), 5),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
+            ]
+        )
+    )
+    story.append(history_table)
+    story.append(Spacer(1, 6 * mm))
+
+    story.append(Paragraph("Working-capital schedule", styles["MemoH2"]))
+    wc_rows = [["Period", "DIO", "DSO", "DPO", "CCC", "CFO / NPAT", "Inv. provision"]]
+    for row in three_statement["working_capital"]:
+        wc_rows.append(
+            [
+                row["period"],
+                f"{row['days_inventory_outstanding']:.1f}d",
+                f"{row['days_sales_outstanding']:.1f}d",
+                f"{row['days_payables_outstanding']:.1f}d",
+                f"{row['cash_conversion_cycle']:.1f}d",
+                f"{row['cfo_to_npat']:.1%}",
+                f"{row['inventory_provision_to_gross']:.1%}",
+            ]
+        )
+    wc_table = Table(wc_rows, colWidths=[29 * mm, 20 * mm, 18 * mm, 20 * mm, 20 * mm, 27 * mm, 27 * mm])
+    wc_table.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, 0), INK),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+                ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", 6.2),
+                ("FONT", (0, 1), (-1, -1), "Helvetica", 6.7),
+                ("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#B9B4AA")),
+                ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, PAPER]),
+                ("ALIGN", (1, 1), (-1, -1), "RIGHT"),
+                ("TOPPADDING", (0, 0), (-1, -1), 5),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
+            ]
+        )
+    )
+    story.append(wc_table)
+    story.append(
+        Paragraph(
+            "CCC = DIO + DSO − DPO. FY2025 CCC improved to 52.1 days from 60.8 days, "
+            "but full-year CFO/NPAT fell to 86.5%. Q1 2026 CFO/NPAT was only 38.9%; the "
+            "90-day CCC is shown as a seasonal diagnostic, not a full-year run rate.",
+            styles["MemoBody"],
+        )
+    )
+
+    story.append(Paragraph("Q1 2026 NPAT-to-CFO bridge", styles["MemoH2"]))
+    q1_bridge = next(
+        item for item in three_statement["bridges"]["npat_to_cfo"]
+        if item["period"] == "Q1 2026A"
+    )
+    selected_labels = {
+        "Net profit after tax",
+        "Depreciation and amortization",
+        "Change in receivables",
+        "Change in inventory",
+        "Change in payables",
+        "Corporate income tax paid",
+    }
+    bridge_rows = [["Bridge item", "VND bn"]]
+    for component in q1_bridge["components"]:
+        if component["label"] in selected_labels:
+            bridge_rows.append([component["label"], f"{component['amount_vnd_bn']:,.1f}"])
+    bridge_rows.append(["Reported cash flow from operations", f"{q1_bridge['reported_cfo_vnd_bn']:,.1f}"])
+    bridge_table = Table(bridge_rows, colWidths=[117 * mm, 44 * mm])
+    bridge_table.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, 0), INK),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+                ("BACKGROUND", (0, -1), (-1, -1), LIME),
+                ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", 7),
+                ("FONT", (0, 1), (-1, -1), "Helvetica", 7.2),
+                ("FONT", (0, -1), (-1, -1), "Helvetica-Bold", 7.2),
+                ("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#B9B4AA")),
+                ("ALIGN", (1, 1), (1, -1), "RIGHT"),
+                ("TOPPADDING", (0, 0), (-1, -1), 5),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
+            ]
+        )
+    )
+    story.append(bridge_table)
+    story.append(
+        Paragraph(
+            "All NPAT-to-CFO, opening-to-closing cash and retained-earnings bridges reconcile. "
+            "The FY2025 retained-earnings residual is labelled as capitalisation/other equity "
+            "movement rather than being recast as operating performance. Normalisation is applied "
+            "only where a disclosed perimeter difference exists; unsupported EBIT, debt, lease or "
+            "minimum-cash adjustments remain N/A.",
+            styles["MemoBody"],
+        )
+    )
+    story.append(PageBreak())
+
+    story.append(Paragraph("5 · Management reference case", styles["MemoH1"]))
     forecast = [
         ["VND bn", "2025A LFL", "2026F", "2027F", "2028F", "2029F", "2030F"],
         ["Revenue", "107,000", "122,500", "135,000", "149,000", "164,000", "182,000"],
@@ -406,7 +596,7 @@ def build_pdf(output_path: Path):
     )
     story.append(PageBreak())
 
-    story.append(Paragraph("5 · Valuation architecture", styles["MemoH1"]))
+    story.append(Paragraph("6 · Valuation architecture", styles["MemoH1"]))
     story.append(Paragraph("DMX", styles["MemoH2"]))
     story.append(
         Paragraph(
@@ -443,13 +633,22 @@ def build_pdf(output_path: Path):
     story.append(formula)
     story.append(Spacer(1, 7 * mm))
 
-    story.append(Paragraph("6 · Scenario logic", styles["MemoH1"]))
+    story.append(Paragraph("7 · Scenario logic", styles["MemoH1"]))
     scenarios = [
         ["Bear", "Base", "Bull"],
         [
-            "Lower SSSG and margin; inventory absorbs cash; lower multiple; larger parent deduction.",
-            "Guidance broadly achieved; gradual margin expansion; working capital normalises.",
-            "Services and EraBlue outperform; margin expands; cash conversion remains controlled.",
+            Paragraph(
+                "Lower SSSG and margin; inventory absorbs cash; lower multiple; larger parent deduction.",
+                styles["MemoTableCell"],
+            ),
+            Paragraph(
+                "Guidance broadly achieved; gradual margin expansion; working capital normalises.",
+                styles["MemoTableCell"],
+            ),
+            Paragraph(
+                "Services and EraBlue outperform; margin expands; cash conversion remains controlled.",
+                styles["MemoTableCell"],
+            ),
         ],
     ]
     scenario_table = Table(scenarios, colWidths=[53.7 * mm] * 3)
@@ -470,13 +669,52 @@ def build_pdf(output_path: Path):
     )
     story.append(scenario_table)
     story.append(Spacer(1, 7 * mm))
+    scenario_values = [
+        ["VND bn", "DMX equity", "MWG share (~86%)", "Stub", "Parent adj.", "MWG equity"],
+        ["Bear", "67,000", "57,620", "28,000", "(8,000)", "77,620"],
+        ["Base", "90,405", "77,748", "45,000", "(5,000)", "117,748"],
+        ["Bull", "112,000", "96,320", "65,000", "(3,000)", "158,320"],
+    ]
+    scenario_value_table = Table(
+        scenario_values,
+        colWidths=[30 * mm, 28 * mm, 34 * mm, 23 * mm, 23 * mm, 28 * mm],
+    )
+    scenario_value_table.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, 0), INK),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+                ("BACKGROUND", (0, 2), (-1, 2), LIME),
+                ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", 6.2),
+                ("FONT", (0, 1), (-1, -1), "Helvetica", 6.8),
+                ("FONT", (0, 2), (-1, 2), "Helvetica-Bold", 6.8),
+                ("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#B9B4AA")),
+                ("ALIGN", (1, 1), (-1, -1), "RIGHT"),
+                ("TOPPADDING", (0, 0), (-1, -1), 5),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
+            ]
+        )
+    )
+    story.append(scenario_value_table)
+    story.append(
+        Paragraph(
+            "Illustrative equity values only; no per-share target, rating or market upside/downside is published.",
+            styles["MemoSmall"],
+        )
+    )
 
-    story.append(Paragraph("7 · Catalysts and risks", styles["MemoH1"]))
+    story.append(Paragraph("8 · Catalysts and risks", styles["MemoH1"]))
     catalyst_risk = [
         ["Potential catalysts", "Key risks"],
         [
-            "DMX price discovery; H1 statements; debt reduction and interest savings from IPO proceeds; EraBlue unit economics; BHX cash generation.",
-            "Demand normalisation; margin reversal; working-capital absorption; expansion before unit economics; persistent holdco discount.",
+            Paragraph(
+                "DMX price discovery; H1 statements; debt reduction and interest savings from IPO proceeds; EraBlue unit economics; BHX cash generation.",
+                styles["MemoTableCell"],
+            ),
+            Paragraph(
+                "Demand normalisation; margin reversal; working-capital absorption; expansion before unit economics; persistent holdco discount.",
+                styles["MemoTableCell"],
+            ),
         ],
     ]
     cr_table = Table(catalyst_risk, colWidths=[80.5 * mm, 80.5 * mm])
@@ -497,7 +735,7 @@ def build_pdf(output_path: Path):
     story.append(cr_table)
     story.append(PageBreak())
 
-    story.append(Paragraph("8 · Analyst conclusion", styles["MemoH1"]))
+    story.append(Paragraph("9 · Analyst conclusion", styles["MemoH1"]))
     story.append(
         Paragraph(
             "The IPO makes MWG more analyzable, not automatically more valuable. Current evidence "
@@ -509,10 +747,10 @@ def build_pdf(output_path: Path):
     conclusion = Table(
         [
             [
-                "VALUE DMX ONCE",
-                "KEEP ERABLUE INSIDE DMX",
-                "VALUE THE STUB SEPARATELY",
-                "PUBLISH ONLY AFTER PRICE-DATE CONTROLS",
+                Paragraph("VALUE DMX<br/>ONCE", styles["MemoTableCellCenter"]),
+                Paragraph("KEEP ERABLUE<br/>INSIDE DMX", styles["MemoTableCellCenter"]),
+                Paragraph("VALUE THE STUB<br/>SEPARATELY", styles["MemoTableCellCenter"]),
+                Paragraph("PUBLISH ONLY AFTER<br/>PRICE-DATE CONTROLS", styles["MemoTableCellCenter"]),
             ]
         ],
         colWidths=[40.25 * mm] * 4,
@@ -537,7 +775,8 @@ def build_pdf(output_path: Path):
         Paragraph(
             "The repository contains a 29-document source register. Raw issuer files are excluded "
             "from Git because redistribution terms are not explicit; URLs, hashes, periods and "
-            "document roles remain committed. The curated Q1 data contains 210 source-tagged facts.",
+            "document roles remain committed. The three-statement module contains 320 source-tagged "
+            "historical facts; the separate Q1 data-pack extract retains 210 allowlisted facts.",
             styles["MemoBody"],
         )
     )
@@ -552,7 +791,11 @@ def build_pdf(output_path: Path):
 
 
 def build_validation_html(
-    output_path: Path, checks: list[Check], rows: list[dict[str, str]], sources: list[dict[str, str]]
+    output_path: Path,
+    checks: list[Check],
+    rows: list[dict[str, str]],
+    sources: list[dict[str, str]],
+    three_statement: dict[str, object],
 ):
     checks_html = "".join(
         "<tr><td>{}</td><td><span class='{}'>{}</span></td><td>{}</td><td>{}</td></tr>".format(
@@ -564,7 +807,14 @@ def build_validation_html(
         )
         for check in checks
     )
-    overall = all(check.passed for check in checks)
+    accounting_summary = three_statement["check_summary"]
+    generic_summary = three_statement["generic_validation"]
+    overall = (
+        all(check.passed for check in checks)
+        and accounting_summary["failed"] == 0
+        and generic_summary["failed_errors"] == 0
+        and generic_summary["failed_warnings"] == 0
+    )
     unique_periods = len({row["period"] for row in rows})
     content = f"""<!doctype html>
 <html lang="en">
@@ -578,7 +828,7 @@ def build_validation_html(
     main{{max-width:1100px;margin:auto;padding:64px 24px}} h1{{font:52px Georgia,serif;letter-spacing:-.04em;margin:.2em 0}}
     .top{{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;border-bottom:2px solid var(--ink);padding-bottom:28px}}
     .badge{{padding:12px 16px;background:{'var(--lime)' if overall else 'var(--coral)'};font-weight:800}}
-    .metrics{{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--ink);margin:32px 0}}
+    .metrics{{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--ink);margin:32px 0}}
     .metrics div{{padding:24px;border-right:1px solid var(--ink)}} .metrics div:last-child{{border:0}}
     .metrics strong{{display:block;font:36px Georgia,serif}} .metrics span{{font-size:10px;text-transform:uppercase}}
     table{{width:100%;border-collapse:collapse;background:#fff}} th,td{{padding:14px;border:1px solid #b7b0a4;text-align:left}}
@@ -589,18 +839,20 @@ def build_validation_html(
 </head>
 <body><main>
   <div class="top"><div><small>GENERATED · {date.today().isoformat()}</small><h1>Validation report</h1>
-  <p>DMX official Q1 2026 data pack → curated financial facts.</p></div>
+  <p>DMX FY2023–FY2025 and Q1 2026 → source-tagged three-statement analysis.</p></div>
   <div class="badge">{'ALL CHECKS PASS' if overall else 'REVIEW REQUIRED'}</div></div>
   <section class="metrics">
-    <div><strong>{len(rows)}</strong><span>curated facts</span></div>
-    <div><strong>{unique_periods}</strong><span>reporting dates</span></div>
+    <div><strong>{three_statement['metadata']['fact_count']}</strong><span>three-statement facts</span></div>
+    <div><strong>{accounting_summary['passed']}/{accounting_summary['checks']}</strong><span>accounting checks</span></div>
+    <div><strong>{unique_periods}</strong><span>Q1 source dates</span></div>
     <div><strong>{len(sources)}</strong><span>registered sources</span></div>
   </section>
   <table><thead><tr><th>Control</th><th>Status</th><th>Observed</th><th>Tolerance</th></tr></thead>
   <tbody>{checks_html}</tbody></table>
   <p class="note">The extractor allowlists only <code>Balance Sheet</code>, <code>Income Statement</code>
-  and <code>Cash Flow Statement</code>. Config and notes sheets are not ingested. Raw issuer files remain
-  outside Git; the source register retains URL, retrieval timestamp, file size and SHA-256.</p>
+  and <code>Cash Flow Statement</code>. The three-statement module additionally validates NPAT-to-CFO,
+  cash roll-forward and retained-earnings bridges. Raw issuer files remain outside Git; the source register
+  retains URL, retrieval timestamp, file size and SHA-256.</p>
 </main></body></html>"""
     output_path.write_text(content, encoding="utf-8")
 
@@ -619,24 +871,54 @@ def main():
 
     facts = read_csv(FACTS_PATH)
     sources = read_csv(SOURCES_PATH)
+    three_statement = json.loads(THREE_STATEMENT_PATH.read_text(encoding="utf-8"))
     checks = build_checks(facts, sources)
+    require_passing_checks(checks)
+    if three_statement["check_summary"]["failed"] != 0:
+        raise ValueError("Three-statement accounting checks failed")
+    generic = three_statement["generic_validation"]
+    if generic["failed_errors"] != 0 or generic["failed_warnings"] != 0:
+        raise ValueError("Three-statement generic validation is not clean")
+
+    model_path = ROOT / "model" / "MWG_DMX_IPO_SOTP_Model.xlsx"
+    if not model_path.is_file():
+        raise FileNotFoundError(f"Required model was not generated: {model_path}")
 
     pdf_path = DOWNLOADS / "Investment_Memo_EN.pdf"
     validation_path = DOWNLOADS / "validation_report.html"
-    build_pdf(pdf_path)
-    build_validation_html(validation_path, checks, facts, sources)
+    build_pdf(pdf_path, three_statement)
+    build_validation_html(validation_path, checks, facts, sources, three_statement)
 
     curated_copy = DOWNLOADS / FACTS_PATH.name
     shutil.copy2(FACTS_PATH, curated_copy)
 
-    model_path = ROOT / "model" / "MWG_DMX_IPO_SOTP_Model.xlsx"
     public_model = DOWNLOADS / "MWG_DMX_IPO_SOTP_Model.xlsx"
-    if model_path.exists():
-        shutil.copy2(model_path, public_model)
+    shutil.copy2(model_path, public_model)
 
-    artifacts = [pdf_path, validation_path, curated_copy]
-    if public_model.exists():
-        artifacts.append(public_model)
+    three_statement_artifacts = [
+        DOWNLOADS / "dmx_three_statement_analysis.json",
+        DOWNLOADS / "dmx_three_statement_facts.csv",
+        DOWNLOADS / "dmx_normalization_adjustments.csv",
+        DOWNLOADS / "three_statement_manifest.json",
+    ]
+    missing_three_statement = [
+        str(path.relative_to(ROOT))
+        for path in three_statement_artifacts
+        if not path.is_file() or path.stat().st_size == 0
+    ]
+    if missing_three_statement:
+        raise FileNotFoundError(
+            "Build scripts/build_three_statement_analysis.py first; missing: "
+            + ", ".join(missing_three_statement)
+        )
+
+    artifacts = [
+        pdf_path,
+        validation_path,
+        curated_copy,
+        public_model,
+        *three_statement_artifacts,
+    ]
     manifest = {
         "generated_on": date.today().isoformat(),
         "data_cutoff": "2026-07-13",

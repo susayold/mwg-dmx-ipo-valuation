@@ -61,6 +61,26 @@ This is a comparability adjustment, not permission to overwrite the signed audit
 
 Never compare a reported FY2025 DMX figure directly with a post-restructuring 2026 KPI without showing the perimeter basis. Do not estimate an An Khang/AvaKids carve-out by simple subtraction unless the official documents provide all components required for that bridge.
 
+### Three-statement coverage and assurance status
+
+| Analysis period | Canonical source | Scope | Assurance treatment |
+|---|---|---|---|
+| FY2023 | `DMX_FS_2024_C`, comparative column | Consolidated statutory | **Comparative unaudited.** The FY2024 auditor expressly states that the comparative figures were not audited. |
+| FY2024 | `DMX_FS_2024_C` | Consolidated statutory | Audited. |
+| FY2025 | `DMX_FS_2025_C` | Consolidated statutory | Audited. |
+| Q1 2026 | `DMX_DATA_2026Q1`, reconciled to the signed Q1 filing | Consolidated statutory YTD | Unaudited. |
+| H1 2026 | `DMX_RESULTS_2026H1` | Management operating update | KPI update only; no H1 statement set was available at the cut-off. |
+
+The analysis may use the Q1 2025 comparative income-statement and cash-flow columns for year-on-year comparisons. It must not imply that a 31 March 2025 balance sheet was independently imported when only the comparative flow columns are used.
+
+Three different data layers must remain visible:
+
+1. `reported_statutory`: the statement figures as filed;
+2. `management_lfl_comparator`: explicitly disclosed like-for-like headlines; and
+3. `analyst_derived`: ratios, bridges and scenario assumptions calculated from the first two layers.
+
+Management LFL data never replaces reported statutory data in an accounting bridge.
+
 ## 4. Canonical document hierarchy
 
 When sources differ, use this priority order:
@@ -75,7 +95,7 @@ Specific canonical choices:
 
 - `DMX_FS_2026Q1_C` is the canonical Q1 2026 consolidated PDF. `DMX_FS_2026Q1_C_ALT` is an official alternate attachment and must not be ingested as another period.
 - `DMX_IPO_RESULT_2026` controls final shares issued and post-offering shares outstanding. Initial offer documents describe proposed terms only.
-- `DMX_IPO_PROCEEDS_2026` controls the adjusted use of proceeds and the actual gross/net-proceeds bridge.
+- `DMX_IPO_PROCEEDS_2026` (Resolution 15) controls the estimated issue-cost and net-proceeds bridge: VND 13,315.080bn gross less VND 100.000bn estimated costs equals VND 13,215.080bn estimated net proceeds. Its debt-repayment allocation is a disclosed **plan**, not evidence of completed disbursement.
 - `DMX_IPO_PRESENTATION_2026`, page 3, controls the 31 May 2026 post-restructuring SOTP perimeter.
 
 ## 5. Period and scope conventions
@@ -85,6 +105,7 @@ Specific canonical choices:
 - Financial-scope values must be one of `consolidated`, `separate`, `management_presentation`, `offering`, or `regulatory_notice`.
 - Consolidated and separate statements must never be mixed in the same time series.
 - Q1 and H1 values are year-to-date unless the source explicitly says otherwise.
+- Working-capital days use actual elapsed days and average opening/closing trade balances. The Q1 2026 schedule uses 90 days and carries a seasonality warning; it is not annualized guidance.
 - The 6M 2026 business-results file is unaudited management information, not a replacement for Q2/H1 financial statements. At the cut-off date, the DMX site listed Q2 financial statements as a future publication.
 
 ## 6. Minimum validation checks
@@ -101,6 +122,10 @@ Every normalized statement should pass the checks below before it reaches the mo
 8. Duplicate official attachments are detected by source ID and statement period, not only by file hash.
 9. Post-IPO share count is taken from `DMX_IPO_RESULT_2026`; proposed shares in earlier documents are not used as actual shares.
 10. Any derived ownership percentage is labelled `derived` and linked to its numerator and denominator sources.
+11. NPAT-to-CFO, cash-roll and retained-earnings bridges must reconcile to reported totals before publication.
+12. DIO, DSO and DPO must use consistent average balance definitions and the correct number of elapsed days.
+13. A pro forma IPO proceeds adjustment must equal VND 13,215.080bn when the starting balance sheet predates the transaction, and must be zero when the selected cash/debt balances already include it.
+14. Management LFL adjustments cannot be allocated to undisclosed EBIT, cash-flow or balance-sheet lines.
 
 ## 7. Local files and licensing
 

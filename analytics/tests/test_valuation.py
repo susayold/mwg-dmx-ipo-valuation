@@ -34,7 +34,7 @@ class ValuationTests(unittest.TestCase):
         self.assertEqual(result.equity_value, Decimal("450"))
         self.assertEqual(result.attributable_equity_value, Decimal("360.0"))
 
-    def test_dcf_terminal_value_is_discounted(self) -> None:
+    def test_dcf_defaults_to_mid_year_convention(self) -> None:
         result = value_dcf_unit(
             {
                 "code": "DCF",
@@ -43,7 +43,70 @@ class ValuationTests(unittest.TestCase):
                 "terminal_growth": 0,
             }
         )
+        self.assertAlmostEqual(
+            float(result.enterprise_value), 1048.8088481701516, places=8
+        )
+        self.assertEqual(result.assumptions["timing_convention"], "mid_year")
+        self.assertEqual(
+            result.assumptions["discount_periods"],
+            [Decimal("0.5"), Decimal("1.5")],
+        )
+
+    def test_dcf_can_use_explicit_year_end_convention(self) -> None:
+        result = value_dcf_unit(
+            {
+                "code": "DCF",
+                "cash_flows": [100, 100],
+                "discount_rate": 0.10,
+                "terminal_growth": 0,
+                "mid_year_convention": False,
+            }
+        )
         self.assertAlmostEqual(float(result.enterprise_value), 1000.0, places=8)
+        self.assertEqual(result.assumptions["timing_convention"], "year_end")
+
+    def test_dcf_supports_auditable_custom_stub_timing(self) -> None:
+        result = value_dcf_unit(
+            {
+                "code": "DCF",
+                "cash_flows": [100, 110],
+                "discount_rate": 0.10,
+                "terminal_growth": 0.02,
+                "discount_periods": [0.25, 1.25],
+                "terminal_discount_period": 1.5,
+            }
+        )
+        rate = Decimal("1.1")
+        expected = (
+            Decimal("100") / rate ** Decimal("0.25")
+            + Decimal("110") / rate ** Decimal("1.25")
+            + (Decimal("110") * Decimal("1.02") / Decimal("0.08"))
+            / rate ** Decimal("1.5")
+        )
+        self.assertAlmostEqual(float(result.enterprise_value), float(expected), places=8)
+        self.assertEqual(result.assumptions["timing_convention"], "custom")
+        self.assertEqual(
+            result.assumptions["terminal_discount_period"], Decimal("1.5")
+        )
+
+    def test_invalid_dcf_timing_is_rejected(self) -> None:
+        invalid_timing = [
+            {"mid_year_convention": "yes"},
+            {"discount_periods": [0.5]},
+            {"discount_periods": [0.5, 0.5]},
+            {"discount_periods": [0.5, 1.5], "terminal_discount_period": 1.0},
+        ]
+        for timing in invalid_timing:
+            with self.subTest(timing=timing), self.assertRaises(ValuationInputError):
+                value_dcf_unit(
+                    {
+                        "code": "DCF",
+                        "cash_flows": [100, 100],
+                        "discount_rate": 0.10,
+                        "terminal_growth": 0,
+                        **timing,
+                    }
+                )
 
     def test_invalid_terminal_growth_is_rejected(self) -> None:
         with self.assertRaises(ValuationInputError):

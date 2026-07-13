@@ -10,8 +10,6 @@ type Scenario = {
   pe: number;
   stubValue: number;
   parentAdjustments: number;
-  mwgShares: number;
-  referencePrice: number;
 };
 
 const scenarios: Record<ScenarioName, Scenario> = {
@@ -20,36 +18,23 @@ const scenarios: Record<ScenarioName, Scenario> = {
     pe: 10,
     stubValue: 28_000,
     parentAdjustments: -8_000,
-    mwgShares: 1_400,
-    referencePrice: 100_000,
   },
   Base: {
     npat: 7_350,
     pe: 12.3,
     stubValue: 45_000,
     parentAdjustments: -5_000,
-    mwgShares: 1_400,
-    referencePrice: 100_000,
   },
   Bull: {
     npat: 8_000,
     pe: 14,
     stubValue: 65_000,
     parentAdjustments: -3_000,
-    mwgShares: 1_400,
-    referencePrice: 100_000,
   },
 };
 
 const formatBn = (value: number) =>
   new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(value);
-
-const formatVnd = (value: number) =>
-  new Intl.NumberFormat("vi-VN", {
-    style: "currency",
-    currency: "VND",
-    maximumFractionDigits: 0,
-  }).format(value);
 
 function RangeInput({
   label,
@@ -83,6 +68,7 @@ function RangeInput({
         max={max}
         step={step}
         value={value}
+        aria-valuetext={`${formatBn(value)}${suffix}`}
         onChange={(event) => onChange(Number(event.target.value))}
       />
     </label>
@@ -90,7 +76,9 @@ function RangeInput({
 }
 
 export function ValuationLab() {
-  const [activeScenario, setActiveScenario] = useState<ScenarioName>("Base");
+  const [activeScenario, setActiveScenario] = useState<ScenarioName | null>(
+    "Base",
+  );
   const [inputs, setInputs] = useState<Scenario>(scenarios.Base);
 
   const output = useMemo(() => {
@@ -98,19 +86,8 @@ export function ValuationLab() {
     const mwgDmxStake =
       dmxEquity * (ipoFacts.mwgOwnershipModelApproxPct / 100);
     const mwgEquity = mwgDmxStake + inputs.stubValue + inputs.parentAdjustments;
-    const impliedValuePerShare = (mwgEquity / inputs.mwgShares) * 1_000;
-    const premiumDiscount =
-      inputs.referencePrice === 0
-        ? 0
-        : impliedValuePerShare / inputs.referencePrice - 1;
 
-    return {
-      dmxEquity,
-      mwgDmxStake,
-      mwgEquity,
-      impliedValuePerShare,
-      premiumDiscount,
-    };
+    return { dmxEquity, mwgDmxStake, mwgEquity };
   }, [inputs]);
 
   const applyScenario = (name: ScenarioName) => {
@@ -119,7 +96,7 @@ export function ValuationLab() {
   };
 
   const update = (key: keyof Scenario, value: number) => {
-    setActiveScenario("Base");
+    setActiveScenario(null);
     setInputs((current) => ({ ...current, [key]: value }));
   };
 
@@ -131,15 +108,21 @@ export function ValuationLab() {
           <h3>Rebuild the SOTP in under a minute.</h3>
           <p>
             Change the earnings anchor, multiple and stub value. All figures
-            below are analyst scenarios—not company guidance or a recommendation.
+            below are analyst scenarios—not company guidance or a
+            recommendation.
           </p>
         </div>
-        <div className="scenario-tabs" aria-label="Valuation scenarios">
+        <div
+          className="scenario-tabs"
+          role="group"
+          aria-label="Valuation scenarios"
+        >
           {(Object.keys(scenarios) as ScenarioName[]).map((name) => (
             <button
               type="button"
               key={name}
               className={activeScenario === name ? "active" : ""}
+              aria-pressed={activeScenario === name}
               onClick={() => applyScenario(name)}
             >
               {name}
@@ -186,40 +169,13 @@ export function ValuationLab() {
             suffix=" bn"
             onChange={(value) => update("parentAdjustments", value)}
           />
-          <RangeInput
-            label="MWG diluted shares"
-            value={inputs.mwgShares}
-            min={1_300}
-            max={1_500}
-            step={1}
-            suffix=" m"
-            onChange={(value) => update("mwgShares", value)}
-          />
-          <RangeInput
-            label="Your reference price"
-            value={inputs.referencePrice}
-            min={40_000}
-            max={220_000}
-            step={1_000}
-            suffix=""
-            onChange={(value) => update("referencePrice", value)}
-          />
         </div>
 
-        <div className="lab-output">
-          <span className="output-label">Illustrative MWG value / share</span>
+        <div className="lab-output" aria-live="polite">
+          <span className="output-label">Illustrative MWG equity value</span>
           <strong className="output-value">
-            {formatVnd(output.impliedValuePerShare)}
+            {formatBn(output.mwgEquity)} <small>VND bn</small>
           </strong>
-          <span
-            className={[
-              "premium",
-              output.premiumDiscount >= 0 ? "positive" : "negative",
-            ].join(" ")}
-          >
-            {output.premiumDiscount >= 0 ? "+" : ""}
-            {(output.premiumDiscount * 100).toFixed(1)}% vs your reference
-          </span>
 
           <div className="value-bridge">
             <div>
@@ -245,9 +201,9 @@ export function ValuationLab() {
           </div>
 
           <p className="lab-note">
-            The default share count and stub values are transparent model inputs.
-            Replace them with your own cut-off-date assumptions before using the
-            output.
+            This is a transparent SOTP scenario for total equity value only. It
+            does not publish a security-level conclusion. The 86% stake is a
+            disclosed-ownership approximation used for illustration.
           </p>
         </div>
       </div>
