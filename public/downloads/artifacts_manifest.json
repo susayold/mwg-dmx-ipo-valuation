@@ -1,0 +1,27 @@
+{
+  "generated_on": "2026-07-13",
+  "data_cutoff": "2026-07-13",
+  "checks_passed": true,
+  "artifacts": [
+    {
+      "path": "public/downloads/Investment_Memo_EN.pdf",
+      "size_bytes": 10696,
+      "sha256": "8e69bab4a1d7b1976ab7548a1ac13695a886f2de20e3da1a21084686bdccd4cd"
+    },
+    {
+      "path": "public/downloads/validation_report.html",
+      "size_bytes": 3192,
+      "sha256": "5ada8e8c892f66713facef63b584eed6c5d77d2cba7520937aa67fef53c8d0ea"
+    },
+    {
+      "path": "public/downloads/dmx_q1_2026_financial_facts.csv",
+      "size_bytes": 33290,
+      "sha256": "9e8ab42494d5b6518a483e329583ea152e639d07312200405c547289a2eb1929"
+    },
+    {
+      "path": "public/downloads/MWG_DMX_IPO_SOTP_Model.xlsx",
+      "size_bytes": 52550,
+      "sha256": "93914077806d9d37a4a9c869fefbfac33c6ca6661df83c2692ba761f19a5e34c"
+    }
+  ]
+}

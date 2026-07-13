@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+data/curated/**/*.sqlite
+data/curated/**/run_manifest.json
+data/curated/**/ratios.json
+data/curated/**/sotp_results.json
+data/curated/**/validation_results.csv

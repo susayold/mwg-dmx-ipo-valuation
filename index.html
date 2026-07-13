@@ -1,0 +1,1655 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101b17">
+    <meta
+      name="description"
+      content="Source-traceable MWG–DMX IPO bridge, financial analysis and interactive SOTP valuation portfolio."
+    >
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://susayold.github.io/mwg-dmx-ipo-valuation/">
+    <meta property="og:title" content="MWG After the DMX IPO — Valuation Lab">
+    <meta
+      property="og:description"
+      content="An independent analyst work sample built from official filings, auditable controls and transparent scenarios."
+    >
+    <meta property="og:image" content="https://susayold.github.io/mwg-dmx-ipo-valuation/public/og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MWG After the DMX IPO — Valuation Lab">
+    <meta
+      name="twitter:description"
+      content="Source-traceable IPO bridge, financial analysis and interactive SOTP valuation portfolio."
+    >
+    <meta name="twitter:image" content="https://susayold.github.io/mwg-dmx-ipo-valuation/public/og.png">
+    <link rel="icon" href="public/favicon.svg">
+    <title>MWG After the DMX IPO — Valuation Lab</title>
+    <style>
+      :root {
+        --paper: #f4f0e7;
+        --paper-2: #e8e1d3;
+        --ink: #101b17;
+        --ink-2: #1b2b24;
+        --lime: #d7ff5f;
+        --lime-dark: #9fcb15;
+        --coral: #ff7358;
+        --blue: #5877ff;
+        --muted: #68756e;
+        --white: #fffdf7;
+        --line: rgba(16, 27, 23, 0.17);
+        --shadow: 0 22px 55px rgba(16, 27, 23, 0.12);
+        --radius: 24px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.5;
+        text-rendering: optimizeLegibility;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      button,
+      a {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      :focus-visible {
+        outline: 3px solid var(--blue);
+        outline-offset: 3px;
+      }
+
+      .skip-link {
+        position: fixed;
+        z-index: 100;
+        top: 10px;
+        left: 10px;
+        transform: translateY(-160%);
+        padding: 10px 14px;
+        background: var(--lime);
+        color: var(--ink);
+        border-radius: 10px;
+        font-weight: 800;
+      }
+
+      .skip-link:focus {
+        transform: translateY(0);
+      }
+
+      .site-header {
+        position: sticky;
+        z-index: 50;
+        top: 0;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        min-height: 70px;
+        padding: 0 4vw;
+        color: var(--white);
+        background: rgba(16, 27, 23, 0.94);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+        backdrop-filter: blur(18px);
+      }
+
+      .wordmark {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 7px;
+        width: fit-content;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+      }
+
+      .wordmark i {
+        color: var(--lime);
+        font-style: normal;
+      }
+
+      .wordmark small {
+        margin-left: 4px;
+        color: rgba(255, 255, 255, 0.54);
+        font-size: 9px;
+        letter-spacing: 0.16em;
+      }
+
+      .site-header nav {
+        display: flex;
+        gap: 26px;
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 12px;
+      }
+
+      .site-header nav a:hover {
+        color: var(--lime);
+      }
+
+      .header-cta,
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 18px;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.02em;
+      }
+
+      .header-cta {
+        justify-self: end;
+        color: var(--ink);
+        background: var(--lime);
+      }
+
+      .button.primary {
+        color: var(--ink);
+        background: var(--lime);
+      }
+
+      .button.secondary {
+        color: var(--white);
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+
+      .hero {
+        overflow: hidden;
+        color: var(--white);
+        background:
+          radial-gradient(circle at 72% 25%, rgba(88, 119, 255, 0.24), transparent 31%),
+          radial-gradient(circle at 19% 89%, rgba(215, 255, 95, 0.12), transparent 28%),
+          var(--ink);
+      }
+
+      .hero-inner {
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(330px, 0.65fr);
+        gap: 6vw;
+        align-items: center;
+        width: min(1180px, 92vw);
+        min-height: 690px;
+        margin: 0 auto;
+        padding: 84px 0 70px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.17em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        width: 28px;
+        height: 2px;
+        content: "";
+        background: currentColor;
+      }
+
+      .hero .eyebrow {
+        color: var(--lime);
+      }
+
+      .hero h1 {
+        max-width: 780px;
+        margin: 21px 0 24px;
+        font-size: clamp(52px, 7.2vw, 96px);
+        line-height: 0.91;
+        letter-spacing: -0.065em;
+      }
+
+      .hero h1 span {
+        display: block;
+        color: var(--lime);
+      }
+
+      .hero-copy > p {
+        max-width: 690px;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 17px;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 31px;
+      }
+
+      .hero-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-top: 42px;
+        padding-top: 22px;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .hero-meta span,
+      .hero-meta strong {
+        display: block;
+      }
+
+      .hero-meta span {
+        margin-bottom: 5px;
+        color: rgba(255, 255, 255, 0.46);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      .hero-meta strong {
+        font-size: 12px;
+      }
+
+      .ipo-ticket {
+        position: relative;
+        overflow: hidden;
+        padding: 25px;
+        color: var(--ink);
+        background: var(--lime);
+        border-radius: 28px;
+        box-shadow: 19px 19px 0 rgba(255, 255, 255, 0.08);
+        transform: rotate(1.2deg);
+      }
+
+      .ipo-ticket::after {
+        position: absolute;
+        right: -52px;
+        bottom: -52px;
+        width: 145px;
+        height: 145px;
+        content: "";
+        border: 26px solid rgba(16, 27, 23, 0.1);
+        border-radius: 50%;
+      }
+
+      .ticket-top,
+      .ticket-foot {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .ticket-value {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+        margin: 25px 0 3px;
+      }
+
+      .ticket-value > strong {
+        font-size: clamp(62px, 7vw, 86px);
+        line-height: 0.83;
+        letter-spacing: -0.07em;
+      }
+
+      .ticket-value span {
+        display: block;
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .ipo-ticket > p {
+        position: relative;
+        z-index: 1;
+        margin: 14px 0 24px;
+        font-size: 13px;
+      }
+
+      .ticket-grid {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-top: 1px solid rgba(16, 27, 23, 0.25);
+        border-left: 1px solid rgba(16, 27, 23, 0.25);
+      }
+
+      .ticket-grid div {
+        padding: 14px 10px;
+        border-right: 1px solid rgba(16, 27, 23, 0.25);
+        border-bottom: 1px solid rgba(16, 27, 23, 0.25);
+      }
+
+      .ticket-grid span,
+      .ticket-grid strong {
+        display: block;
+      }
+
+      .ticket-grid span {
+        font-size: 9px;
+        text-transform: uppercase;
+      }
+
+      .ticket-grid strong {
+        margin-top: 3px;
+        font-size: 17px;
+      }
+
+      .ticket-foot {
+        align-items: center;
+        margin-top: 19px;
+      }
+
+      .ticket-foot a {
+        padding: 7px 10px;
+        color: var(--white);
+        background: var(--ink);
+        border-radius: 999px;
+      }
+
+      .hero-stripe {
+        display: flex;
+        justify-content: space-around;
+        gap: 24px;
+        overflow: hidden;
+        padding: 12px 3vw;
+        color: var(--ink);
+        background: var(--coral);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        white-space: nowrap;
+      }
+
+      .section {
+        width: min(1180px, 92vw);
+        margin: 0 auto;
+        padding: 96px 0;
+      }
+
+      .section-heading {
+        max-width: 850px;
+        margin-bottom: 43px;
+      }
+
+      .section-heading h2 {
+        margin: 14px 0 17px;
+        font-size: clamp(36px, 5.2vw, 67px);
+        line-height: 0.98;
+        letter-spacing: -0.05em;
+      }
+
+      .section-heading p {
+        max-width: 720px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 16px;
+      }
+
+      .decision-grid {
+        display: grid;
+        grid-template-columns: 1.35fr 0.65fr;
+        gap: 18px;
+      }
+
+      .question-card,
+      .signal-card,
+      .evidence-card,
+      .audit-card,
+      .artifact-card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+      }
+
+      .question-card {
+        grid-row: span 3;
+        padding: 40px;
+        color: var(--white);
+        background: var(--ink);
+      }
+
+      .card-label,
+      .question-card > span {
+        color: var(--lime-dark);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      .question-card blockquote {
+        margin: 30px 0 55px;
+        font-size: clamp(28px, 3.6vw, 46px);
+        font-weight: 800;
+        line-height: 1.08;
+        letter-spacing: -0.04em;
+      }
+
+      .formula {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .formula span {
+        padding: 9px 11px;
+        color: var(--ink);
+        background: var(--lime);
+        border-radius: 9px;
+        font-size: 11px;
+        font-weight: 900;
+      }
+
+      .formula b {
+        color: rgba(255, 255, 255, 0.55);
+      }
+
+      .signal-card {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        gap: 16px;
+        padding: 24px;
+        background: rgba(255, 253, 247, 0.54);
+      }
+
+      .signal-index {
+        display: grid;
+        width: 44px;
+        height: 44px;
+        place-items: center;
+        color: var(--white);
+        background: var(--blue);
+        border-radius: 50%;
+        font-weight: 900;
+      }
+
+      .signal-card.risk .signal-index {
+        color: var(--ink);
+        background: var(--coral);
+      }
+
+      .signal-card h3 {
+        margin: 4px 0 7px;
+        font-size: 21px;
+      }
+
+      .signal-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .boundary-wrap {
+        color: var(--white);
+        background: var(--ink);
+      }
+
+      .boundary-wrap .section-heading p {
+        color: rgba(255, 255, 255, 0.66);
+      }
+
+      .boundary-wrap .eyebrow {
+        color: var(--lime);
+      }
+
+      .parent-node {
+        width: min(580px, 100%);
+        margin: 0 auto 27px;
+        padding: 20px;
+        text-align: center;
+        color: var(--ink);
+        background: var(--lime);
+        border-radius: 18px;
+      }
+
+      .parent-node span,
+      .parent-node strong {
+        display: block;
+      }
+
+      .parent-node span {
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.15em;
+      }
+
+      .parent-node strong {
+        margin-top: 4px;
+        font-size: 21px;
+      }
+
+      .boundary-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .boundary-card {
+        padding: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: var(--radius);
+      }
+
+      .boundary-card.stub {
+        background: rgba(88, 119, 255, 0.11);
+      }
+
+      .boundary-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+      }
+
+      .boundary-head span {
+        color: var(--lime);
+        font-size: 11px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .boundary-card ul {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px 18px;
+        margin: 24px 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .boundary-card li {
+        padding: 9px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.11);
+        font-size: 13px;
+      }
+
+      .boundary-card p {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.63);
+        font-size: 12px;
+      }
+
+      .metric-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        overflow: hidden;
+        margin-bottom: 22px;
+        background: var(--line);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+      }
+
+      .metric-row article {
+        padding: 26px 22px;
+        background: var(--white);
+      }
+
+      .metric-row span,
+      .metric-row strong,
+      .metric-row i {
+        display: block;
+      }
+
+      .metric-row span {
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .metric-row strong {
+        margin: 6px 0;
+        font-size: 32px;
+        letter-spacing: -0.04em;
+      }
+
+      .metric-row i {
+        color: var(--blue);
+        font-size: 11px;
+        font-style: normal;
+        font-weight: 800;
+      }
+
+      .evidence-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 20px;
+      }
+
+      .evidence-card {
+        padding: 30px;
+        background: var(--white);
+      }
+
+      .card-heading {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        align-items: flex-start;
+      }
+
+      .card-heading span {
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .card-heading h3 {
+        margin: 6px 0 0;
+        font-size: 27px;
+      }
+
+      .card-heading > strong {
+        font-size: 34px;
+      }
+
+      .progress-track {
+        height: 12px;
+        margin: 28px 0;
+        overflow: hidden;
+        background: var(--paper-2);
+        border-radius: 999px;
+      }
+
+      .progress-track span {
+        display: block;
+        width: 53%;
+        height: 100%;
+        background: var(--blue);
+        border-radius: inherit;
+      }
+
+      .mini-metrics {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border-top: 1px solid var(--line);
+        border-left: 1px solid var(--line);
+      }
+
+      .mini-metrics div {
+        padding: 13px 10px;
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .mini-metrics span,
+      .mini-metrics strong {
+        display: block;
+      }
+
+      .mini-metrics span {
+        color: var(--muted);
+        font-size: 9px;
+        text-transform: uppercase;
+      }
+
+      .mini-metrics strong {
+        margin-top: 3px;
+        font-size: 17px;
+      }
+
+      .provenance {
+        margin: 18px 0 0;
+        color: var(--muted);
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 10px;
+      }
+
+      .cash-bars {
+        display: flex;
+        gap: 28px;
+        align-items: flex-end;
+        height: 190px;
+        margin: 25px 0 18px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .cash-bars div {
+        display: grid;
+        grid-template-rows: 1fr auto auto;
+        align-items: end;
+        width: 74px;
+        height: 100%;
+        text-align: center;
+      }
+
+      .cash-bars i {
+        display: block;
+        width: 100%;
+        min-height: 12px;
+        background: var(--lime-dark);
+        border-radius: 10px 10px 0 0;
+      }
+
+      .cash-bars div:nth-child(2) i {
+        background: var(--coral);
+      }
+
+      .cash-bars b,
+      .cash-bars strong {
+        margin-top: 5px;
+        font-size: 10px;
+      }
+
+      .forecast-wrap {
+        background: var(--white);
+      }
+
+      .forecast-table {
+        width: 100%;
+        overflow: hidden;
+        border-collapse: collapse;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        box-shadow: var(--shadow);
+      }
+
+      .forecast-table th,
+      .forecast-table td {
+        padding: 15px 13px;
+        text-align: right;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .forecast-table th:first-child,
+      .forecast-table td:first-child {
+        text-align: left;
+      }
+
+      .forecast-table thead {
+        color: var(--white);
+        background: var(--ink);
+      }
+
+      .forecast-table tbody th {
+        color: var(--muted);
+        font-size: 11px;
+        text-transform: uppercase;
+      }
+
+      .forecast-table tbody tr:nth-child(even) {
+        background: rgba(232, 225, 211, 0.48);
+      }
+
+      .forecast-note {
+        margin: 19px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .valuation-wrap {
+        color: var(--white);
+        background: var(--blue);
+      }
+
+      .valuation-wrap .section {
+        width: min(1280px, 94vw);
+      }
+
+      .lab {
+        overflow: hidden;
+        color: var(--ink);
+        background: var(--white);
+        border-radius: 30px;
+        box-shadow: var(--shadow);
+      }
+
+      .lab-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 30px;
+        padding: 32px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .lab-head h2 {
+        margin: 5px 0 7px;
+        font-size: clamp(31px, 4vw, 53px);
+        line-height: 1;
+        letter-spacing: -0.05em;
+      }
+
+      .lab-head p {
+        max-width: 660px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .scenario-tabs {
+        display: flex;
+        align-self: flex-start;
+        padding: 4px;
+        background: var(--paper-2);
+        border-radius: 999px;
+      }
+
+      .scenario-tabs button {
+        min-height: 38px;
+        padding: 0 15px;
+        color: var(--muted);
+        background: transparent;
+        border: 0;
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 900;
+      }
+
+      .scenario-tabs button.active {
+        color: var(--white);
+        background: var(--ink);
+      }
+
+      .lab-grid {
+        display: grid;
+        grid-template-columns: 1fr 0.8fr;
+      }
+
+      .lab-inputs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        padding: 34px;
+        border-right: 1px solid var(--line);
+      }
+
+      .lab-control {
+        display: block;
+      }
+
+      .lab-control > span {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        align-items: baseline;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .lab-control strong {
+        color: var(--ink);
+        font-size: 15px;
+      }
+
+      .lab-control input {
+        width: 100%;
+        margin-top: 11px;
+        accent-color: var(--blue);
+        cursor: pointer;
+      }
+
+      .lab-output {
+        padding: 34px;
+        color: var(--white);
+        background: var(--ink);
+      }
+
+      .output-label {
+        color: rgba(255, 255, 255, 0.57);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .output-value {
+        display: block;
+        margin: 8px 0 5px;
+        color: var(--lime);
+        font-size: clamp(41px, 5vw, 65px);
+        line-height: 1;
+        letter-spacing: -0.055em;
+      }
+
+      .premium {
+        display: inline-block;
+        padding: 6px 9px;
+        color: var(--ink);
+        background: var(--lime);
+        border-radius: 7px;
+        font-size: 11px;
+        font-weight: 900;
+      }
+
+      .premium.negative {
+        background: var(--coral);
+      }
+
+      .value-bridge {
+        margin-top: 26px;
+        border-top: 1px solid rgba(255, 255, 255, 0.16);
+      }
+
+      .value-bridge div {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        font-size: 11px;
+      }
+
+      .value-bridge span {
+        color: rgba(255, 255, 255, 0.58);
+      }
+
+      .value-bridge .total {
+        color: var(--lime);
+        font-weight: 900;
+      }
+
+      .lab-note {
+        margin: 18px 0 0;
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 10px;
+      }
+
+      .audit-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .audit-card,
+      .artifact-card {
+        padding: 30px;
+        background: var(--white);
+      }
+
+      .audit-card h3,
+      .artifact-card h3 {
+        margin: 5px 0 19px;
+        font-size: 27px;
+      }
+
+      .check-list {
+        display: grid;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .check-list li {
+        position: relative;
+        padding: 12px 12px 12px 40px;
+        background: rgba(215, 255, 95, 0.2);
+        border-radius: 10px;
+        font-size: 12px;
+      }
+
+      .check-list li::before {
+        position: absolute;
+        top: 10px;
+        left: 12px;
+        display: grid;
+        width: 21px;
+        height: 21px;
+        place-items: center;
+        content: "✓";
+        color: var(--white);
+        background: var(--ink);
+        border-radius: 50%;
+        font-size: 11px;
+        font-weight: 900;
+      }
+
+      .artifact-list {
+        display: grid;
+        gap: 9px;
+      }
+
+      .artifact-list a {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 14px 15px;
+        border: 1px solid var(--line);
+        border-radius: 11px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .artifact-list a:hover {
+        background: var(--lime);
+      }
+
+      .artifact-list b {
+        color: var(--blue);
+      }
+
+      .sources-wrap {
+        background: var(--paper-2);
+      }
+
+      .source-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .source-list a {
+        display: grid;
+        grid-template-columns: 48px 1fr auto;
+        gap: 18px;
+        align-items: center;
+        padding: 19px;
+        background: var(--white);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+      }
+
+      .source-list > a > span {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        color: var(--white);
+        background: var(--ink);
+        border-radius: 50%;
+        font-size: 11px;
+        font-weight: 900;
+      }
+
+      .source-list strong,
+      .source-list p {
+        display: block;
+        margin: 0;
+      }
+
+      .source-list p {
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .source-list b {
+        color: var(--blue);
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 10px;
+      }
+
+      footer {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 30px;
+        align-items: end;
+        padding: 55px 4vw;
+        color: var(--white);
+        background: var(--ink);
+      }
+
+      footer p {
+        max-width: 720px;
+        margin: 13px 0 0;
+        color: rgba(255, 255, 255, 0.58);
+        font-size: 11px;
+      }
+
+      footer .cutoff {
+        text-align: right;
+      }
+
+      footer .cutoff span,
+      footer .cutoff strong {
+        display: block;
+      }
+
+      footer .cutoff span {
+        color: rgba(255, 255, 255, 0.45);
+        font-size: 9px;
+        text-transform: uppercase;
+      }
+
+      @media (max-width: 920px) {
+        .site-header {
+          grid-template-columns: 1fr auto;
+        }
+
+        .site-header nav {
+          display: none;
+        }
+
+        .hero-inner,
+        .decision-grid,
+        .evidence-grid,
+        .lab-grid,
+        .audit-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-inner {
+          padding-top: 70px;
+        }
+
+        .question-card {
+          grid-row: auto;
+        }
+
+        .metric-row {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .lab-inputs {
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+      }
+
+      @media (max-width: 640px) {
+        .site-header {
+          min-height: 60px;
+          padding: 0 4vw;
+        }
+
+        .wordmark small {
+          display: none;
+        }
+
+        .header-cta {
+          min-height: 38px;
+          padding: 0 12px;
+          font-size: 10px;
+        }
+
+        .hero-inner {
+          width: min(92vw, 560px);
+          min-height: auto;
+          padding: 60px 0 55px;
+        }
+
+        .hero h1 {
+          font-size: clamp(48px, 16vw, 72px);
+        }
+
+        .ipo-ticket {
+          transform: none;
+        }
+
+        .hero-stripe {
+          justify-content: flex-start;
+        }
+
+        .section {
+          padding: 72px 0;
+        }
+
+        .section-heading h2 {
+          font-size: 40px;
+        }
+
+        .question-card,
+        .signal-card,
+        .evidence-card,
+        .audit-card,
+        .artifact-card,
+        .boundary-card,
+        .lab-head,
+        .lab-inputs,
+        .lab-output {
+          padding: 22px;
+        }
+
+        .boundary-grid,
+        .metric-row,
+        .mini-metrics,
+        .lab-inputs {
+          grid-template-columns: 1fr;
+        }
+
+        .boundary-card ul {
+          grid-template-columns: 1fr;
+        }
+
+        .metric-row {
+          gap: 1px;
+        }
+
+        .mini-metrics {
+          border-top: 0;
+        }
+
+        .lab-head {
+          display: grid;
+        }
+
+        .scenario-tabs {
+          width: 100%;
+        }
+
+        .scenario-tabs button {
+          flex: 1;
+        }
+
+        .forecast-table {
+          display: block;
+          overflow-x: auto;
+          white-space: nowrap;
+        }
+
+        .source-list a {
+          grid-template-columns: 42px 1fr;
+        }
+
+        .source-list b {
+          grid-column: 2;
+        }
+
+        footer {
+          grid-template-columns: 1fr;
+        }
+
+        footer .cutoff {
+          text-align: left;
+        }
+      }
+
+      @media print {
+        .site-header,
+        .hero-actions,
+        .scenario-tabs,
+        .lab-inputs {
+          display: none !important;
+        }
+
+        .hero,
+        .boundary-wrap,
+        .valuation-wrap,
+        footer {
+          print-color-adjust: exact;
+          -webkit-print-color-adjust: exact;
+        }
+
+        .section {
+          padding: 42px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to analysis</a>
+    <header class="site-header">
+      <a class="wordmark" href="#top" aria-label="MWG DMX valuation home">
+        <span>MWG</span><i>/</i><span>DMX</span><small>VALUATION LAB</small>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#case">Case</a>
+        <a href="#evidence">Evidence</a>
+        <a href="#forecast">Forecast</a>
+        <a href="#valuation">Valuation</a>
+        <a href="#sources">Sources</a>
+      </nav>
+      <a class="header-cta" href="public/downloads/MWG_DMX_IPO_SOTP_Model.xlsx">Download model</a>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top">
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <span class="eyebrow">Independent analyst work sample · HOSE: MWG</span>
+            <h1>MWG after the <span>DMX IPO.</span></h1>
+            <p>
+              A source-traceable transaction bridge, financial-statement review and
+              sum-of-the-parts case that asks the harder question: what is the non-DMX
+              stub worth after the IPO makes DMX visible?
+            </p>
+            <div class="hero-actions">
+              <a class="button primary" href="#valuation">Open valuation lab</a>
+              <a class="button secondary" href="public/downloads/Investment_Memo_EN.pdf">Read investment memo</a>
+            </div>
+            <div class="hero-meta">
+              <div><span>Deliverable</span><strong>Recruiter-ready portfolio case</strong></div>
+              <div><span>Methods</span><strong>IPO bridge · DCF · SOTP · scenarios</strong></div>
+              <div><span>Data cut-off</span><strong>13 July 2026</strong></div>
+            </div>
+          </div>
+
+          <aside class="ipo-ticket" aria-label="Verified DMX IPO transaction facts">
+            <div class="ticket-top"><span>Transaction snapshot</span><span>Official result</span></div>
+            <div class="ticket-value"><strong>13.3</strong><div><span>VND</span><span>trillion</span></div></div>
+            <p>VND 13,315.08bn gross proceeds from the completed primary offering.</p>
+            <div class="ticket-grid">
+              <div><span>Offer price</span><strong>VND 80k</strong></div>
+              <div><span>Shares issued</span><strong>166.4m</strong></div>
+              <div><span>Post shares</span><strong>1,267.7m</strong></div>
+              <div><span>MWG ownership</span><strong>nearly 86%</strong></div>
+            </div>
+            <div class="ticket-foot">
+              <span>DMX_IPO_RESULT_2026</span>
+              <a href="https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/7/0/f1/08/f108ca2a7399d9a70674915a4b2cf651.pdf" target="_blank" rel="noreferrer">Primary source ↗</a>
+            </div>
+          </aside>
+        </div>
+        <div class="hero-stripe" aria-hidden="true">
+          <span>PUBLIC FILINGS</span><span>NO BLACK BOX</span><span>FORMULAS INCLUDED</span><span>SOURCE → CONTROL → DECISION</span>
+        </div>
+      </section>
+
+      <section class="section" id="case">
+        <div class="section-heading">
+          <span class="eyebrow">01 / The decision</span>
+          <h2>Do not value MWG as one undifferentiated retailer.</h2>
+          <p>
+            The IPO provides a visible post-money anchor for DMX. The analytical work is
+            separating the remaining MWG assets, parent adjustments and corporate perimeter
+            without double-counting EraBlue or IPO cash.
+          </p>
+        </div>
+        <div class="decision-grid">
+          <article class="question-card">
+            <span>Core question</span>
+            <blockquote>
+              After valuing MWG's post-IPO stake in DMX, what value belongs to Bach Hoa Xanh,
+              An Khang, AvaKids and parent-level adjustments?
+            </blockquote>
+            <div class="formula" aria-label="MWG sum of the parts formula">
+              <span>MWG equity</span><b>=</b><span>DMX stake</span><b>+</b><span>Non-DMX stub</span><b>±</b><span>Parent adjustments</span>
+            </div>
+          </article>
+          <article class="signal-card">
+            <div class="signal-index">A</div>
+            <div><span class="card-label">Transaction</span><h3>Value crystallisation</h3><p>The actual post-offer share count implies a VND 101.4tn post-money anchor at the IPO price.</p></div>
+          </article>
+          <article class="signal-card">
+            <div class="signal-index">B</div>
+            <div><span class="card-label">Operations</span><h3>Margin expansion</h3><p>Q1 reported gross margin improved to 19.18% while revenue grew 29.4% year on year.</p></div>
+          </article>
+          <article class="signal-card risk">
+            <div class="signal-index">C</div>
+            <div><span class="card-label">Watchpoint</span><h3>Cash conversion</h3><p>Q1 CFO covered only 39% of NPAT, making working capital a required stress test.</p></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="boundary-wrap">
+        <div class="section">
+          <div class="section-heading">
+            <span class="eyebrow">02 / Model boundary</span>
+            <h2>One ownership map prevents the largest SOTP error.</h2>
+            <p>EraBlue is a 45% equity-accounted joint venture inside DMX. It enters valuation once—not again in the MWG stub.</p>
+          </div>
+          <div class="parent-node"><span>HOSE: MWG</span><strong>Mobile World Investment Corporation</strong></div>
+          <div class="boundary-grid">
+            <article class="boundary-card">
+              <div class="boundary-head"><span>Inside DMX</span><strong>nearly 86% disclosed</strong></div>
+              <ul><li>The Gioi Di Dong</li><li>Dien May Xanh</li><li>TopZone</li><li>DMX Technician</li><li>Super App initiatives</li><li>EraBlue 45% JV</li></ul>
+              <p>EraBlue value enters through DMX earnings or a separately identified JV value—never both.</p>
+            </article>
+            <article class="boundary-card stub">
+              <div class="boundary-head"><span>MWG stub</span><strong>Value separately</strong></div>
+              <ul><li>Bach Hoa Xanh</li><li>An Khang</li><li>AvaKids</li><li>Other investments</li><li>Parent cash and debt</li><li>Corporate adjustments</li></ul>
+              <p>The stub uses transparent assumptions and remains separate from official or management figures.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="evidence">
+        <div class="section-heading">
+          <span class="eyebrow">03 / Current evidence</span>
+          <h2>Growth is visible. Cash quality still needs watching.</h2>
+          <p>Reported Q1 financials remain separate from the issuer's six-month operating update and like-for-like KPIs.</p>
+        </div>
+        <div class="metric-row">
+          <article><span>Q1 2026 revenue</span><strong>32.5tn</strong><i>+29.4% YoY · reported</i></article>
+          <article><span>Q1 2026 NPAT</span><strong>2.22tn</strong><i>+50.1% YoY · reported</i></article>
+          <article><span>Gross margin</span><strong>19.18%</strong><i>+119 bps YoY</i></article>
+          <article><span>Cash + deposits − debt</span><strong>7.9tn</strong><i>31 March 2026</i></article>
+        </div>
+        <div class="evidence-grid">
+          <article class="evidence-card">
+            <div class="card-heading"><div><span>6M 2026 operating pulse</span><h3>Revenue at 53% of guidance</h3></div><strong>65.3tn</strong></div>
+            <div class="progress-track" role="img" aria-label="53 percent of annual revenue guidance"><span></span></div>
+            <div class="mini-metrics">
+              <div><span>Revenue growth</span><strong>+31% LFL</strong></div>
+              <div><span>SSSG</span><strong>+32%</strong></div>
+              <div><span>Financed sales</span><strong>38% mix</strong></div>
+              <div><span>EraBlue</span><strong>261 stores</strong></div>
+            </div>
+            <p class="provenance">DMX_RESULTS_2026H1 · issuer operating update; unaudited · stated like-for-like basis</p>
+          </article>
+          <article class="evidence-card">
+            <div class="card-heading"><div><span>Q1 2026 earnings quality</span><h3>NPAT to cash bridge</h3></div><strong>39%</strong></div>
+            <div class="cash-bars" role="img" aria-label="Q1 NPAT of VND 2,219bn compared with operating cash flow of VND 864bn">
+              <div><i style="height: 100%"></i><b>NPAT</b><strong>2,219bn</strong></div>
+              <div><i style="height: 39%"></i><b>CFO</b><strong>864bn</strong></div>
+            </div>
+            <p class="provenance">DMX_DATA_2026Q1 · official unaudited consolidated financials · reported basis</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="forecast-wrap" id="forecast">
+        <div class="section">
+          <div class="section-heading">
+            <span class="eyebrow">04 / Forecast evidence</span>
+            <h2>Management's case is a benchmark—not the answer.</h2>
+            <p>Company outlook is isolated from independent Bear, Base and Bull assumptions so a presentation target never becomes an unchallenged analyst forecast.</p>
+          </div>
+          <table class="forecast-table">
+            <thead><tr><th>VND bn</th><th>2025A LFL</th><th>2026F</th><th>2027F</th><th>2028F</th><th>2029F</th><th>2030F</th></tr></thead>
+            <tbody>
+              <tr><th>Revenue</th><td>107,000</td><td>122,500</td><td>135,000</td><td>149,000</td><td>164,000</td><td>182,000</td></tr>
+              <tr><th>NPAT</th><td>6,075</td><td>7,350</td><td>8,500</td><td>9,800</td><td>11,300</td><td>13,000</td></tr>
+              <tr><th>Gross margin</th><td>17.1%</td><td>17.5%</td><td>17.8%</td><td>18.0%</td><td>18.3%</td><td>18.4%</td></tr>
+            </tbody>
+          </table>
+          <p class="forecast-note">
+            2025A is a management-adjusted like-for-like reference, not statutory reported actuals. 2026F–2030F are management projections.
+            Source: DMX_IPO_PRESENTATION_2026.
+          </p>
+        </div>
+      </section>
+
+      <section class="valuation-wrap" id="valuation">
+        <div class="section">
+          <div class="lab">
+            <div class="lab-head">
+              <div><span class="eyebrow">Interactive valuation</span><h2>Rebuild the SOTP in under a minute.</h2><p>Change earnings, multiple, stub value and parent adjustments. These are illustrative analyst inputs—not company guidance or a recommendation.</p></div>
+              <div class="scenario-tabs" role="group" aria-label="Valuation scenarios">
+                <button type="button" data-scenario="Bear">Bear</button>
+                <button type="button" class="active" data-scenario="Base" aria-pressed="true">Base</button>
+                <button type="button" data-scenario="Bull">Bull</button>
+              </div>
+            </div>
+            <div class="lab-grid">
+              <div class="lab-inputs">
+                <label class="lab-control"><span>DMX 2026E NPAT <strong id="npat-value"></strong></span><input id="npat" type="range" min="5500" max="9000" step="50" value="7350"></label>
+                <label class="lab-control"><span>DMX forward P/E <strong id="pe-value"></strong></span><input id="pe" type="range" min="8" max="18" step="0.1" value="12.3"></label>
+                <label class="lab-control"><span>Non-DMX stub value <strong id="stub-value"></strong></span><input id="stub" type="range" min="10000" max="90000" step="1000" value="45000"></label>
+                <label class="lab-control"><span>Parent adjustments <strong id="adjustments-value"></strong></span><input id="adjustments" type="range" min="-15000" max="5000" step="500" value="-5000"></label>
+                <label class="lab-control"><span>MWG diluted shares <strong id="shares-value"></strong></span><input id="shares" type="range" min="1300" max="1550" step="1" value="1477"></label>
+                <label class="lab-control"><span>Your reference price <strong id="reference-value"></strong></span><input id="reference" type="range" min="40000" max="220000" step="1000" value="100000"></label>
+              </div>
+              <div class="lab-output" aria-live="polite">
+                <span class="output-label">Illustrative MWG value / share</span>
+                <strong class="output-value" id="per-share-output">—</strong>
+                <span class="premium" id="premium-output">—</span>
+                <div class="value-bridge">
+                  <div><span>DMX equity value</span><strong id="dmx-equity-output">—</strong></div>
+                  <div><span>MWG share of DMX (~86% model approximation)</span><strong id="stake-output">—</strong></div>
+                  <div><span>Non-DMX stub</span><strong id="stub-output">—</strong></div>
+                  <div><span>Parent adjustments</span><strong id="adjustments-output">—</strong></div>
+                  <div class="total"><span>MWG equity value</span><strong id="equity-output">—</strong></div>
+                </div>
+                <p class="lab-note">The issuer disclosed MWG ownership only as “nearly 86%”. The 86.0% calculation is explicitly a model approximation. Replace all assumptions with cut-off-date verified inputs before drawing a market conclusion.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="methodology">
+        <div class="section-heading">
+          <span class="eyebrow">05 / Audit trail</span>
+          <h2>Built to be inspected—not merely presented.</h2>
+          <p>The repository separates official actuals, management outlook and analyst assumptions, with source hashes and publication gates.</p>
+        </div>
+        <div class="audit-grid">
+          <article class="audit-card">
+            <span class="card-label">Controls</span><h3>Research QA</h3>
+            <ul class="check-list">
+              <li>Reported and like-for-like figures remain separate.</li>
+              <li>EraBlue is included once inside the DMX perimeter.</li>
+              <li>IPO proceeds enter the post-money bridge once.</li>
+              <li>Balance sheet, gross-profit and cash bridges reconcile.</li>
+              <li>Every official fact group carries source, status, basis and date.</li>
+              <li>Target price and rating stay locked without same-date market inputs.</li>
+            </ul>
+          </article>
+          <article class="artifact-card">
+            <span class="card-label">Downloads</span><h3>Recruiter inspection pack</h3>
+            <div class="artifact-list">
+              <a href="public/downloads/MWG_DMX_IPO_SOTP_Model.xlsx"><span>Excel financial model</span><b>XLSX ↗</b></a>
+              <a href="public/downloads/Investment_Memo_EN.pdf"><span>Investment memo</span><b>PDF ↗</b></a>
+              <a href="public/downloads/validation_report.html"><span>Validation report</span><b>HTML ↗</b></a>
+              <a href="public/downloads/dmx_q1_2026_financial_facts.csv"><span>Curated Q1 facts</span><b>CSV ↗</b></a>
+              <a href="public/downloads/artifacts_manifest.json"><span>Artifact SHA-256 manifest</span><b>JSON ↗</b></a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="sources-wrap" id="sources">
+        <div class="section">
+          <div class="section-heading"><span class="eyebrow">06 / Primary sources</span><h2>Issuer documents, not scraped summaries.</h2></div>
+          <div class="source-list">
+            <a href="https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/7/0/f1/08/f108ca2a7399d9a70674915a4b2cf651.pdf" target="_blank" rel="noreferrer"><span>01</span><div><strong>DMX board resolution approving the IPO result</strong><p>Actual offering, proceeds and post-offer share bridge</p></div><b>DMX_IPO_RESULT_2026 ↗</b></a>
+            <a href="https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/6/0/6b/e5/6be50a510e272451464dae07771401ca.xlsx" target="_blank" rel="noreferrer"><span>02</span><div><strong>DMX official Q1 2026 financial data pack</strong><p>Balance sheet, income statement and cash-flow facts</p></div><b>DMX_DATA_2026Q1 ↗</b></a>
+            <a href="https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/7/5006021/b5/ee/b5ee17c283b469b12b3b435d00da8aa4.pdf" target="_blank" rel="noreferrer"><span>03</span><div><strong>DMX six-month 2026 business results</strong><p>Unaudited LFL revenue, network and operating KPIs</p></div><b>DMX_RESULTS_2026H1 ↗</b></a>
+            <a href="https://cdnv2-tmdt.tgdd.vn/mwgvn/investorrelations/files/posts/2026/6/5005889/4a/f4/4af4a4152a74661a28063a23b4d6747f.pdf" target="_blank" rel="noreferrer"><span>04</span><div><strong>DMX IPO presentation</strong><p>Management 2026–2030 outlook and model perimeter</p></div><b>DMX_IPO_PRESENTATION_2026 ↗</b></a>
+            <a href="https://cdnv2.tgdd.vn/mwgvn/investorrelations/files/posts/2026/3/5677/48/8a/488ab752e1224bcbd9dd5413be04179f.pdf" target="_blank" rel="noreferrer"><span>05</span><div><strong>MWG Annual Report 2025</strong><p>Group structure, history and governance context</p></div><b>MWG_AR_2025 ↗</b></a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        <span class="wordmark"><span>MWG</span><i>/</i><span>DMX</span></span>
+        <p>
+          Independent educational portfolio project based on public information. Not investment advice,
+          not licensed securities research, and not an offer or solicitation. Verify all figures against
+          original filings before use.
+        </p>
+      </div>
+      <div class="cutoff"><span>Data cut-off</span><strong>13 July 2026</strong></div>
+    </footer>
+
+    <script>
+      (() => {
+        "use strict";
+
+        const scenarios = {
+          Bear: { npat: 6700, pe: 10, stub: 28000, adjustments: -8000, shares: 1477, reference: 100000 },
+          Base: { npat: 7350, pe: 12.3, stub: 45000, adjustments: -5000, shares: 1477, reference: 100000 },
+          Bull: { npat: 8000, pe: 14, stub: 65000, adjustments: -3000, shares: 1477, reference: 100000 }
+        };
+        const ownershipApproximation = 0.86;
+        const inputIds = ["npat", "pe", "stub", "adjustments", "shares", "reference"];
+        const inputs = Object.fromEntries(inputIds.map((id) => [id, document.getElementById(id)]));
+        const output = (id) => document.getElementById(id);
+        const integer = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
+        const oneDecimal = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+        const vnd = new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", maximumFractionDigits: 0 });
+
+        function value(id) {
+          return Number(inputs[id].value);
+        }
+
+        function setActiveScenario(name) {
+          document.querySelectorAll("[data-scenario]").forEach((button) => {
+            const active = button.dataset.scenario === name;
+            button.classList.toggle("active", active);
+            button.setAttribute("aria-pressed", String(active));
+          });
+        }
+
+        function render() {
+          const npat = value("npat");
+          const pe = value("pe");
+          const stub = value("stub");
+          const adjustments = value("adjustments");
+          const shares = value("shares");
+          const reference = value("reference");
+          const dmxEquity = npat * pe;
+          const stake = dmxEquity * ownershipApproximation;
+          const equity = stake + stub + adjustments;
+          const perShare = (equity / shares) * 1000;
+          const premium = reference ? perShare / reference - 1 : 0;
+
+          output("npat-value").textContent = `${integer.format(npat)}bn`;
+          output("pe-value").textContent = `${oneDecimal.format(pe)}×`;
+          output("stub-value").textContent = `${integer.format(stub)}bn`;
+          output("adjustments-value").textContent = `${integer.format(adjustments)}bn`;
+          output("shares-value").textContent = `${integer.format(shares)}m`;
+          output("reference-value").textContent = vnd.format(reference);
+          output("per-share-output").textContent = vnd.format(perShare);
+          output("dmx-equity-output").textContent = `${integer.format(dmxEquity)}bn`;
+          output("stake-output").textContent = `${integer.format(stake)}bn`;
+          output("stub-output").textContent = `${integer.format(stub)}bn`;
+          output("adjustments-output").textContent = `${integer.format(adjustments)}bn`;
+          output("equity-output").textContent = `${integer.format(equity)}bn`;
+          const premiumNode = output("premium-output");
+          premiumNode.textContent = `${premium >= 0 ? "+" : ""}${(premium * 100).toFixed(1)}% vs your reference`;
+          premiumNode.classList.toggle("negative", premium < 0);
+        }
+
+        document.querySelectorAll("[data-scenario]").forEach((button) => {
+          button.addEventListener("click", () => {
+            const name = button.dataset.scenario;
+            Object.entries(scenarios[name]).forEach(([key, scenarioValue]) => {
+              inputs[key].value = String(scenarioValue);
+            });
+            setActiveScenario(name);
+            render();
+          });
+        });
+
+        inputIds.forEach((id) => {
+          inputs[id].addEventListener("input", () => {
+            setActiveScenario("");
+            render();
+          });
+        });
+
+        render();
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,106 @@
+name: CI
+
+"on":
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web:
+    name: Web build and tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+          cache: npm
+
+      - name: Install web dependencies
+        run: npm ci
+
+      - name: Lint website source
+        run: npm run lint
+
+      - name: Build and test website
+        run: npm test
+
+  analytics-and-artifacts:
+    name: Analytics, model and reports
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            analytics/pyproject.toml
+            requirements-artifacts.txt
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e "analytics[xlsx]"
+          python -m pip install -r requirements-artifacts.txt
+
+      - name: Run analytics unit tests
+        run: python -m unittest discover -s analytics/tests -v
+
+      - name: Validate source-download plan without network access
+        run: python scripts/fetch_sources.py --dry-run
+
+      - name: Build financial model
+        run: python scripts/build_financial_model.py
+
+      - name: Build memo and validation artifacts
+        run: python scripts/build_reports.py
+
+      - name: Verify generated artifacts
+        shell: python
+        run: |
+          from pathlib import Path
+
+          required = [
+              Path("model/MWG_DMX_IPO_SOTP_Model.xlsx"),
+              Path("public/downloads/MWG_DMX_IPO_SOTP_Model.xlsx"),
+              Path("public/downloads/Investment_Memo_EN.pdf"),
+              Path("public/downloads/validation_report.html"),
+              Path("public/downloads/artifacts_manifest.json"),
+          ]
+          missing = [str(path) for path in required if not path.is_file() or path.stat().st_size == 0]
+          if missing:
+              raise SystemExit(f"Missing or empty artifacts: {missing}")
+          print("Verified generated artifacts:")
+          for path in required:
+              print(f"- {path} ({path.stat().st_size:,} bytes)")
+
+      - name: Upload research artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mwg-dmx-research-artifacts
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            model/MWG_DMX_IPO_SOTP_Model.xlsx
+            public/downloads/MWG_DMX_IPO_SOTP_Model.xlsx
+            public/downloads/Investment_Memo_EN.pdf
+            public/downloads/validation_report.html
+            public/downloads/artifacts_manifest.json

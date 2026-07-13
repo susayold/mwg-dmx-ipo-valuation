@@ -1,0 +1,3 @@
+source_document_id,entity_code,document_title,document_type,period_end,published_date,source_url,retrieved_at,sha256,data_status,notes
+SYNTHETIC-MWG-FY2024,SYNTH_MWG_GROUP,Synthetic MWG-like consolidated fixture FY2024,synthetic_fixture,2024-12-31,2026-07-13,,,,synthetic,Illustrative testing data only; not an issuer disclosure
+SYNTHETIC-MWG-FY2025,SYNTH_MWG_GROUP,Synthetic MWG-like consolidated fixture FY2025,synthetic_fixture,2025-12-31,2026-07-13,,,,synthetic,Illustrative testing data only; not an issuer disclosure

@@ -1,0 +1,2 @@
+# The runtime intentionally uses only the Python standard library.
+# Install the package from this directory with: python -m pip install -e .
