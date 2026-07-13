@@ -103,9 +103,16 @@ test("GitHub Pages artifact includes the standalone renderer", async () => {
 
 test("CI research artifact carries standalone site scripts", async () => {
   const workflow = await readFile(ciWorkflowPath, "utf8");
+  const generatedBlock = workflow.match(/generated = \[[\s\S]*?\n          \]/)?.[0] ?? "";
+  const requiredBlock = workflow.match(/required = \[[\s\S]*?\n          \]/)?.[0] ?? "";
+  const uploadBlock = workflow.match(/path: \|[\s\S]*?public\/standalone-site\.js/)?.[0] ?? "";
 
-  assert.match(workflow, /public\/three-statement-data\.js/);
-  assert.match(workflow, /public\/standalone-site\.js/);
+  assert.match(generatedBlock, /public\/three-statement-data\.js/);
+  assert.doesNotMatch(generatedBlock, /public\/standalone-site\.js/);
+  assert.match(requiredBlock, /Path\("public\/three-statement-data\.js"\)/);
+  assert.match(requiredBlock, /Path\("public\/standalone-site\.js"\)/);
+  assert.match(uploadBlock, /public\/three-statement-data\.js/);
+  assert.match(uploadBlock, /public\/standalone-site\.js/);
 });
 
 test("all local links and assets in index.html exist in the repository", async () => {

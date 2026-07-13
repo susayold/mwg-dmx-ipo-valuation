@@ -86,7 +86,6 @@ jobs:
               Path("public/downloads/dmx_three_statement_facts.csv"),
               Path("public/downloads/dmx_normalization_adjustments.csv"),
               Path("public/downloads/three_statement_manifest.json"),
-              Path("public/standalone-site.js"),
           ]
           for path in generated:
               path.unlink(missing_ok=True)
@@ -123,6 +122,7 @@ jobs:
               Path("data/processed/dmx_three_statement_analysis.json"),
               Path("app/data/three-statement-analysis.json"),
               Path("public/three-statement-data.js"),
+              Path("public/standalone-site.js"),
               Path("public/downloads/dmx_three_statement_analysis.json"),
               Path("public/downloads/dmx_three_statement_facts.csv"),
               Path("public/downloads/dmx_normalization_adjustments.csv"),
